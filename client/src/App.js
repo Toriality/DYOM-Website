@@ -1,22 +1,22 @@
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, Container } from "@mui/material";
+import { colors } from "./colors";
 
 // Site main theme
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#FFD066",
+      main: colors.primaryColor,
     },
     secondary: {
-      main: "#f44336",
+      main: colors.secondaryColor,
     },
     background: {
-      default: "#252525",
+      default: colors.backgroundColor,
     },
     text: {
-      primary: "#DDD",
-      secondary: "#FFF",
+      primary: colors.primaryText,
     },
   },
 });
