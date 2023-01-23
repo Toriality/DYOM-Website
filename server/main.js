@@ -19,9 +19,10 @@ mongoose.connect(uri, () => {
   console.log("Connected to MongoDB");
 });
 
-// Static server page
-app.use(express.static("build"));
-app.get("*", (req, res) => res.sendFile(path.resolve("build", "index.html")));
+// Pages
+app.use("/api/user", require("./routes/user"));
+app.use("/api/mission", require("./routes/mission"));
+app.use("/api/article", require("./routes/article"));
 
 // Log server info
 app.listen(port, () => {
