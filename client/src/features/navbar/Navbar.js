@@ -5,18 +5,15 @@ import {
   Box,
   Toolbar,
   Typography,
-  Button,
   IconButton,
-  Icon,
   Avatar,
   InputBase,
   MenuItem,
   Menu,
-  FormControl,
+  ButtonBase,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { colors } from "../../colors";
 import logo from "../../images/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -60,8 +57,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export function Navbar() {
   let [query, setQuery] = React.useState("");
@@ -121,7 +116,12 @@ export function Navbar() {
           />
         </Search>
         {/* Profile Avatar and Name */}
-        <Box sx={{ display: "flex" }}>
+        <ButtonBase
+          onClick={(e) => {
+            navigate("/profile/me");
+          }}
+          sx={{ display: "flex" }}
+        >
           <Typography variant="h4" color="primary" mr={2}>
             Toriality
           </Typography>
@@ -131,32 +131,7 @@ export function Navbar() {
           >
             <Avatar alt="Profile Avatar" />
           </IconButton>
-          <Menu
-            sx={{ mt: "45px" }}
-            id="menu-appbar"
-            //anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            //open={Boolean(anchorElUser)}
-            //onClose={handleCloseUserMenu}
-          >
-            {settings.map((setting) => (
-              <MenuItem
-                key={setting}
-                //onClick={handleCloseUserMenu}
-              >
-                <Typography textAlign="center">{setting}</Typography>
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
+        </ButtonBase>
       </Toolbar>
     </AppBar>
   );
