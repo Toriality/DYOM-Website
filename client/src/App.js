@@ -4,16 +4,42 @@ import { CssBaseline, Container } from "@mui/material";
 import { colors } from "./colors";
 import Pricedown from "./fonts/pricedown.ttf";
 import { Navbar } from "./features/navbar/Navbar";
+import { Home } from "./features/home/Home";
 
 // Site main theme
 const theme = createTheme({
   typography: {
-    fontFamily: "Pricedown, Arial",
+    fontFamily: "Pricedown, Verdana",
     allVariants: {
       color: colors.primaryText,
     },
+    h1: { fontSize: "64pt", color: "white" },
+    h2: { fontSize: "48pt", color: "white" },
+    h3: { fontSize: "32pt", color: "white" },
+    h4: { fontSize: "20pt", color: "white" },
+    body1: { fontFamily: "Verdana", fontSize: "16pt" },
+    body2: { fontFamily: "Verdana", fontSize: "12pt" },
+    subtitle1: { fontFamily: "Verdana", fontSize: "10pt" },
+    subtitle2: { fontFamily: "Verdana", fontSize: "8pt" },
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          lineHeight: "1",
+          color: colors.primaryColor,
+          backgroundColor: colors.backgroundColor,
+          border: "2px solid " + colors.primaryColor,
+          borderRadius: 20,
+          fontSize: "32pt",
+          padding: "1rem 2rem",
+          "&:hover": {
+            color: "#000",
+            backgroundColor: colors.primaryColor,
+          },
+        },
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: `
         @font-face {
@@ -51,7 +77,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LayoutsWithNavbar />}>
-            <Route path="/" element={null} />
+            <Route path="/" element={<Home />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -64,9 +90,7 @@ function LayoutsWithNavbar() {
   return (
     <>
       <Navbar />
-      <Container sx={{ mt: 4 }}>
-        <Outlet />
-      </Container>
+      <Outlet />
     </>
   );
 }
