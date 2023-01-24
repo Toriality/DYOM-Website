@@ -25,7 +25,7 @@ export function Home() {
       />
       <Box
         sx={{
-          zIndex: "9999",
+          zIndex: "1",
           ml: 14,
           mr: 6,
           flexGrow: 1,

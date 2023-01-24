@@ -62,6 +62,9 @@ const theme = createTheme({
     background: {
       default: colors.backgroundColor,
     },
+    stroke: {
+      default: colors.stroke,
+    },
     text: {
       primary: colors.primaryText,
       secondary: "#fff",

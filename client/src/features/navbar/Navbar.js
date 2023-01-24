@@ -8,15 +8,19 @@ import {
   IconButton,
   Avatar,
   InputBase,
-  MenuItem,
-  Menu,
   ButtonBase,
+  TextField,
+  Button,
+  Modal,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { colors } from "../../colors";
 import logo from "../../images/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { ModalBox } from "../../styles/components/ModalBox";
+import { loginUser } from "../user/userSlice";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,8 +62,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export function Navbar() {
+export function Navbar(props) {
   let [query, setQuery] = React.useState("");
+  let [openModal, setOpenModal] = React.useState(false);
+
+  //const count = useSelector((state) => state.user.value);
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
     <AppBar
@@ -118,21 +127,92 @@ export function Navbar() {
         {/* Profile Avatar and Name */}
         <ButtonBase
           onClick={(e) => {
-            navigate("/profile/me");
+            setOpenModal(true);
           }}
           sx={{ display: "flex" }}
         >
           <Typography variant="h4" color="primary" mr={2}>
             Toriality
           </Typography>
-          <IconButton
-            //onClick={handleOpenUserMenu}
-            sx={{ p: 0 }}
-          >
+          <IconButton sx={{ p: 0 }}>
             <Avatar alt="Profile Avatar" />
           </IconButton>
         </ButtonBase>
       </Toolbar>
+      <LoginModal toggle={() => setOpenModal(openModal)} open={openModal} />
     </AppBar>
+  );
+}
+
+function LoginModal(props) {
+  const [state, setState] = React.useState({ username: "", password: "" });
+  const [shouldClose, setClose] = React.useState(false);
+  const { toggle } = props;
+  const { loading, userInfo, error, success } = useSelector(
+    (state) => state.user
+  );
+  const dispatch = useDispatch();
+  //const { register, handleSubmit } = useForm()
+
+  React.useEffect(() => {
+    if (shouldClose) {
+      toggle();
+      setClose(false);
+    }
+  }, [shouldClose, toggle]);
+
+  const onChange = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const { username, password } = state;
+    const user = {
+      username,
+      password,
+    };
+    dispatch(loginUser(user));
+    setClose(true);
+  };
+
+  return (
+    <Modal open={props.open} onClose={props.toggle}>
+      <ModalBox title="Log in..." desc="Welcome back!">
+        <form onSubmit={onSubmit}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              "& .MuiTextField-root": {
+                mb: 2,
+              },
+            }}
+          >
+            <TextField
+              required
+              name="username"
+              label="Username"
+              placeholder="Your username"
+              onChange={onChange}
+            />
+            <TextField
+              required
+              name="password"
+              label="Password"
+              type="password"
+              placeholder="Your password"
+              onChange={onChange}
+            />
+            <Button variant="contained" type="submit">
+              Log in
+            </Button>
+          </Box>
+        </form>
+      </ModalBox>
+    </Modal>
   );
 }
