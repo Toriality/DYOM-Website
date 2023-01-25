@@ -1,10 +1,10 @@
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, Container } from "@mui/material";
-import { colors } from "./colors";
+import { colors } from "./styles/colors";
 import Pricedown from "./fonts/pricedown.ttf";
-import { Navbar } from "./features/navbar/Navbar";
-import { Home } from "./features/home/Home";
+import { Navbar } from "./components/navbar/Navbar";
+import { Home } from "./components/home/Home";
 
 // Site main theme
 const theme = createTheme({

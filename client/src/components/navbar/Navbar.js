@@ -1,9 +1,9 @@
 import React from "react";
 import { AppBar, Toolbar } from "@mui/material";
-import { colors } from "../../colors";
+import { colors } from "../../styles/colors";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../user/userSlice";
-import { useGetUserDetailsQuery } from "../user/authService";
+import { setCredentials } from "../../features/user/userSlice";
+import { useGetUserDetailsQuery } from "../../features/user/authService";
 import { NavMenu } from "./NavMenu";
 import { NavSearch } from "./NavSearch";
 import { NavUser } from "./NavUser";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, TextField, Box, Modal } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser } from "../user/userSlice";
+import { loginUser } from "../../features/user/userSlice";
 import { ModalBox } from "../../styles/components/ModalBox";
 
 export function LoginModal(props) {
