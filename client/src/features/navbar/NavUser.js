@@ -30,7 +30,7 @@ export function NavUser() {
     return (
       <ButtonBase>
         <Typography variant="h4" color="primary" mr={2}>
-          {userInfo.data.username}
+          {userInfo?.data?.username || userInfo?.username}
         </Typography>
         <IconButton sx={{ p: 0 }}>
           <Avatar alt="Profile Avatar" />
