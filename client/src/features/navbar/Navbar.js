@@ -20,7 +20,8 @@ import logo from "../../images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { ModalBox } from "../../styles/components/ModalBox";
-import { loginUser } from "../user/userSlice";
+import { loginUser, setCredentials } from "../user/userSlice";
+import { useGetUserDetailsQuery } from "../user/authService";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,6 +71,17 @@ export function Navbar(props) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
+    pollingInterval: 900000,
+  });
+
+  console.log(data);
+
+  React.useEffect(() => {
+    if (data) dispatch(setCredentials(data));
+  }, [data, dispatch]);
+
   return (
     <AppBar
       position="static"
