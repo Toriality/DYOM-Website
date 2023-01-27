@@ -2,8 +2,15 @@ import React from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../../images/logo.png";
+import { Menu } from "./Menu";
 
 export function NavMenu() {
+  const [open, setOpen] = React.useState(false);
+
+  const toggle = () => {
+    setOpen(!open);
+  };
+
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box
@@ -15,6 +22,9 @@ export function NavMenu() {
         src={logo}
       />
       <IconButton
+        onClick={() => {
+          setOpen(true);
+        }}
         size="large"
         edge="start"
         color="primary"
@@ -26,6 +36,7 @@ export function NavMenu() {
           Menu
         </Typography>
       </IconButton>
+      <Menu open={open} toggle={toggle} />
     </Box>
   );
 }

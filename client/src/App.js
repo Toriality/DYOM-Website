@@ -23,6 +23,13 @@ const theme = createTheme({
     subtitle2: { fontFamily: "Verdana", fontSize: "6pt" },
   },
   components: {
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          display: "block ",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
