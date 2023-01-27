@@ -54,7 +54,13 @@ export function Banner() {
           Latest version: DYOM 8.1
         </Typography>
         <Box sx={{ display: "block" }}>
-          <Button variant="contained">Download Mod</Button>
+          <Button
+            href="https://www.gtagarage.com/mods/show.php?id=5038"
+            target="_blank"
+            variant="contained"
+          >
+            Download Mod
+          </Button>
         </Box>
       </Box>
       <Box
