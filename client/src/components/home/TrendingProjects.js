@@ -1,4 +1,5 @@
 import { Typography, Box } from "@mui/material";
+import { ProjectBox } from "../../styles/components/ProjectBox";
 import React from "react";
 
 export function TrendingProjects() {
@@ -16,15 +17,19 @@ export function TrendingProjects() {
       </Typography>
       <Box
         sx={{
+          display: "flex",
           backgroundColor: "background.darker",
           border: "2px solid",
           borderColor: "stroke.default",
           borderRadius: "40px",
           width: "100%",
           minHeight: "40rem",
+          p: "2rem 4rem",
+          gap: 10,
         }}
       >
-        {/* 2 project boxes */}
+        <ProjectBox />
+        <ProjectBox />
       </Box>
     </Box>
   );
