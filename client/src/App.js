@@ -13,14 +13,14 @@ const theme = createTheme({
     allVariants: {
       color: colors.primaryText,
     },
-    h1: { fontSize: "64pt", color: "white" },
-    h2: { fontSize: "48pt", color: "white" },
-    h3: { fontSize: "32pt", color: "white" },
-    h4: { fontSize: "20pt", color: "white" },
-    body1: { fontFamily: "Verdana", fontSize: "16pt" },
-    body2: { fontFamily: "Verdana", fontSize: "12pt" },
-    subtitle1: { fontFamily: "Verdana", fontSize: "10pt" },
-    subtitle2: { fontFamily: "Verdana", fontSize: "8pt" },
+    h1: { fontSize: "48pt", color: "white" },
+    h2: { fontSize: "32pt", color: "white" },
+    h3: { fontSize: "24pt", color: "white" },
+    h4: { fontSize: "16pt", color: "white" },
+    body1: { fontFamily: "Verdana", fontSize: "12pt" },
+    body2: { fontFamily: "Verdana", fontSize: "8pt" },
+    subtitle1: { fontFamily: "Verdana", fontSize: "8pt" },
+    subtitle2: { fontFamily: "Verdana", fontSize: "6pt" },
   },
   components: {
     MuiButton: {
@@ -61,6 +61,7 @@ const theme = createTheme({
     },
     background: {
       default: colors.backgroundColor,
+      darker: colors.backgroundDarker,
     },
     stroke: {
       default: colors.stroke,
