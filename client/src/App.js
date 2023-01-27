@@ -5,6 +5,7 @@ import { colors } from "./styles/colors";
 import Pricedown from "./fonts/pricedown.ttf";
 import { Navbar } from "./components/navbar/Navbar";
 import { Home } from "./components/home/Home";
+import { Footer } from "./components/footer/Footer";
 
 // Site main theme
 const theme = createTheme({
@@ -102,6 +103,7 @@ function LayoutsWithNavbar() {
     <>
       <Navbar />
       <Outlet />
+      <Footer />
     </>
   );
 }
