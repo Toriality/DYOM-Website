@@ -6,6 +6,7 @@ import Pricedown from "./fonts/pricedown.ttf";
 import { Navbar } from "./components/navbar/Navbar";
 import { Home } from "./components/home/Home";
 import { Footer } from "./components/footer/Footer";
+import { Debug_AddMission } from "./components/debug/AddMission";
 
 // Site main theme
 const theme = createTheme({
@@ -90,6 +91,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LayoutsWithNavbar />}>
             <Route path="/" element={<Home />} />
+            <Route path="/debug/add_mission" element={<Debug_AddMission />} />
           </Route>
         </Routes>
       </BrowserRouter>
