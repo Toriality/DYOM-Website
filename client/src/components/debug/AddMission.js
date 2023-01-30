@@ -13,6 +13,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMission } from "../../features/mission/missionSlice";
 
+const YT_REGEX =
+  /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+
 export function Debug_AddMission() {
   const [state, setState] = React.useState({
     title: {
@@ -138,20 +141,27 @@ export function Debug_AddMission() {
     if (e.target.files[0].size > 8 * 1024 * 1024) {
       setState((prevState) => ({
         ...prevState,
-        banner: { ...prevState.banner, error: true },
+        banner: { ...prevState.banner, input: null, error: true },
       }));
       return;
     }
     setState((prevState) => ({
       ...prevState,
-      banner: { ...prevState.banner, input: e.target.files[0] },
+      banner: { ...prevState.banner, input: e.target.files[0], error: false },
     }));
   };
 
   const handleTrailerChange = (e) => {
+    if (e.target.value !== "" && !YT_REGEX.test(e.target.value)) {
+      setState((prevState) => ({
+        ...prevState,
+        trailer: { ...prevState.trailer, input: "", error: true },
+      }));
+      return;
+    }
     setState((prevState) => ({
       ...prevState,
-      trailer: { ...prevState.trailer, input: e.target.value },
+      trailer: { ...prevState.trailer, input: e.target.value, error: false },
     }));
   };
 
@@ -168,6 +178,7 @@ export function Debug_AddMission() {
         ...prevState,
         images: {
           ...prevState.images,
+          input: null,
           error: true,
           errorMsg: "You cannot insert more than 5 images on the gallery! ",
         },
@@ -177,14 +188,14 @@ export function Debug_AddMission() {
       if (e.target.files[i].size > 8 * 1024 * 1024) {
         setState((prevState) => ({
           ...prevState,
-          images: { ...prevState.images, error: true },
+          images: { ...prevState.images, input: null, error: true },
         }));
         return;
       }
     }
     setState((prevState) => ({
       ...prevState,
-      images: { ...prevState.images, input: e.target.files },
+      images: { ...prevState.images, input: e.target.files, error: false },
     }));
   };
 
@@ -192,13 +203,13 @@ export function Debug_AddMission() {
     if (e.target.files[0].size > 8 * 1024 * 1024) {
       setState((prevState) => ({
         ...prevState,
-        file: { ...prevState.file, error: true },
+        file: { ...prevState.file, input: null, error: true },
       }));
       return;
     }
     setState((prevState) => ({
       ...prevState,
-      file: { ...prevState.file, input: e.target.files[0] },
+      file: { ...prevState.file, input: e.target.files[0], error: false },
     }));
   };
 
@@ -266,27 +277,6 @@ export function Debug_AddMission() {
     for (var pair of formData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
-    // dispatch(
-    //   addMission({
-    //     title: state.title.input,
-    //     author: state.author.input,
-    //     date: state.date.input,
-    //     summary: state.summary.input,
-    //     description: state.description.input,
-    //     banner: state.banner.input,
-    //     trailer: state.trailer.input,
-    //     images: state.images.input,
-    //     file: "-",
-    //     credits: state.credits.input,
-    //     tags: state.tags.input,
-    //     originalName: state.originalName.input,
-    //     motto: state.motto.input,
-    //     musicTheme: state.musicTheme.input,
-    //     difficulty: state.difficulty.input,
-    //     modsRequired: state.modsRequired.input,
-    //     formData,
-    //   })
-    // );
     dispatch(addMission(formData));
   };
 
@@ -359,6 +349,9 @@ export function Debug_AddMission() {
           maxLength: 72,
         }}
       />
+      <Typography variant="subtitle1" color="error">
+        {state.trailer.error ? state.trailer.errorMsg : null}
+      </Typography>
 
       <InputLabel htmlFor="mission-images">Mission Images</InputLabel>
       <Button variant="contained" component="label" id="mission-images">
