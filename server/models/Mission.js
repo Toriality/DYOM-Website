@@ -4,37 +4,33 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 
 const missionSchema = new Schema(
   {
-    missionTitle: {
+    title: {
       type: String,
       required: true,
     },
-    missionAuthor: {
+    author: {
       type: Schema.Types.ObjectId,
       required: true,
     },
-    missionUploadDate: {
-      type: Date,
-      default: Date.now,
-      required: true,
-    },
-    missionSummary: { type: String },
+    summary: { type: String },
     officialReviews: { type: [Schema.Types.Mixed] },
     userReviews: { type: [Schema.Types.Mixed] },
-    missionFullDescription: { type: String },
-    missionAwards: { type: [Schema.Types.Mixed] },
-    missionFile: {
+    description: { type: String },
+    awards: { type: [Schema.Types.Mixed] },
+    file: {
       filename: { type: String, required: true },
       filedest: { type: String, required: true },
     },
+    tags: { type: [String] },
+    trailer: { type: String },
     credits: { type: String },
-    specsOriginalName: { type: String },
-    specsMotto: { type: String },
-    specsMainTheme: { type: String },
-    specsDifficulty: { type: String },
-    specsModsRequired: { type: String },
+    originalName: { type: String },
+    motto: { type: String },
+    mainTheme: { type: String },
+    difficulty: { type: String },
+    modsRequired: { type: String },
     views: { type: Number, default: 0 },
     downloads: { type: Number, default: 0 },
-    tags: { type: [String] },
   },
   {
     timestamps: true,

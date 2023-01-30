@@ -10,7 +10,8 @@ import {
   FormLabel,
 } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addMission } from "../../features/mission/missionSlice";
 
 export function Debug_AddMission() {
   const [state, setState] = React.useState({
@@ -253,6 +254,42 @@ export function Debug_AddMission() {
     }));
   };
 
+  const dispatch = useDispatch();
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    Object.keys(state).forEach((key) => {
+      formData.append(key, state[key].input);
+    });
+    // Display the key/value pairs
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+    // dispatch(
+    //   addMission({
+    //     title: state.title.input,
+    //     author: state.author.input,
+    //     date: state.date.input,
+    //     summary: state.summary.input,
+    //     description: state.description.input,
+    //     banner: state.banner.input,
+    //     trailer: state.trailer.input,
+    //     images: state.images.input,
+    //     file: "-",
+    //     credits: state.credits.input,
+    //     tags: state.tags.input,
+    //     originalName: state.originalName.input,
+    //     motto: state.motto.input,
+    //     musicTheme: state.musicTheme.input,
+    //     difficulty: state.difficulty.input,
+    //     modsRequired: state.modsRequired.input,
+    //     formData,
+    //   })
+    // );
+    dispatch(addMission(formData));
+  };
+
   return (
     <Box
       sx={{
@@ -342,6 +379,7 @@ export function Debug_AddMission() {
       <Button variant="contained" component="label" id="mission-file">
         Upload File
         <input
+          name="file"
           type="file"
           hidden
           accept=".zip, .rar, .dat"
@@ -406,7 +444,9 @@ export function Debug_AddMission() {
       <br />
       <br />
 
-      <Button variant="contained">Add mission</Button>
+      <Button variant="contained" onClick={(e) => onSubmit(e)}>
+        Add mission
+      </Button>
     </Box>
   );
 }

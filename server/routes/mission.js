@@ -2,7 +2,7 @@ const router = require("express").Router();
 let Mission = require("../models/Mission");
 let User = require("../models/User");
 const auth = require("../middleware/auth");
-const { createStorage, createUpload } = require("../upload");
+const { createStorage, createUpload, upload } = require("../upload");
 
 // Get list of missions
 router.get("/list", auth, (req, res) => {
@@ -48,30 +48,35 @@ router.get("/download/:id", auth, (req, res) => {
 });
 
 // Add mission
-router.post("/add", auth, (req, res) => {
+router.post("/add", auth, upload.single("file"), (req, res) => {
+  console.log(req.file);
   // Get user id
   const userID = req.user.id;
 
   // Mission file vars
-  let filename, filedest;
+  let filename = req.file.filename;
+  let filedest = req.file.destination;
 
   // Mission params
   const {
-    missionTitle,
-    missionSummary,
-    missionFullDescription,
-    missionFile,
+    title,
+    date,
+    summary,
+    description,
+    banner,
+    trailer,
+    images,
     credits,
-    specsOriginalName,
-    specsMotto,
-    specsMainTheme,
-    specsDifficulty,
-    specsModsRequired,
     tags,
+    originalName,
+    motto,
+    musicTheme,
+    difficulty,
+    modsRequired,
   } = req.body;
 
   // Required fields
-  if (!missionTitle || !missionFile) {
+  if (!title || !filename) {
     return res.status(400).json({ msg: "Please insert the required fields." });
   }
 
@@ -79,32 +84,26 @@ router.post("/add", auth, (req, res) => {
   if (tags.length > 3)
     return res.status(400).json({ msg: "No more than 3 tags are allowed!" });
 
-  // Upload mission file
-  const storage = createStorage("missions");
-  const upload = createUpload("mission", storage);
-  upload(req, res, (err) => {
-    // Get errors
-    if (err) return res.status(400).json({ err });
-    filename = req.file.filename;
-    filedest = req.file.filedest;
-  });
-
   const newMission = new Mission({
-    missionTitle,
-    missionSummary,
-    missionFullDescription,
-    missionFile: {
+    title,
+    author: userID,
+    date,
+    summary,
+    description,
+    banner,
+    trailer,
+    images,
+    file: {
       filename,
       filedest,
     },
     credits,
-    specsOriginalName,
-    specsMotto,
-    specsMainTheme,
-    specsDifficulty,
-    specsModsRequired,
     tags,
-    missionAuthor: userID,
+    originalName,
+    motto,
+    musicTheme,
+    difficulty,
+    modsRequired,
   });
 
   newMission
@@ -121,6 +120,7 @@ router.post("/add", auth, (req, res) => {
       res.json({ msg: "Mission added into the database!" });
     })
     .catch((err) => {
+      console.log(err);
       res.status(400).json({ msg: "Something went wrong. Try again later." });
     });
 });
