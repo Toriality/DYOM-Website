@@ -8,6 +8,9 @@ import {
   TextField,
   Button,
   FormLabel,
+  Select,
+  MenuItem,
+  Checkbox,
 } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -104,7 +107,7 @@ export function Debug_AddMission() {
       msg: "The title of the mission's original music theme if any",
     },
     difficulty: {
-      input: "",
+      input: "Unknown",
       error: false,
       errorMsg: "Invalid difficulty string!",
       msg: "Enter the difficulty of the mission",
@@ -261,7 +264,7 @@ export function Debug_AddMission() {
   const handleModsChange = (e) => {
     setState((prevState) => ({
       ...prevState,
-      modsRequired: { ...prevState.modsRequired, input: e.target.value },
+      modsRequired: { ...prevState.modsRequired, input: e.target.checked },
     }));
   };
 
@@ -428,11 +431,22 @@ export function Debug_AddMission() {
         inputProps={{ maxLength: 86 }}
       />
 
-      <InputLabel htmlFor="difficulty">difficulty</InputLabel>
-      <Input id="difficulty" onChange={(e) => handleDifficultyChange(e)} />
+      <InputLabel htmlFor="difficulty">Difficulty</InputLabel>
+      <Select
+        id="difficulty"
+        value={state.difficulty.input}
+        label="difficulty"
+        onChange={(e) => handleDifficultyChange(e)}
+      >
+        <MenuItem value="Unknown">Unknown</MenuItem>
+        <MenuItem value="Easy">Easy</MenuItem>
+        <MenuItem value="Normal">Normal</MenuItem>
+        <MenuItem value="Hard">Hard</MenuItem>
+        <MenuItem value="Extreme">Extreme</MenuItem>
+      </Select>
 
       <InputLabel htmlFor="mods-required">Mods Required</InputLabel>
-      <Input id="mods-required" onChange={(e) => handleModsChange(e)} />
+      <Checkbox id="mods-required" onChange={(e) => handleModsChange(e)} />
 
       <br />
       <br />

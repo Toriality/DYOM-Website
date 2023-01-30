@@ -28,7 +28,7 @@ const missionSchema = new Schema(
     motto: { type: String },
     mainTheme: { type: String },
     difficulty: { type: String },
-    modsRequired: { type: String },
+    modsRequired: { type: Boolean },
     views: { type: Number, default: 0 },
     downloads: { type: Number, default: 0 },
   },
