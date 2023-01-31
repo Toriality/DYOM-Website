@@ -130,7 +130,10 @@ export function Debug_AddMission() {
   });
 
   const handleSummaryChange = (e) => {
-    setState({ ...state, state: e.target.value });
+    setState((prevState) => ({
+      ...prevState,
+      summary: { ...prevState.summary, input: e.target.value },
+    }));
   };
 
   const handleTitleChange = (e) => {
@@ -274,7 +277,11 @@ export function Debug_AddMission() {
     e.preventDefault();
     const formData = new FormData();
     Object.keys(state).forEach((key) => {
-      formData.append(key, state[key].input);
+      if (key === "images") {
+        for (var x = 0; x < state.images.input.length; x++) {
+          formData.append("images", state[key].input[x]);
+        }
+      } else formData.append(key, state[key].input);
     });
     // Display the key/value pairs
     for (var pair of formData.entries()) {

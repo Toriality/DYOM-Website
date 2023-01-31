@@ -17,10 +17,9 @@ const missionSchema = new Schema(
     userReviews: { type: [Schema.Types.Mixed] },
     description: { type: String },
     awards: { type: [Schema.Types.Mixed] },
-    file: {
-      filename: { type: String, required: true },
-      filedest: { type: String, required: true },
-    },
+    file: { type: String },
+    banner: { type: String },
+    images: { type: [String] },
     tags: { type: [String] },
     trailer: { type: String },
     credits: { type: String },

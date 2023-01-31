@@ -48,81 +48,98 @@ router.get("/download/:id", auth, (req, res) => {
 });
 
 // Add mission
-router.post("/add", auth, upload.single("file"), (req, res) => {
-  console.log(req.file);
-  // Get user id
-  const userID = req.user.id;
+router.post(
+  "/add",
+  auth,
+  upload.fields([
+    { name: "file", maxCount: 1 },
+    { name: "banner", maxCount: 1 },
+    { name: "images", maxCount: 5 },
+  ]),
+  (req, res) => {
+    let author = req.user.id;
+    let file = null;
+    let banner = null;
+    let images = [];
 
-  // Mission file vars
-  let filename = req.file.filename;
-  let filedest = req.file.destination;
+    // Mission file vars
+    if (req.files["file"]) {
+      file = req.files["file"][0].originalname;
+    }
+    if (req.files["banner"]) {
+      banner = req.files["banner"][0].originalname;
+    }
+    if (req.files["images"]) {
+      for (var x = 0; x < req.files["images"].length; x++) {
+        images.push(req.files["images"][x].originalname);
+      }
+    }
+    let tags = req.body.tags.split(",");
+    tags = tags.filter((empty) => empty !== "");
 
-  // Mission params
-  const {
-    title,
-    date,
-    summary,
-    description,
-    banner,
-    trailer,
-    images,
-    credits,
-    tags,
-    originalName,
-    motto,
-    musicTheme,
-    difficulty,
-    modsRequired,
-  } = req.body;
+    // Mission params
+    const {
+      title,
+      date,
+      summary,
+      description,
+      trailer,
+      credits,
+      originalName,
+      motto,
+      musicTheme,
+      difficulty,
+      modsRequired,
+    } = req.body;
 
-  // Required fields
-  if (!title || !filename) {
-    return res.status(400).json({ msg: "Please insert the required fields." });
-  }
+    // Required fields
+    if (!title || !file) {
+      return res
+        .status(400)
+        .json({ msg: "Please insert the required fields." });
+    }
 
-  // Limit tags and links ammount to a maximum of 6 tags
-  if (tags.length > 3)
-    return res.status(400).json({ msg: "No more than 3 tags are allowed!" });
+    // Limit tags and links ammount to a maximum of 3 tags
+    if (tags.length > 3)
+      return res.status(400).json({ msg: "No more than 3 tags are allowed!" });
 
-  const newMission = new Mission({
-    title,
-    author: userID,
-    date,
-    summary,
-    description,
-    banner,
-    trailer,
-    images,
-    file: {
-      filename,
-      filedest,
-    },
-    credits,
-    tags,
-    originalName,
-    motto,
-    musicTheme,
-    difficulty,
-    modsRequired,
-  });
-
-  newMission
-    .save()
-    .then((mission) => {
-      // Add request to user database
-      User.updateOne(
-        { _id: userID },
-        {
-          $push: { missions: mission._id },
-        },
-        (err, data) => {}
-      );
-      res.json({ msg: "Mission added into the database!" });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json({ msg: "Something went wrong. Try again later." });
+    const newMission = new Mission({
+      title,
+      author,
+      date,
+      summary,
+      description,
+      banner,
+      trailer,
+      images,
+      file,
+      credits,
+      tags,
+      originalName,
+      motto,
+      musicTheme,
+      difficulty,
+      modsRequired,
     });
-});
+
+    newMission
+      .save()
+      .then((mission) => {
+        // Add request to user database
+        User.updateOne(
+          { _id: author },
+          {
+            $push: { missions: mission._id },
+          },
+          (err, data) => {}
+        );
+        res.json({ msg: "Mission added into the database!" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json({ msg: "Something went wrong. Try again later." });
+      });
+  }
+);
 
 module.exports = router;
