@@ -21,6 +21,7 @@ const YT_REGEX =
 
 export function Debug_AddMission() {
   const [state, setState] = React.useState({
+    type: "missions",
     title: {
       input: "",
       error: false,
@@ -277,11 +278,13 @@ export function Debug_AddMission() {
     e.preventDefault();
     const formData = new FormData();
     Object.keys(state).forEach((key) => {
-      if (key === "images") {
-        for (var x = 0; x < state.images.input.length; x++) {
-          formData.append("images", state[key].input[x]);
-        }
-      } else formData.append(key, state[key].input);
+      if (key !== "type") {
+        if (key === "images") {
+          for (var x = 0; x < state.images.input.length; x++) {
+            formData.append("images", state[key].input[x]);
+          }
+        } else formData.append(key, state[key].input);
+      } else formData.append("type", state.type);
     });
     // Display the key/value pairs
     for (var pair of formData.entries()) {

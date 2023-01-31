@@ -129,8 +129,8 @@ router.post(
         fs.rename(
           `./uploads/${author}/missions/uploading/`,
           `./uploads/${author}/missions/${mission._id}`,
-          () => {
-            console.log(mission._id.toString());
+          (err) => {
+            if (err) console.log(err);
           }
         );
         // Add request to user database
