@@ -7,6 +7,7 @@ import { Navbar } from "./components/navbar/Navbar";
 import { Home } from "./components/home/Home";
 import { Footer } from "./components/footer/Footer";
 import { Debug_AddMission } from "./components/debug/AddMission";
+import { AddMission } from "./components/projects/missions/addMission/AddMission";
 
 // Site main theme
 const theme = createTheme({
@@ -105,6 +106,7 @@ function App() {
           <Route path="/" element={<LayoutsWithNavbar />}>
             <Route path="/" element={<Home />} />
             <Route path="/debug/add_mission" element={<Debug_AddMission />} />
+            <Route path="/missions/add" element={<AddMission />} />
           </Route>
         </Routes>
       </BrowserRouter>
