@@ -12,7 +12,7 @@ export function Menu(props) {
       }}
       PaperProps={{
         sx: {
-          backgroundColor: "background.darker",
+          backgroundColor: "background.default",
           opacity: "0.95",
         },
       }}

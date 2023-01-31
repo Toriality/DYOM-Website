@@ -10,14 +10,7 @@ export function ProjectBox(props) {
         flexGrow: "1",
       }}
     >
-      <Box
-        component={"img"}
-        src={nopreview}
-        width={"100%"}
-        height={"100%"}
-        borderRadius={"12px"}
-        mr={3}
-      />
+      <Box component={"img"} src={nopreview} borderRadius={"12px"} mr={3} />
       <Box sx={{ width: "100%", height: "100%" }}>
         <Link variant="h3">Project Name</Link>
         <Typography variant="h4">

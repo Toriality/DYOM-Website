@@ -26,8 +26,8 @@ export function Banner() {
       <Box
         sx={{
           zIndex: "1",
-          ml: 14,
-          mr: 6,
+          ml: "12%",
+          mr: 0,
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",

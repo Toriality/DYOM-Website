@@ -12,7 +12,7 @@ export function Footer() {
   return (
     <>
       <Box
-        bgcolor="background.darker"
+        bgcolor="#070707"
         sx={{
           pt: 4,
           pb: 4,

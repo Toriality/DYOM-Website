@@ -9,7 +9,6 @@ export function TrendingProjects() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        m: "2rem 10rem",
       }}
     >
       <Typography variant="h3" mb={5}>
@@ -18,13 +17,6 @@ export function TrendingProjects() {
       <Box
         sx={{
           display: "flex",
-          backgroundColor: "background.darker",
-          border: "2px solid",
-          borderColor: "stroke.default",
-          borderRadius: "40px",
-          width: "100%",
-          minHeight: "40rem",
-          p: "2rem 4rem",
           gap: 10,
         }}
       >

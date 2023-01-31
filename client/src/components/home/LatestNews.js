@@ -8,7 +8,6 @@ export function LatestNews() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        m: "2rem 10rem",
       }}
     >
       <Typography variant="h3" mb={5}>
@@ -16,11 +15,6 @@ export function LatestNews() {
       </Typography>
       <Box
         sx={{
-          backgroundColor: "background.darker",
-          border: "2px solid",
-          borderColor: "stroke.default",
-          borderRadius: "40px",
-          width: "100%",
           minHeight: "40rem",
         }}
       >

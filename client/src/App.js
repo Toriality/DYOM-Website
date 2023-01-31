@@ -1,6 +1,6 @@
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline, Container } from "@mui/material";
+import { CssBaseline, Container, Box } from "@mui/material";
 import { colors } from "./styles/colors";
 import Pricedown from "./fonts/pricedown.ttf";
 import { Navbar } from "./components/navbar/Navbar";
@@ -28,7 +28,7 @@ const theme = createTheme({
     MuiLink: {
       styleOverrides: {
         root: {
-          display: "block ",
+          display: "block",
         },
       },
     },
@@ -69,8 +69,8 @@ const theme = createTheme({
       main: colors.secondaryColor,
     },
     background: {
-      default: colors.backgroundColor,
-      darker: colors.backgroundDarker,
+      default: colors.backgroundDarker,
+      box: colors.backgroundColor,
     },
     stroke: {
       default: colors.stroke,
