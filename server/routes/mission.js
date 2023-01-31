@@ -2,7 +2,8 @@ const router = require("express").Router();
 let Mission = require("../models/Mission");
 let User = require("../models/User");
 const auth = require("../middleware/auth");
-const { createStorage, createUpload, upload } = require("../upload");
+const { upload } = require("../upload");
+const fs = require("fs");
 
 // Get list of missions
 router.get("/list", auth, (req, res) => {
@@ -125,6 +126,13 @@ router.post(
     newMission
       .save()
       .then((mission) => {
+        fs.rename(
+          `./uploads/${author}/missions/uploading/`,
+          `./uploads/${author}/missions/${mission._id}`,
+          () => {
+            console.log(mission._id.toString());
+          }
+        );
         // Add request to user database
         User.updateOne(
           { _id: author },
