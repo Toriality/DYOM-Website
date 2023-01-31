@@ -50,15 +50,28 @@ const theme = createTheme({
       },
     },
     MuiCssBaseline: {
-      styleOverrides: `
-        @font-face {
-          font-family: 'Priceodwn';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local('Pricedown'), url(${Pricedown}) format('ttf');
-        }
-      `,
+      styleOverrides: {
+        "@font-face": {
+          "font-family": "Priceodwn",
+          "font-style": "normal",
+          "font-display": "swap",
+          "font-weight": "400",
+          src: `local('Pricedown'), url(${Pricedown}) format('ttf')`,
+        },
+        body: {
+          "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+            backgroundColor: "#070707",
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+            backgroundColor: colors.primaryColor,
+          },
+          "&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover":
+            {
+              backgroundColor: colors.secondaryColor,
+            },
+        },
+      },
     },
   },
   palette: {
