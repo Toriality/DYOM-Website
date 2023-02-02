@@ -1,10 +1,10 @@
 import React from "react";
 import { DYOMContent } from "../../../../styles/components/DYOMContainer";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { UploadImages } from "./UploadImages";
 import { MainInfo } from "./MainInfo";
-import { Description } from "./Description";
 import { Specs } from "./Specs";
+import { Box } from "@mui/system";
 
 export function AddMission() {
   return (
@@ -12,17 +12,12 @@ export function AddMission() {
       <Typography variant="h3" align="center" mb="2rem">
         Add a new mission
       </Typography>
-      <Grid container>
-        <Grid item xs={6}>
+      <Grid container spacing={5} mb={5}>
+        <Grid item xs={4}>
           <UploadImages />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <MainInfo />
-        </Grid>
-      </Grid>
-      <Grid container>
-        <Grid item xs={12}>
-          <Description />
         </Grid>
       </Grid>
       <Grid container>
@@ -30,6 +25,9 @@ export function AddMission() {
           <Specs />
         </Grid>
       </Grid>
+      <Box mt={10} align="center">
+        <Button>Add mission</Button>
+      </Box>
     </DYOMContent>
   );
 }
