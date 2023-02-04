@@ -55,13 +55,13 @@ router.post(
   upload.fields([
     { name: "file", maxCount: 1 },
     { name: "banner", maxCount: 1 },
-    { name: "images", maxCount: 5 },
+    { name: "gallery", maxCount: 5 },
   ]),
   (req, res) => {
     let author = req.user.id;
     let file = null;
     let banner = null;
-    let images = [];
+    let gallery = [];
 
     // Mission file vars
     if (req.files["file"]) {
@@ -70,9 +70,9 @@ router.post(
     if (req.files["banner"]) {
       banner = req.files["banner"][0].originalname;
     }
-    if (req.files["images"]) {
-      for (var x = 0; x < req.files["images"].length; x++) {
-        images.push(req.files["images"][x].originalname);
+    if (req.files["gallery"]) {
+      for (var x = 0; x < req.files["gallery"].length; x++) {
+        gallery.push(req.files["gallery"][x].originalname);
       }
     }
     let tags = req.body.tags.split(",");
@@ -86,11 +86,11 @@ router.post(
       description,
       trailer,
       credits,
-      originalName,
+      original,
       motto,
-      musicTheme,
+      music,
       difficulty,
-      modsRequired,
+      mods,
     } = req.body;
 
     // Required fields
@@ -112,15 +112,15 @@ router.post(
       description,
       banner,
       trailer,
-      images,
+      gallery,
       file,
       credits,
       tags,
-      originalName,
+      original,
       motto,
-      musicTheme,
+      music,
       difficulty,
-      modsRequired,
+      mods,
     });
 
     newMission

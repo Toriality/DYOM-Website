@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 export function MainInfo(props) {
+  console.log(props.date, props.user);
   return (
     <Grid container spacing={2}>
       <Grid item xs={8}>
@@ -18,11 +19,11 @@ export function MainInfo(props) {
       </Grid>
       <Grid item xs={2}>
         <InputLabel>Author</InputLabel>
-        <Input fullWidth disabled />
+        <Input fullWidth disabled value={props.user} />
       </Grid>
       <Grid item xs={2}>
         <InputLabel>Date</InputLabel>
-        <Input fullWidth disabled />
+        <Input fullWidth disabled value={props.date} />
       </Grid>
       <Grid item xs={12}>
         <InputLabel>Summary</InputLabel>

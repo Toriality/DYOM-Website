@@ -5,6 +5,8 @@ import { UploadImages } from "./UploadImages";
 import { MainInfo } from "./MainInfo";
 import { Specs } from "./Specs";
 import { Box } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { addMission } from "../../../../features/mission/missionSlice";
 
 export function AddMission() {
   const [info, setInfo] = React.useState({
@@ -34,13 +36,24 @@ export function AddMission() {
       preview: undefined,
     },
     gallery: {
-      input: null,
+      input: [],
       error: false,
       preview: undefined,
     },
   });
 
   let previewArray = [];
+  let date = new Date();
+  date = date.toLocaleString("en", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const { userInfo, loading } = useSelector((state) => state.user);
+  let user = userInfo.username ? userInfo.username : "loading...";
+  const dispatch = useDispatch();
 
   const changeInfo = (e) => {
     if (e.target.type === "file") {
@@ -163,16 +176,58 @@ export function AddMission() {
   };
 
   const closeButton = (type) => {
-    setImages((prevState) => ({
-      ...prevState,
-      [type]: {
-        ...prevState[type],
-        input: null,
-        error: null,
-        preview: undefined,
-      },
-    }));
-    if (type === "gallery") previewArray = [];
+    if (type === "banner") {
+      setImages((prevState) => ({
+        ...prevState,
+        banner: {
+          ...prevState.banner,
+          input: null,
+          preview: undefined,
+        },
+      }));
+    }
+    if (type === "gallery") {
+      previewArray = [];
+      setImages((prevState) => ({
+        ...prevState,
+        gallery: {
+          ...prevState.gallery,
+          input: [],
+          preview: undefined,
+        },
+      }));
+    }
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    const state = {
+      type: "mission",
+      ...info,
+      ...specs,
+      ...images,
+    };
+
+    console.log(state);
+
+    Object.keys(state).forEach((key) => {
+      if (key !== "type") {
+        if (key === "gallery") {
+          for (var x = 0; x < state.gallery.input.length; x++) {
+            formData.append("gallery", state[key].input[x]);
+          }
+        } else formData.append(key, state[key].input);
+      } else formData.append("type", state.type);
+    });
+
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    dispatch(addMission(formData));
   };
 
   const changeSpecs = (e) => {
@@ -208,7 +263,7 @@ export function AddMission() {
           />
         </Grid>
         <Grid item xs={8}>
-          <MainInfo changeInfo={changeInfo} />
+          <MainInfo changeInfo={changeInfo} user={user} date={date} />
         </Grid>
       </Grid>
       <Grid container>
@@ -217,7 +272,7 @@ export function AddMission() {
         </Grid>
       </Grid>
       <Box mt={10} align="center">
-        <Button>Add mission</Button>
+        <Button onClick={(e) => onSubmit(e)}>Add mission</Button>
       </Box>
     </DYOMContent>
   );
