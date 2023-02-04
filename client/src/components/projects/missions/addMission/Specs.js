@@ -41,7 +41,7 @@ export function Specs() {
           </Grid>
           <Grid item xs={6}>
             <InputLabel>Difficulty</InputLabel>
-            <Select>
+            <Select defaultValue={"Unknown"}>
               <MenuItem value="Unknown">Unknown</MenuItem>
               <MenuItem value="Easy">Easy</MenuItem>
               <MenuItem value="Normal">Normal</MenuItem>
