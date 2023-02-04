@@ -13,7 +13,7 @@ import nopreview from "../../../../images/nopreview.jpg";
 const iconButtonStyle = {
   color: "error.main",
   position: "absolute",
-  zIndex: "9999",
+  zIndex: "999",
   bgcolor: "white",
   p: 0.5,
   transform: "translate(-25%, -25%)",
