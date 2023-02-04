@@ -205,7 +205,7 @@ export function AddMission() {
     const formData = new FormData();
 
     const state = {
-      type: "mission",
+      type: "missions",
       ...info,
       ...specs,
       ...images,
