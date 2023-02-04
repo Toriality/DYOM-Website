@@ -10,18 +10,28 @@ import {
   TextField,
 } from "@mui/material";
 
-export function Specs() {
+export function Specs(props) {
   return (
     <Grid container spacing={5}>
       <Grid item xs={4}>
         <Grid container>
           <Grid item xs={12}>
             <InputLabel>Credits</InputLabel>
-            <TextField fullWidth multiline rows={8} />
+            <TextField
+              name="credits"
+              onChange={(e) => props.changeSpecs(e)}
+              fullWidth
+              multiline
+              rows={8}
+            />
           </Grid>
           <Grid item xs={12}>
             <InputLabel>Trailer</InputLabel>
-            <Input fullWidth />
+            <Input
+              name="trailer"
+              onChange={(e) => props.changeSpecs(e)}
+              fullWidth
+            />
           </Grid>
         </Grid>
       </Grid>
@@ -29,19 +39,27 @@ export function Specs() {
         <Grid container height="100%" alignContent="space-between">
           <Grid item xs={12}>
             <InputLabel>Original Name</InputLabel>
-            <Input fullWidth />
+            <Input
+              name="original"
+              onChange={(e) => props.changeSpecs(e)}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={6}>
             <InputLabel>MOTTO</InputLabel>
-            <Input />
+            <Input name="motto" onChange={(e) => props.changeSpecs(e)} />
           </Grid>
           <Grid item xs={6}>
             <InputLabel>Music Theme</InputLabel>
-            <Input />
+            <Input name="music" onChange={(e) => props.changeSpecs(e)} />
           </Grid>
           <Grid item xs={6}>
             <InputLabel>Difficulty</InputLabel>
-            <Select defaultValue={"Unknown"}>
+            <Select
+              name="difficulty"
+              onChange={(e) => props.changeSpecs(e)}
+              defaultValue={"Unknown"}
+            >
               <MenuItem value="Unknown">Unknown</MenuItem>
               <MenuItem value="Easy">Easy</MenuItem>
               <MenuItem value="Normal">Normal</MenuItem>
@@ -51,7 +69,7 @@ export function Specs() {
           </Grid>
           <Grid item xs={6}>
             <InputLabel>Mods required</InputLabel>
-            <Checkbox />
+            <Checkbox name="mods" onChange={(e) => props.changeSpecs(e)} />
           </Grid>
         </Grid>
       </Grid>

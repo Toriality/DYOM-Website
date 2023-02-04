@@ -7,6 +7,15 @@ import { Specs } from "./Specs";
 import { Box } from "@mui/system";
 
 export function AddMission() {
+  const [specs, setSpecs] = React.useState({
+    credits: { input: null, error: false },
+    trailer: { input: null, error: false },
+    original: { input: null, error: false },
+    motto: { input: null, error: false },
+    music: { input: null, error: false },
+    difficulty: { input: null, error: false },
+    mods: { input: false, error: false },
+  });
   const [images, setImages] = React.useState({
     banner: {
       input: null,
@@ -124,6 +133,23 @@ export function AddMission() {
     if (type === "gallery") previewArray = [];
   };
 
+  const changeSpecs = (e) => {
+    if (e.target.type === "checkbox") {
+      setSpecs((prevState) => ({
+        ...prevState,
+        [e.target.name]: {
+          ...prevState[e.target.name],
+          input: e.target.checked,
+        },
+      }));
+    } else {
+      setSpecs((prevState) => ({
+        ...prevState,
+        [e.target.name]: { ...prevState[e.target.name], input: e.target.value },
+      }));
+    }
+  };
+
   return (
     <DYOMContent>
       <Typography variant="h3" align="center" mb="2rem">
@@ -145,7 +171,7 @@ export function AddMission() {
       </Grid>
       <Grid container>
         <Grid item xs={12}>
-          <Specs />
+          <Specs changeSpecs={changeSpecs} />
         </Grid>
       </Grid>
       <Box mt={10} align="center">
