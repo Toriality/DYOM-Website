@@ -263,7 +263,12 @@ export function AddMission() {
           />
         </Grid>
         <Grid item xs={8}>
-          <MainInfo changeInfo={changeInfo} user={user} date={date} />
+          <MainInfo
+            changeInfo={changeInfo}
+            info={info}
+            user={user}
+            date={date}
+          />
         </Grid>
       </Grid>
       <Grid container>

@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 
 export function MainInfo(props) {
-  console.log(props.date, props.user);
   return (
     <Grid container spacing={2}>
       <Grid item xs={8}>
@@ -46,8 +45,15 @@ export function MainInfo(props) {
         <Input name="tags" id="tag2" onChange={(e) => props.changeInfo(e)} />
       </Grid>
       <Grid item xs={4}>
-        <Button component="label">
-          Choose file
+        <Button
+          component="label"
+          sx={{
+            color: props.info.file.input ? "secondary.main" : "primary.main",
+          }}
+        >
+          {props.info.file.input?.name
+            ? props.info.file.input?.name
+            : "Choose file"}
           <input
             hidden
             type="file"
