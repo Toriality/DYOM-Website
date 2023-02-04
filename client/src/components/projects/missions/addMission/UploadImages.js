@@ -10,139 +10,27 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import nopreview from "../../../../images/nopreview.jpg";
 
-export function UploadImages() {
-  const [state, setState] = React.useState({
-    banner: {
-      input: null,
-      error: false,
-      preview: undefined,
-    },
-    gallery: {
-      input: null,
-      error: false,
-      preview: undefined,
-    },
-  });
+const iconButtonStyle = {
+  color: "error.main",
+  position: "absolute",
+  zIndex: "9999",
+  bgcolor: "white",
+  p: 0.5,
+  transform: "translate(-25%, -25%)",
+  "&:hover": {
+    opacity: "1",
+    bgcolor: "error.main",
+    color: "white",
+  },
+};
 
-  let previewArray = [];
-
-  const uploadBanner = (e) => {
-    if (e.target.files[0].size >= 8 * 1024 * 1024) {
-      setState((prevState) => ({
-        ...prevState,
-        banner: {
-          ...prevState.banner,
-          error: true,
-          input: null,
-          preview: undefined,
-        },
-      }));
-      return;
-    }
-    const objectURL = URL.createObjectURL(e.target.files[0]);
-    setState((prevState) => ({
-      ...prevState,
-      banner: {
-        ...prevState.banner,
-        error: false,
-        input: e.target.files[0],
-        preview: objectURL,
-      },
-    }));
-  };
-
-  const uploadGallery = (e) => {
-    if (!state.gallery.preview) {
-      setState((prevState) => ({
-        ...prevState,
-        gallery: {
-          ...prevState.gallery,
-          preview: [],
-        },
-      }));
-    }
-    if (state.gallery.preview) {
-      if (e.target.files.length + state.gallery.preview.length > 5) {
-        setState((prevState) => ({
-          ...prevState,
-          gallery: {
-            ...prevState.gallery,
-            error: true,
-          },
-        }));
-        return;
-      }
-    } else {
-      if (e.target.files.length > 5) {
-        setState((prevState) => ({
-          ...prevState,
-          gallery: {
-            ...prevState.gallery,
-            error: true,
-          },
-        }));
-        return;
-      }
-    }
-    for (var i = 0; i < e.target.files.length; i++) {
-      if (e.target.files[i].size > 8 * 1024 * 1024) {
-        setState((prevState) => ({
-          ...prevState,
-          gallery: {
-            ...prevState.gallery,
-            error: true,
-          },
-        }));
-        return;
-      }
-    }
-    Array.from(e.target.files).forEach((file) => {
-      const objectURL = URL.createObjectURL(file);
-      previewArray.push(objectURL);
-    });
-    setState((prevState) => ({
-      ...prevState,
-      gallery: {
-        ...prevState.gallery,
-        input: e.target.files,
-        error: false,
-        preview: [...prevState.gallery.preview, ...previewArray],
-      },
-    }));
-    console.log(state.gallery);
-  };
-
-  const closeButton = (type) => {
-    setState((prevState) => ({
-      ...prevState,
-      [type]: {
-        ...prevState[type],
-        input: null,
-        error: null,
-        preview: undefined,
-      },
-    }));
-    if (type === "gallery") previewArray = [];
-  };
-
+export function UploadImages(props) {
   return (
     <Grid container spacing={1}>
       <Grid item xs={9}>
         <IconButton
-          onClick={() => closeButton("banner")}
-          sx={{
-            color: "error.main",
-            position: "absolute",
-            zIndex: "9999",
-            bgcolor: "white",
-            p: 0.5,
-            transform: "translate(-25%, -25%)",
-            "&:hover": {
-              opacity: "1",
-              bgcolor: "error.main",
-              color: "white",
-            },
-          }}
+          onClick={() => props.closeButton("banner")}
+          sx={iconButtonStyle}
         >
           <CloseIcon />
         </IconButton>
@@ -154,14 +42,16 @@ export function UploadImages() {
             minWidth: "320px",
             backgroundImage:
               "url(" +
-              (!state.banner.preview ? nopreview : state.banner.preview) +
+              (!props.images.banner.preview
+                ? nopreview
+                : props.images.banner.preview) +
               ")",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
           }}
         >
           <input
-            onChange={(e) => uploadBanner(e)}
+            onChange={(e) => props.changeBanner(e)}
             type="file"
             hidden
             accept="image/jpeg, image/png"
@@ -170,20 +60,8 @@ export function UploadImages() {
       </Grid>
       <Grid item xs={3}>
         <IconButton
-          onClick={() => closeButton("gallery")}
-          sx={{
-            color: "error.main",
-            position: "absolute",
-            zIndex: "1",
-            bgcolor: "white",
-            p: 0.5,
-            transform: "translate(-25%, -25%)",
-            "&:hover": {
-              opacity: "1",
-              bgcolor: "error.main",
-              color: "white",
-            },
-          }}
+          onClick={() => props.closeButton("gallery")}
+          sx={iconButtonStyle}
         >
           <CloseIcon />
         </IconButton>
@@ -210,9 +88,9 @@ export function UploadImages() {
               sx={{
                 backgroundImage:
                   "url(" +
-                  (state.gallery.preview
-                    ? state.gallery.preview[element]
-                      ? state.gallery.preview[element]
+                  (props.images.gallery.preview
+                    ? props.images.gallery.preview[element]
+                      ? props.images.gallery.preview[element]
                       : nopreview
                     : nopreview) +
                   ")",
@@ -220,7 +98,7 @@ export function UploadImages() {
             />
           ))}
           <input
-            onChange={(e) => uploadGallery(e)}
+            onChange={(e) => props.changeGallery(e)}
             type="file"
             hidden
             multiple
