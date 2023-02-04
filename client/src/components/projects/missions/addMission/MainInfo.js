@@ -9,12 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 
-export function MainInfo() {
+export function MainInfo(props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={8}>
         <InputLabel>Mission Title</InputLabel>
-        <Input fullWidth />
+        <Input name="title" onChange={(e) => props.changeInfo(e)} fullWidth />
       </Grid>
       <Grid item xs={2}>
         <InputLabel>Author</InputLabel>
@@ -26,20 +26,35 @@ export function MainInfo() {
       </Grid>
       <Grid item xs={12}>
         <InputLabel>Summary</InputLabel>
-        <Input fullWidth />
+        <Input name="summary" onChange={(e) => props.changeInfo(e)} fullWidth />
       </Grid>
       <Grid item xs={12}>
         <InputLabel>Description</InputLabel>
-        <TextField fullWidth multiline rows={12} />
+        <TextField
+          name="description"
+          onChange={(e) => props.changeInfo(e)}
+          fullWidth
+          multiline
+          rows={12}
+        />
       </Grid>
       <Grid item xs={8}>
         <InputLabel>Tags</InputLabel>
-        <Input />
-        <Input />
-        <Input />
+        <Input name="tags" id="tag0" onChange={(e) => props.changeInfo(e)} />
+        <Input name="tags" id="tag1" onChange={(e) => props.changeInfo(e)} />
+        <Input name="tags" id="tag2" onChange={(e) => props.changeInfo(e)} />
       </Grid>
       <Grid item xs={4}>
-        <Button>Choose file</Button>
+        <Button component="label">
+          Choose file
+          <input
+            hidden
+            type="file"
+            name="file"
+            onChange={(e) => props.changeInfo(e)}
+            accept=".zip, .rar, .dat"
+          />
+        </Button>
       </Grid>
     </Grid>
   );

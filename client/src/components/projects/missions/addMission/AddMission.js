@@ -7,6 +7,16 @@ import { Specs } from "./Specs";
 import { Box } from "@mui/system";
 
 export function AddMission() {
+  const [info, setInfo] = React.useState({
+    title: { input: null, error: false },
+    author: { input: null, error: false },
+    date: { input: null, error: false },
+    summary: { input: null, error: false },
+    description: { input: null, error: false },
+    tags: { input: [], error: false },
+    file: { input: null, error: false },
+  });
+
   const [specs, setSpecs] = React.useState({
     credits: { input: null, error: false },
     trailer: { input: null, error: false },
@@ -16,6 +26,7 @@ export function AddMission() {
     difficulty: { input: null, error: false },
     mods: { input: false, error: false },
   });
+
   const [images, setImages] = React.useState({
     banner: {
       input: null,
@@ -30,6 +41,37 @@ export function AddMission() {
   });
 
   let previewArray = [];
+
+  const changeInfo = (e) => {
+    if (e.target.type === "file") {
+      setInfo((prevState) => ({
+        ...prevState,
+        file: {
+          input: e.target.files[0],
+          error: false,
+        },
+      }));
+    } else {
+      if (e.target.name === "tags") {
+        let index = e.target.id.substring(3, e.target.id.length);
+        let tagsArray = info.tags.input.slice();
+        tagsArray[index] = e.target.value;
+        setInfo((prevState) => ({
+          ...prevState,
+          tags: { ...prevState.tags, input: tagsArray, error: false },
+        }));
+        console.log(info);
+      } else {
+        setInfo((prevState) => ({
+          ...prevState,
+          [e.target.name]: {
+            ...prevState[e.target.name],
+            input: e.target.value,
+          },
+        }));
+      }
+    }
+  };
 
   const changeBanner = (e) => {
     if (e.target.files.length != 0) {
@@ -166,7 +208,7 @@ export function AddMission() {
           />
         </Grid>
         <Grid item xs={8}>
-          <MainInfo />
+          <MainInfo changeInfo={changeInfo} />
         </Grid>
       </Grid>
       <Grid container>
