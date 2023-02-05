@@ -86,6 +86,7 @@ const theme = createTheme({
     background: {
       default: colors.backgroundDarker,
       box: colors.backgroundColor,
+      light: colors.backgroundLighter,
     },
     stroke: {
       default: colors.stroke,
