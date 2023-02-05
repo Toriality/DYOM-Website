@@ -3,6 +3,8 @@ import React from "react";
 import { DYOMContent } from "../../../../styles/components/DYOMContainer";
 import banner from "../../../../images/single_mission.jpg";
 import { ProjectBox } from "../../../../styles/components/ProjectBox";
+import { SearchBox } from "../../../../styles/components/SearchBox";
+import { FilterBox } from "../../../../styles/components/FilterBox";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
@@ -83,13 +85,13 @@ export function ListMissions() {
             <Typography variant="h2">List of uploaded missions</Typography>
           </Grid>
           <Grid item xs={8}>
-            {/* Search box */}
+            <SearchBox searchString="search=" />
           </Grid>
           <Grid item xs={4}>
             <UploadProject />
           </Grid>
           <Grid item xs={8}>
-            {/* Filter box */}
+            <FilterBox />
           </Grid>
           <Grid item xs={4}>
             {/* Page picker box */}
