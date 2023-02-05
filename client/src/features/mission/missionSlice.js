@@ -35,3 +35,29 @@ export const addMission = createAsyncThunk(
     }
   }
 );
+
+export const listMissions = createAsyncThunk("mission/list", async () => {
+  try {
+    const response = await axios.get(`${backendURL}api/mission/list`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data.msg) {
+      return error.response.data.msg;
+    } else {
+      return error.msg;
+    }
+  }
+});
+
+export const missionSlice = createSlice({
+  name: "mission",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(listMissions.fulfilled, (state, action) => {
+      state.missionInfo = action.payload;
+    });
+  },
+});
+
+export default missionSlice.reducer;

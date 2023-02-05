@@ -8,27 +8,25 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function createData(
-  name,
-  author,
-  lastUpdate,
-  rating,
-  views,
-  downloads,
-  comments
-) {
-  return { name, author, lastUpdate, rating, views, downloads, comments };
-}
+export function MissionTable(props) {
+  const [data, setData] = React.useState({});
+  React.useEffect(() => {
+    if (props.data.length > 0) {
+    }
+  }, [props.data]);
 
-const rows = [
-  createData("Mission", "Someone", "02-02-2000", 10, 420, 420, 3),
-  createData("Mission", "Someone", "02-02-2000", 10, 420, 420, 3),
-  createData("Mission", "Someone", "02-02-2000", 10, 420, 420, 3),
-  createData("Mission", "Someone", "02-02-2000", 10, 420, 420, 3),
-  createData("Mission", "Someone", "02-02-2000", 10, 420, 420, 3),
-];
+  const changeUpdate = (e) => {
+    let date = new Date(e);
+    date = date.toLocaleString("en", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return date;
+  };
 
-export function MissionTable() {
   return (
     <TableContainer>
       <Table>
@@ -44,19 +42,21 @@ export function MissionTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell>{row.author}</TableCell>
-              <TableCell>{row.lastUpdate}</TableCell>
-              <TableCell>{row.rating}</TableCell>
-              <TableCell>{row.views}</TableCell>
-              <TableCell>{row.downloads}</TableCell>
-              <TableCell>{row.comments}</TableCell>
-            </TableRow>
-          ))}
+          {props.data.length > 0
+            ? props.data.map((row) => (
+                <TableRow key={row._id}>
+                  <TableCell component="th" scope="row">
+                    {row.title}
+                  </TableCell>
+                  <TableCell>{row.author.username}</TableCell>
+                  <TableCell>{changeUpdate(row.updatedAt)}</TableCell>
+                  <TableCell>{row.rating}</TableCell>
+                  <TableCell>{row.views}</TableCell>
+                  <TableCell>{row.downloads}</TableCell>
+                  <TableCell>{row.comments}</TableCell>
+                </TableRow>
+              ))
+            : null}
         </TableBody>
       </Table>
     </TableContainer>

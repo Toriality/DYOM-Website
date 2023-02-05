@@ -7,6 +7,8 @@ import { SearchBox } from "../../../../styles/components/SearchBox";
 import { FilterBox } from "../../../../styles/components/FilterBox";
 import { PagesBox } from "../../../../styles/components/PagesBox";
 import { MissionTable } from "../../../../styles/components/MissionTable";
+import { listMissions } from "../../../../features/mission/missionSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
@@ -15,6 +17,14 @@ const UploadProject = () => (
 );
 
 export function ListMissions() {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.mission.missionInfo);
+
+  React.useEffect(() => {
+    console.log(data);
+    dispatch(listMissions());
+  }, [dispatch]);
+
   return (
     <>
       <Grid
@@ -99,7 +109,7 @@ export function ListMissions() {
             <PagesBox />
           </Grid>
           <Grid item xs={12}>
-            <MissionTable />
+            <MissionTable data={data} />
           </Grid>
           <Grid item xs={4}>
             <PagesBox />
