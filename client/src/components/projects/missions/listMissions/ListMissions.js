@@ -6,6 +6,7 @@ import { ProjectBox } from "../../../../styles/components/ProjectBox";
 import { SearchBox } from "../../../../styles/components/SearchBox";
 import { FilterBox } from "../../../../styles/components/FilterBox";
 import { PagesBox } from "../../../../styles/components/PagesBox";
+import { MissionTable } from "../../../../styles/components/MissionTable";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
@@ -98,7 +99,7 @@ export function ListMissions() {
             <PagesBox />
           </Grid>
           <Grid item xs={12}>
-            {/* Missions table */}
+            <MissionTable />
           </Grid>
           <Grid item xs={4}>
             <PagesBox />

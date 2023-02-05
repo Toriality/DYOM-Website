@@ -27,6 +27,39 @@ const theme = createTheme({
     subtitle2: { fontFamily: "Verdana", fontSize: "6pt" },
   },
   components: {
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          "& > .MuiTableRow-root > .MuiTableCell-root": {
+            fontWeight: "bolder",
+            backgroundColor: colors.backgroundLighter,
+          },
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          "&:nth-child(even)": {
+            filter: "brightness(125%)",
+            backgroundColor: colors.backgroundColor,
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          padding: "0.8rem",
+          fontSize: "12pt",
+          border: "1px solid",
+          borderColor: colors.stroke,
+          backgroundColor: colors.backgroundColor,
+          filter: "brightness(125%)",
+          textAlign: "center",
+        },
+      },
+    },
     MuiLink: {
       styleOverrides: {
         root: {
