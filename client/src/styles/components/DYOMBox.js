@@ -5,7 +5,7 @@ export function DYOMBox(props) {
   return (
     <Box
       sx={{
-        p: 3,
+        p: 2,
         pl: 4,
         pr: 4,
         borderRadius: "30px",
@@ -13,10 +13,13 @@ export function DYOMBox(props) {
         border: "1px solid",
         borderColor: "stroke.default",
         display: "flex",
-        justifyContent: "space-between",
+        //justifyContent: "space-between",
         alignItems: "center",
         "& *": {
           lineHeight: "1",
+        },
+        "& > h3": {
+          mr: 3,
         },
       }}
     >

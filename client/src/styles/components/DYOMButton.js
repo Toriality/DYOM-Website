@@ -6,8 +6,8 @@ export function DYOMButton(props) {
     <ButtonBase
       sx={{
         p: 1,
-        pr: 3,
-        pl: 3,
+        pr: props.page ? 2 : 3,
+        pl: props.page ? 2 : 3,
         borderRadius: "30px",
         backgroundColor: props.checked ? "background.light" : "inherit",
         "&:hover": {

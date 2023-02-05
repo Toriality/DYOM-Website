@@ -5,6 +5,7 @@ import banner from "../../../../images/single_mission.jpg";
 import { ProjectBox } from "../../../../styles/components/ProjectBox";
 import { SearchBox } from "../../../../styles/components/SearchBox";
 import { FilterBox } from "../../../../styles/components/FilterBox";
+import { PagesBox } from "../../../../styles/components/PagesBox";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
@@ -84,25 +85,25 @@ export function ListMissions() {
           <Grid item xs={12}>
             <Typography variant="h2">List of uploaded missions</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <SearchBox searchString="search=" />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <UploadProject />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <FilterBox />
           </Grid>
           <Grid item xs={4}>
-            {/* Page picker box */}
+            <PagesBox />
           </Grid>
           <Grid item xs={12}>
             {/* Missions table */}
           </Grid>
-          <Grid item xs={8}>
-            {/* Page picker */}
-          </Grid>
           <Grid item xs={4}>
+            <PagesBox />
+          </Grid>
+          <Grid item xs={6}>
             <UploadProject />
           </Grid>
         </Grid>

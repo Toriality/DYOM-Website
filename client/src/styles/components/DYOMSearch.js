@@ -29,6 +29,7 @@ const Search = styled("div")(({ theme }) => ({
   position: "relative",
   color: "black",
   borderRadius: 20,
+  maxWidth: "70%",
   backgroundColor: alpha(theme.palette.common.white, 0.9),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 1),
