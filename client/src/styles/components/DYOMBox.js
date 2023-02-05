@@ -15,6 +15,9 @@ export function DYOMBox(props) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        "& *": {
+          lineHeight: "1",
+        },
       }}
     >
       {props.children}
