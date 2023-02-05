@@ -6,37 +6,23 @@ const { upload } = require("../upload");
 const fs = require("fs");
 
 // Get list of missions
-router.get("/list", auth, (req, res) => {
-  Mission.find({})
-    .lean()
-    .then(async (missions) => {
-      res.json(missions);
-    });
-});
+router.get("/list", (req, res) => {
+  const resultsPerPage = req.query.limit || 3;
+  const page = req.query.page || 1;
+  const regex = new RegExp(req.query.search, "i");
+  const filter = req.query.search ? { title: { $regex: regex } } : {};
 
-// Mission search
-router.get("/", auth, (req, res) => {
-  const resultsPerPage = req.query.limit || 10;
-
-  const query = {
-    approved: true,
-    $text: { $search: req.query.search },
-    score: { $meta: "textScore" },
-  };
-  const options = {
-    sort: { score: { $meta: "textScore" } },
-    offset: resultsPerPage * (req.query.page - 1) || 0,
-    limit: resultsPerPage,
-    lean: true,
-  };
-
-  Mission.paginate(query, options)
-    .then(async (missions) => {
-      res.json(missions);
+  Mission.find(filter)
+    .select("title author updatedAt rating views downloads comments")
+    .limit(resultsPerPage)
+    .skip(resultsPerPage * (page - 1))
+    .sort({ updatedAt: "desc" })
+    .populate({
+      path: "author",
+      select: "username",
     })
-    .catch((err) => {
-      console.log(err);
-      res.json({});
+    .exec((err, events) => {
+      res.json(events);
     });
 });
 
