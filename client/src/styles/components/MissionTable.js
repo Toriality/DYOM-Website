@@ -5,6 +5,7 @@ import {
   TableRow,
   Table,
   TableBody,
+  Link,
 } from "@mui/material";
 import React from "react";
 
@@ -46,9 +47,14 @@ export function MissionTable(props) {
             ? props.data.map((row) => (
                 <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
-                    {row.title}
+                    <Link href={`/missions/${row._id}`}>{row.title}</Link>
                   </TableCell>
-                  <TableCell>{row.author.username}</TableCell>
+                  <TableCell>
+                    <Link href={`/profile/${row.author._id}`}>
+                      {row.author.username}
+                    </Link>
+                  </TableCell>
+
                   <TableCell>{changeUpdate(row.updatedAt)}</TableCell>
                   <TableCell>{row.rating}</TableCell>
                   <TableCell>{row.views}</TableCell>
