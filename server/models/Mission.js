@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const mongoosePaginate = require("mongoose-paginate-v2");
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const missionSchema = new Schema(
   {
@@ -33,11 +33,11 @@ const missionSchema = new Schema(
     downloads: { type: Number, default: 0 },
   },
   {
+    _id: false,
     timestamps: true,
   }
 );
 
-missionSchema.plugin(mongoosePaginate);
+missionSchema.plugin(AutoIncrement, { start_seq: 0 });
 const Mission = mongoose.model("Mission", missionSchema);
-
 module.exports = Mission;

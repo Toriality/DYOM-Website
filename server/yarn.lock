@@ -830,6 +830,13 @@ array-flatten@1.1.1:
   resolved "https://registry.npmjs.org/array-flatten/-/array-flatten-1.1.1.tgz"
   integrity sha512-PCVAQswWemu6UdxsDFFX/+gVeYqKAod3D3UVm91jHwynguOwAvYPhx8nNlM++NqRcK6CxxpUafjmhIdKiHibqg==
 
+async@^2.5.0:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.4.tgz#706b7ff6084664cd7eae713f6f965433b5504221"
+  integrity sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==
+  dependencies:
+    lodash "^4.17.14"
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
@@ -1303,7 +1310,7 @@ kareem@2.5.1:
   resolved "https://registry.npmjs.org/kareem/-/kareem-2.5.1.tgz"
   integrity sha512-7jFxRVm+jD+rkq3kY0iZDJfsO2/t4BBPeEb2qKn2lR/9KhuksYk5hxzfRYWMPV8P/x2d0kHD306YyWLzjjH+uA==
 
-lodash@^4.17.21:
+lodash@^4.17.14, lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -1429,6 +1436,14 @@ mongoose-paginate-v2@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/mongoose-paginate-v2/-/mongoose-paginate-v2-1.7.1.tgz#0b390f5eb8e5dca55ffcb1fd7b4d8078636cb8f1"
   integrity sha512-J8DJw3zRXcXOKoZv+RvO9tt5HotRnbo2iCR3lke+TtsQsYwQvbY3EgUkPqZXw6qCX2IByvXrW5SGNdAB0od/Cw==
+
+mongoose-sequence@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/mongoose-sequence/-/mongoose-sequence-5.3.1.tgz#b1acc6f860550692a73cdc948578c9974a8e3630"
+  integrity sha512-kQB1ctCdAQT8YdQzoHV0CpBRsO4RNVy03SOkzM6TQKBbGBs1ZgVS4UlKsuvBPaiPt9q5tKgQZvorGJ1awbHDqA==
+  dependencies:
+    async "^2.5.0"
+    lodash "^4.17.20"
 
 mongoose@^6.8.3:
   version "6.8.4"
