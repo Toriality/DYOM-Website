@@ -1,6 +1,6 @@
+import React from "react";
 import { Typography, Box, Link } from "@mui/material";
 import nopreview from "../../images/nopreview.jpg";
-import React from "react";
 
 export function ProjectBox(props) {
   return (

@@ -2,7 +2,7 @@ import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { InputBase } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 export function DYOMSearch(props) {
   let [query, setQuery] = React.useState("");

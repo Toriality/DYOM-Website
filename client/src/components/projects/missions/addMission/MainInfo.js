@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Grid,
-  Input,
-  InputLabel,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Input, InputLabel, TextField } from "@mui/material";
 
 export function MainInfo(props) {
   return (

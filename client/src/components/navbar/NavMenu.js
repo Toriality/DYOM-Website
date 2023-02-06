@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Link, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../../images/logo.png";
 import { Menu } from "./Menu";
@@ -13,14 +13,17 @@ export function NavMenu() {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box
-        component="img"
-        sx={{
-          height: 45,
-        }}
-        alt="DYOM Logo"
-        src={logo}
-      />
+      <Link href="/">
+        <Box
+          component="img"
+          sx={{
+            height: 45,
+            mt: "5px",
+          }}
+          alt="DYOM Logo"
+          src={logo}
+        />
+      </Link>
       <IconButton
         onClick={() => {
           setOpen(true);

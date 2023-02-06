@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, Typography, Link, Drawer } from "@mui/material";
+import { Grid, Typography, Link, Drawer } from "@mui/material";
 
 export function Menu(props) {
   return (

@@ -21,7 +21,6 @@ export function ListMissions() {
   const data = useSelector((state) => state.mission.missionInfo);
 
   React.useEffect(() => {
-    console.log(data);
     dispatch(listMissions());
   }, [dispatch]);
 

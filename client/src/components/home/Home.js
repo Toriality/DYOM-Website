@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import { DYOMContent } from "../../styles/components/DYOMContainer";
 import { Banner } from "./Banner";
 import { LatestNews } from "./LatestNews";

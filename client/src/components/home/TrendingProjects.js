@@ -1,6 +1,6 @@
+import React from "react";
 import { Typography, Box } from "@mui/material";
 import { ProjectBox } from "../../styles/components/ProjectBox";
-import React from "react";
 
 export function TrendingProjects() {
   return (

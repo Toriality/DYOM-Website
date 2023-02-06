@@ -8,14 +8,12 @@ import { NavMenu } from "./NavMenu";
 import { NavSearch } from "./NavSearch";
 import { NavUser } from "./NavUser";
 
-export function Navbar(props) {
+export function Navbar() {
   const dispatch = useDispatch();
 
   const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
     pollingInterval: 900000,
   });
-
-  console.log(data);
 
   React.useEffect(() => {
     if (data) dispatch(setCredentials(data));

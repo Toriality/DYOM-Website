@@ -51,7 +51,7 @@ export function AddMission() {
     hour: "2-digit",
     minute: "2-digit",
   });
-  const { userInfo, loading } = useSelector((state) => state.user);
+  const { userInfo } = useSelector((state) => state.user);
   let user = userInfo.username ? userInfo.username : "loading...";
   const dispatch = useDispatch();
 
@@ -87,7 +87,7 @@ export function AddMission() {
   };
 
   const changeBanner = (e) => {
-    if (e.target.files.length != 0) {
+    if (e.target.files.length !== 0) {
       if (e.target.files[0].size >= 8 * 1024 * 1024) {
         setImages((prevState) => ({
           ...prevState,

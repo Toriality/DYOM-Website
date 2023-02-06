@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  ButtonBase,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, ButtonBase, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import nopreview from "../../../../images/nopreview.jpg";
 

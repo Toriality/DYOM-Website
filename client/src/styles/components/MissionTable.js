@@ -1,3 +1,4 @@
+import React from "react";
 import {
   TableCell,
   TableContainer,
@@ -7,10 +8,8 @@ import {
   TableBody,
   Link,
 } from "@mui/material";
-import React from "react";
 
 export function MissionTable(props) {
-  const [data, setData] = React.useState({});
   React.useEffect(() => {
     if (props.data.length > 0) {
     }
