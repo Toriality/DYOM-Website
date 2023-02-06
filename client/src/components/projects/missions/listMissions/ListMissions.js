@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
-    <Button href="add">Upload project</Button>
+    <Button href="missions/add">Upload project</Button>
   </Box>
 );
 
