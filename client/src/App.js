@@ -31,6 +31,7 @@ const theme = createTheme({
     MuiAccordion: {
       styleOverrides: {
         root: {
+          marginBottom: "1rem",
           borderRadius: "20px !important",
           backgroundColor: colors.backgroundDarker,
         },

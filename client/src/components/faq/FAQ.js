@@ -7,6 +7,8 @@ import {
 import React from "react";
 import { DYOMContent } from "../../styles/components/DYOMContainer";
 import { FilterBox } from "../../styles/components/FilterBox";
+import { faqStrings } from "./faqStrings";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export function FAQ() {
   return (
@@ -15,17 +17,26 @@ export function FAQ() {
         Frequently Asked Questions
       </Typography>
       <FilterBox />
-      <Accordion>
-        <AccordionSummary>
-          <Typography>Loren Ipsun</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      {faqStrings.map((el) => (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={
+              <ExpandMoreIcon
+                sx={{
+                  color: "white",
+                  bgcolor: "background.box",
+                  borderRadius: "20px",
+                }}
+              />
+            }
+          >
+            <Typography variant="body1">{el.q}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body1">{el.a}</Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </DYOMContent>
   );
 }
