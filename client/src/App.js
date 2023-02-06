@@ -9,6 +9,7 @@ import { Footer } from "./components/footer/Footer";
 import { Debug_AddMission } from "./components/debug/AddMission";
 import { AddMission } from "./components/projects/missions/addMission/AddMission";
 import { ListMissions } from "./components/projects/missions/listMissions/ListMissions";
+import { FAQ } from "./components/faq/FAQ";
 
 // Site main theme
 const theme = createTheme({
@@ -27,6 +28,33 @@ const theme = createTheme({
     subtitle2: { fontFamily: "Verdana", fontSize: "6pt" },
   },
   components: {
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          borderRadius: "20px !important",
+          backgroundColor: colors.backgroundDarker,
+        },
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          borderRadius: "20px",
+          padding: "0.7rem 4rem",
+          backgroundColor: colors.backgroundLighter,
+          "& .MuiTypography-root": {
+            fontWeight: "bolder",
+          },
+        },
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          padding: "2rem 4rem",
+        },
+      },
+    },
     MuiTableHead: {
       styleOverrides: {
         root: {
@@ -143,6 +171,7 @@ function App() {
             <Route path="/debug/add_mission" element={<Debug_AddMission />} />
             <Route path="/missions/add" element={<AddMission />} />
             <Route path="/missions" element={<ListMissions />} />
+            <Route path="/faq" element={<FAQ />} />
           </Route>
         </Routes>
       </BrowserRouter>
