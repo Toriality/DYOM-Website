@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const userSchema = new Schema(
   {
@@ -28,10 +29,12 @@ const userSchema = new Schema(
     nationality: { type: String },
   },
   {
+    _id: false,
     timestamps: true,
   }
 );
 
+userSchema.plugin(AutoIncrement, { id: "user_seq", start_seq: 0 });
 const Users = mongoose.model("User", userSchema);
 
 module.exports = Users;

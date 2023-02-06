@@ -38,6 +38,6 @@ const missionSchema = new Schema(
   }
 );
 
-missionSchema.plugin(AutoIncrement, { start_seq: 0 });
+missionSchema.plugin(AutoIncrement, { id: "mission_seq", start_seq: 0 });
 const Mission = mongoose.model("Mission", missionSchema);
 module.exports = Mission;
