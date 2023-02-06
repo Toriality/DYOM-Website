@@ -7,7 +7,7 @@ const fs = require("fs");
 
 // Get list of missions
 router.get("/list", (req, res) => {
-  const resultsPerPage = req.query.limit || 3;
+  const resultsPerPage = req.query.limit || 10;
   const page = req.query.page || 1;
   const regex = new RegExp(req.query.search, "i");
   const filter = req.query.search ? { title: { $regex: regex } } : {};
