@@ -16,20 +16,17 @@ const initialState = {
   success: false,
 };
 
+const config = {
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+};
+
 export const registerUser = createAsyncThunk(
   "user/register",
-  async ({ username, password }, { rejectWithValue }) => {
+  async (formData, { rejectWithValue }) => {
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      await axios.post(
-        `${backendURL}api/user/register`,
-        { username, password },
-        config
-      );
+      await axios.post(`${backendURL}api/user/register`, formData, config);
     } catch (error) {
       if (error.response && error.response.data.msg) {
         return rejectWithValue(error.response.data.msg);

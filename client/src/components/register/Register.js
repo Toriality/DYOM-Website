@@ -26,6 +26,9 @@ export function Register() {
       ...profileInfo,
       image,
     };
+
+    formData.append("type", "register");
+
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
@@ -34,7 +37,7 @@ export function Register() {
       console.log(pair[0] + ", " + pair[1]);
     }
 
-    //dispatch(registerUser(formData))
+    dispatch(registerUser(formData));
   };
 
   const changeInfo = (e) => {

@@ -3,10 +3,10 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
-
 require("dotenv").config();
-
 const User = require("../models/User");
+const { upload } = require("../upload");
+const fs = require("fs");
 
 // Get list of users
 router.get("/", (req, res) => {
@@ -67,8 +67,8 @@ router.post("/login", (req, res) => {
 });
 
 // Register new user
-router.post("/register", (req, res) => {
-  const { password } = req.body;
+router.post("/register", upload.single("image"), (req, res) => {
+  const { password, email, location, aboutme } = req.body;
   let username;
   const displayname = req.body.username;
   try {
@@ -79,9 +79,9 @@ router.post("/register", (req, res) => {
   }
 
   // Simple validation
-  if (!username || !password) {
+  if (!username || !password || !email) {
     return res.status(400).json({
-      msg: "Please enter all the fields.",
+      msg: "Please enter all the required fields.",
     });
   }
 
@@ -96,8 +96,10 @@ router.post("/register", (req, res) => {
     // If user doesn't exist, continue registration
     const newUser = new User({
       username,
-      displayname,
       password,
+      email,
+      location,
+      aboutme,
     });
 
     // Create salt & hash
@@ -106,17 +108,21 @@ router.post("/register", (req, res) => {
         if (err) throw err;
         // Store hash in your password DB
         newUser.password = hash;
-        newUser.save().then((user) => {
+        newUser.save((error, user) => {
+          fs.rename(
+            `./uploads/${req.folder}`,
+            `./uploads/${user._id}/`,
+            (err) => {
+              if (err) console.log(err);
+            }
+          );
           jwt.sign(
             { id: user.id },
             process.env.JWT_SECRET,
             { expiresIn: "20d" },
             (err, token) => {
               if (err) throw err;
-              res.json({
-                token,
-                data: { id: user.id, username: user.username },
-              });
+              res.json({ token, user });
             }
           );
         });
