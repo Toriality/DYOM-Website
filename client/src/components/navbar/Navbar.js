@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Toolbar } from "@mui/material";
+import { AppBar, Toolbar, CircularProgress } from "@mui/material";
 import { colors } from "../../styles/colors";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../features/user/userSlice";
@@ -16,8 +16,9 @@ export function Navbar() {
   });
 
   React.useEffect(() => {
+    console.log(isFetching);
     if (data) dispatch(setCredentials(data));
-  }, [data, dispatch]);
+  }, [data, isFetching, dispatch]);
 
   return (
     <AppBar
@@ -33,7 +34,7 @@ export function Navbar() {
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <NavMenu />
         <NavSearch />
-        <NavUser />
+        {isFetching ? <CircularProgress /> : <NavUser />}
       </Toolbar>
     </AppBar>
   );

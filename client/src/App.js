@@ -8,6 +8,7 @@ import { Footer } from "./components/footer/Footer";
 import { AddMission } from "./components/projects/missions/addMission/AddMission";
 import { ListMissions } from "./components/projects/missions/listMissions/ListMissions";
 import { FAQ } from "./components/faq/FAQ";
+import { Register } from "./components/register/Register";
 
 // Site
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LayoutsWithNavbar />}>
             <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/missions/add" element={<AddMission />} />
             <Route path="/missions" element={<ListMissions />} />
             <Route path="/faq" element={<FAQ />} />
