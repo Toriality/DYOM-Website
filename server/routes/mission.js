@@ -2,7 +2,7 @@ const router = require("express").Router();
 let Mission = require("../models/Mission");
 let User = require("../models/User");
 const auth = require("../middleware/auth");
-const { upload } = require("../upload");
+const { upload } = require("../multer/mission");
 const fs = require("fs");
 
 // Get list of missions

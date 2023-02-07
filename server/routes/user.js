@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 require("dotenv").config();
 const User = require("../models/User");
-const { upload } = require("../upload");
+const { upload } = require("../multer/register");
 const fs = require("fs");
 
 // Get list of users
