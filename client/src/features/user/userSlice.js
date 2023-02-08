@@ -26,7 +26,13 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (formData, { rejectWithValue }) => {
     try {
-      await axios.post(`${backendURL}api/user/register`, formData, config);
+      const { data } = await axios.post(
+        `${backendURL}api/user/register`,
+        formData,
+        config
+      );
+      localStorage.setItem("token", data.token);
+      return data;
     } catch (error) {
       if (error.response && error.response.data.msg) {
         return rejectWithValue(error.response.data.msg);
@@ -91,7 +97,8 @@ export const userSlice = createSlice({
       state.error = null;
     },
     [registerUser.fulfilled]: (state, { payload }) => {
-      state.userInfo = payload;
+      state.userInfo = payload.user;
+      state.token = payload.token;
       state.loading = false;
       state.success = true;
     },

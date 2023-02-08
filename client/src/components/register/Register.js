@@ -3,8 +3,9 @@ import { Grid, Button, Box, Typography } from "@mui/material";
 import { DYOMContent } from "../../styles/components/DYOMContainer";
 import { UploadPic } from "./UploadPic";
 import { ProfileInfo } from "./ProfileInfo";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../features/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export function Register() {
   const [image, setImage] = React.useState(null);
@@ -17,7 +18,9 @@ export function Register() {
     aboutme: null,
   });
 
+  const { userInfo, token, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +41,7 @@ export function Register() {
     }
 
     dispatch(registerUser(formData));
+    navigate("/");
   };
 
   const changeInfo = (e) => {
@@ -68,6 +72,7 @@ export function Register() {
 
   return (
     <DYOMContent>
+      {token ? navigate("/") : null}
       <Typography align="center" variant="h3" mb="2rem">
         Register a new account
       </Typography>
