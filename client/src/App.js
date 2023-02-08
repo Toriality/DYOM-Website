@@ -11,6 +11,7 @@ import { FAQ } from "./components/faq/FAQ";
 import { Register } from "./components/register/Register";
 import { useLocation } from "react-router-dom";
 import React from "react";
+import { Mission } from "./components/projects/missions/mission/Mission";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -38,6 +39,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/missions/add" element={<AddMission />} />
+            <Route path="/missions/:id" elemeent={<Mission />} />
             <Route path="/missions" element={<ListMissions />} />
             <Route path="/faq" element={<FAQ />} />
           </Route>
