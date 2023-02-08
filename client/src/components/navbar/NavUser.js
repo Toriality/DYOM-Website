@@ -33,7 +33,14 @@ export function NavUser() {
           {userInfo?.username}
         </Typography>
         <IconButton sx={{ p: 0 }}>
-          <Avatar alt="Profile Avatar" />
+          <Avatar
+            src={
+              userInfo?.hasAvatar
+                ? `http://localhost:5000/${userInfo._id}/avatar.jpg`
+                : null
+            }
+            alt="Profile Avatar"
+          />
         </IconButton>
       </ButtonBase>
     );

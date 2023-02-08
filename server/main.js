@@ -24,6 +24,9 @@ app.use("/api/user", require("./routes/user"));
 app.use("/api/mission", require("./routes/mission"));
 app.use("/api/article", require("./routes/article"));
 
+// Make uploads folder public
+app.use("/", express.static(path.join(__dirname, "/uploads")));
+
 // Log server info
 app.listen(port, () => {
   console.log(

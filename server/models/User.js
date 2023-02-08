@@ -29,7 +29,7 @@ const userSchema = new Schema(
     aboutMe: { type: String },
     pinnedProject: { type: Schema.Types.ObjectId },
     pinnedAward: { type: Schema.Types.ObjectId },
-    avatar: { type: Buffer },
+    hasAvatar: { type: Boolean },
     location: { type: String },
   },
   {

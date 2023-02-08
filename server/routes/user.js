@@ -85,6 +85,10 @@ router.post("/register", upload.single("image"), (req, res) => {
     });
   }
 
+  // Check if avatar were uploaded
+  console.log(req.file, !!req.file);
+  const hasAvatar = !!req.file;
+
   // Check if user exists and complete registration
   User.findOne({ username }).then((user) => {
     // Check for existing user
@@ -100,6 +104,7 @@ router.post("/register", upload.single("image"), (req, res) => {
       email,
       location,
       aboutme,
+      hasAvatar,
     });
 
     // Create salt & hash
@@ -109,13 +114,15 @@ router.post("/register", upload.single("image"), (req, res) => {
         // Store hash in your password DB
         newUser.password = hash;
         newUser.save((error, user) => {
-          fs.rename(
-            `./uploads/${req.folder}`,
-            `./uploads/${user._id}/`,
-            (err) => {
-              if (err) console.log(err);
-            }
-          );
+          if (hasAvatar) {
+            fs.rename(
+              `./uploads/${req.folder}`,
+              `./uploads/${user._id}/`,
+              (err) => {
+                if (err) console.log(err);
+              }
+            );
+          }
           jwt.sign(
             { id: user.id },
             process.env.JWT_SECRET,
@@ -135,7 +142,9 @@ router.post("/register", upload.single("image"), (req, res) => {
 router.get("/profile", auth, (req, res) => {
   User.findById(req.user.id)
     .select("-password")
-    .then((user) => res.json(user));
+    .then((user) => {
+      res.json(user);
+    });
 });
 
 module.exports = router;
