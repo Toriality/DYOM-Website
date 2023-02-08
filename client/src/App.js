@@ -37,10 +37,12 @@ function App() {
         <Routes>
           <Route path="/" element={<LayoutsWithNavbar />}>
             <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/missions/add" element={<AddMission />} />
-            <Route path="/missions/:id" elemeent={<Mission />} />
-            <Route path="/missions" element={<ListMissions />} />
+            <Route path="register" element={<Register />} />
+            <Route path="missions">
+              <Route path="" element={<ListMissions />} />
+              <Route path="add" element={<AddMission />} />
+              <Route path=":id" element={<Mission />} />
+            </Route>
             <Route path="/faq" element={<FAQ />} />
           </Route>
         </Routes>
