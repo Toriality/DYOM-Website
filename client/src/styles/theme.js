@@ -19,6 +19,22 @@ export const theme = createTheme({
     subtitle2: { fontFamily: "Verdana", fontSize: "6pt" },
   },
   components: {
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          borderBottom: "1px solid " + colors.backgroundLighter,
+          backgroundColor: colors.backgroundInput,
+          paddingLeft: ".8rem",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.backgroundInput,
+        },
+      },
+    },
     MuiAccordion: {
       styleOverrides: {
         root: {
