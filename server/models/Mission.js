@@ -9,7 +9,7 @@ const missionSchema = new Schema(
       required: true,
     },
     author: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.Number,
       ref: "User",
       required: true,
     },

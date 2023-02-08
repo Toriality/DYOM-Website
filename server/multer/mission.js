@@ -5,7 +5,7 @@ const fs = require("fs");
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     userID = req.user.id;
-    path = `./uploads/${userID}/mission/uploading`;
+    path = `./uploads/${userID}/missions/uploading`;
     fs.mkdirSync(path, { recursive: true });
     cb(null, path);
   },
