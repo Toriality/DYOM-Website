@@ -1,12 +1,13 @@
 import React from "react";
 import { DYOMContent } from "../../../../styles/components/DYOMContainer";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { UploadImages } from "./UploadImages";
 import { MainInfo } from "./MainInfo";
 import { Specs } from "./Specs";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { addMission } from "../../../../features/mission/missionSlice";
+import { useNavigate } from "react-router-dom";
 
 export function AddMission() {
   const [info, setInfo] = React.useState({
@@ -42,6 +43,7 @@ export function AddMission() {
     },
   });
 
+  const navigate = useNavigate();
   let previewArray = [];
   let date = new Date();
   date = date.toLocaleString("en", {
@@ -52,6 +54,7 @@ export function AddMission() {
     minute: "2-digit",
   });
   const { userInfo } = useSelector((state) => state.user);
+  const { missionInfo, loading } = useSelector((state) => state.mission);
   let user = userInfo.username ? userInfo.username : "loading...";
   const dispatch = useDispatch();
 
@@ -230,6 +233,12 @@ export function AddMission() {
     dispatch(addMission(formData));
   };
 
+  React.useEffect(() => {
+    if (missionInfo._id) {
+      navigate(`/missions/${missionInfo._id}`);
+    }
+  }, [missionInfo]);
+
   const changeSpecs = (e) => {
     if (e.target.type === "checkbox") {
       setSpecs((prevState) => ({
@@ -277,7 +286,9 @@ export function AddMission() {
         </Grid>
       </Grid>
       <Box mt={10} align="center">
-        <Button onClick={(e) => onSubmit(e)}>Add mission</Button>
+        <Button disabled={loading} onClick={(e) => onSubmit(e)}>
+          {loading ? <CircularProgress /> : "Add mission"}
+        </Button>
       </Box>
     </DYOMContent>
   );

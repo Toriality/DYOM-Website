@@ -127,7 +127,7 @@ router.post(
           },
           (err, data) => {}
         );
-        res.json({ msg: "Mission added into the database!" });
+        res.json(mission);
       })
       .catch((err) => {
         console.log(err);

@@ -25,7 +25,12 @@ export const addMission = createAsyncThunk(
   "mission/add",
   async (formData, { rejectWithValue }) => {
     try {
-      await axios.post(`${backendURL}api/mission/add`, formData, config);
+      const { data } = await axios.post(
+        `${backendURL}api/mission/add`,
+        formData,
+        config
+      );
+      return data;
     } catch (error) {
       if (error.response && error.response.data.msg) {
         return rejectWithValue(error.response.data.msg);
@@ -53,10 +58,34 @@ export const missionSlice = createSlice({
   name: "mission",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(listMissions.fulfilled, (state, action) => {
-      state.missionInfo = action.payload;
-    });
+  extraReducers: {
+    [listMissions.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+      state.missionInfo = payload;
+    },
+    [listMissions.pending]: (state, { payload }) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [listMissions.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+      state.missionInfo = payload;
+    },
+    [addMission.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    [addMission.pending]: (state, { paylaod }) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [addMission.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+      state.missionInfo = payload;
+    },
   },
 });
 
