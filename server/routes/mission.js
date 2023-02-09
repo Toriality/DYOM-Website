@@ -28,9 +28,14 @@ router.get("/list", (req, res) => {
 
 // Get mission
 router.get("/:id", (req, res) => {
-  Mission.findOne({ _id: req.params.id }).then((mission) => {
-    res.json(mission);
-  });
+  Mission.findOne({ _id: req.params.id })
+    .populate({
+      path: "author",
+      select: "username",
+    })
+    .exec((err, events) => {
+      res.json(events);
+    });
 });
 
 // Downlaod mission file

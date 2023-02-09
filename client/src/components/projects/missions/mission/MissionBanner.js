@@ -16,6 +16,47 @@ export function MissionBanner(props) {
     return <CircularProgress />;
   };
   const Loaded = () => {
+    const changeUpdate = (e) => {
+      let date = new Date(e);
+      date = date.toLocaleString("en", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      return date;
+    };
+
+    const getImageURL = (img) => {
+      if (img)
+        return `url(http://localhost:5000/${props.data.author?._id}/missions/${props.data._id}/${img})`;
+      else return `url(${nopreview})`;
+    };
+
+    const TagBox = (props) => {
+      return (
+        <Box
+          sx={{
+            mr: 2,
+            borderRadius: "20px",
+            border: "1px solid",
+            borderColor: "primary.main",
+            p: "0.7rem",
+            pr: 3,
+            pl: 3,
+            textAlign: "center",
+            backgroundColor: "background.default",
+            "& *": {
+              color: "primary.main",
+            },
+          }}
+        >
+          <Typography variant="body1">{props.children}</Typography>
+        </Box>
+      );
+    };
+
     return (
       <Box
         sx={{
@@ -28,11 +69,11 @@ export function MissionBanner(props) {
       >
         <Grid container mb={4}>
           <Grid item xs={8}>
-            <Typography variant="h1">Mission Title</Typography>
+            <Typography variant="h1">{props.data.title}</Typography>
             <Typography variant="h3">
               Created by:
               <Link href="/" sx={{ ml: "1ch", display: "inline" }}>
-                Username
+                {props.data.author?.username}
               </Link>
             </Typography>
           </Grid>
@@ -58,15 +99,17 @@ export function MissionBanner(props) {
             >
               <Box>
                 <FaRegClock fontSize="16pt" />
-                <Typography variant="h3">03.03.2023</Typography>
+                <Typography variant="h3">
+                  {changeUpdate(props.data.updatedAt)}
+                </Typography>
               </Box>
               <Box>
                 <FaRegEye fontSize="16pt" />
-                <Typography variant="h3">214</Typography>
+                <Typography variant="h3">{props.data.views}</Typography>
               </Box>
               <Box>
                 <MdOutlineDownloadForOffline fontSize="16pt" />
-                <Typography variant="h3">100</Typography>
+                <Typography variant="h3">{props.data.downloads}</Typography>
               </Box>
             </Box>
           </Grid>
@@ -102,7 +145,7 @@ export function MissionBanner(props) {
             <Box
               sx={{
                 aspectRatio: "2/3",
-                backgroundImage: "url(" + nopreview + ")",
+                backgroundImage: () => getImageURL(props.data.banner),
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
@@ -115,14 +158,27 @@ export function MissionBanner(props) {
                 aspectRatio: "16/9",
               }}
             >
-              <iframe
-                src="https://www.youtube.com/embed/q3Yg5WdQr0I"
-                height="100%"
-                width="100%"
-                frameBorder="0"
-                allowFullScreen
-                title="Trailer"
-              />
+              {props.data.trailer !== "null" ? (
+                <iframe
+                  src={props.data.trailer}
+                  height="100%"
+                  width="100%"
+                  frameBorder="0"
+                  allowFullScreen
+                  title="Trailer"
+                />
+              ) : (
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundImage: `url(${nopreview})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center center",
+                  }}
+                />
+              )}
             </Box>
           </Grid>
           <Grid item xs={1}>
@@ -134,115 +190,41 @@ export function MissionBanner(props) {
                 height: "100%",
               }}
             >
-              <Box
-                sx={{
-                  flexGrow: "1",
-                  backgroundImage: "url(" + nopreview + ")",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center center",
-                }}
-              />
-              <Box
-                sx={{
-                  flexGrow: "1",
-                  backgroundImage: "url(" + nopreview + ")",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center center",
-                }}
-              />
-              <Box
-                sx={{
-                  flexGrow: "1",
-                  backgroundImage: "url(" + nopreview + ")",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center center",
-                }}
-              />
-              <Box
-                sx={{
-                  flexGrow: "1",
-                  backgroundImage: "url(" + nopreview + ")",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center center",
-                }}
-              />
-              <Box
-                sx={{
-                  flexGrow: "1",
-                  backgroundImage: "url(" + nopreview + ")",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center center",
-                }}
-              />
+              {props.data.gallery?.length > 0 ? (
+                props.data.gallery?.map((img) => (
+                  <Box
+                    sx={{
+                      flexGrow: "1",
+                      backgroundImage: () => getImageURL(img),
+                      backgroundRepeat: "no-repeat",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center center",
+                    }}
+                  />
+                ))
+              ) : (
+                <Box
+                  sx={{
+                    flexGrow: "1",
+                    backgroundImage: `url(${nopreview})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center center",
+                  }}
+                />
+              )}
             </Box>
           </Grid>
         </Grid>
         <Grid container>
           <Grid item xs={8}>
             <Box display="flex" mb={4}>
-              <Box
-                sx={{
-                  borderRadius: "20px",
-                  border: "1px solid",
-                  borderColor: "primary.main",
-                  p: 1,
-                  pr: 4,
-                  pl: 4,
-                  textAlign: "center",
-                  backgroundColor: "background.default",
-                }}
-              >
-                <Typography color="primary.main" variant="body1">
-                  Drama
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  ml: 3,
-                  borderRadius: "20px",
-                  border: "1px solid",
-                  borderColor: "primary.main",
-                  p: 1,
-                  pr: 4,
-                  pl: 4,
-                  textAlign: "center",
-                  backgroundColor: "background.default",
-                }}
-              >
-                <Typography color="primary.main" variant="body1">
-                  Action
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  ml: 3,
-                  borderRadius: "20px",
-                  border: "1px solid",
-                  borderColor: "primary.main",
-                  p: 1,
-                  pr: 4,
-                  pl: 4,
-                  textAlign: "center",
-                  backgroundColor: "background.default",
-                }}
-              >
-                <Typography color="primary.main" variant="body1">
-                  Suspense
-                </Typography>
-              </Box>
+              {props.data.tags?.map((tag) => (
+                <TagBox>{tag}</TagBox>
+              ))}
             </Box>
             <Typography variant="body1" maxWidth="72ch" mb={4}>
-              Note that we’re adding a transition to both the .box, and
-              .box::after, since we’re going to animate both of these elements:
-              transform for .box, and opacity for .box::after. These styles give
-              us a white box with a subtle box-shadow. The stronger shadow from
-              .box::after is completely hidden at this point, and you can’t
-              interact with the box:
+              {props.data.summary}
             </Typography>
             <Button variant="contained">Download</Button>
           </Grid>
@@ -262,7 +244,7 @@ export function MissionBanner(props) {
               </Typography>
               <FaStar fontSize="24pt" />
               <Typography ml={2} variant="h2">
-                8.3
+                --
               </Typography>
             </Box>
             <Box
@@ -277,7 +259,7 @@ export function MissionBanner(props) {
               </Typography>
               <FaStar fontSize="24pt" />
               <Typography ml={2} variant="h2">
-                5.5
+                --
               </Typography>
             </Box>
           </Grid>

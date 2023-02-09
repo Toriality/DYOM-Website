@@ -22,7 +22,7 @@ export function MissionSpecs(props) {
               <Typography variant="h3" mr={8} width="33%">
                 Original name:
               </Typography>
-              <Typography variant="body1">Mission original name</Typography>
+              <Typography variant="body1">{props.data.original}</Typography>
             </Box>
             <Box
               display="flex"
@@ -33,7 +33,7 @@ export function MissionSpecs(props) {
               <Typography variant="h3" mr={8} width="33%">
                 MOTTO:
               </Typography>
-              <Typography variant="body1">Mission MOTTO</Typography>
+              <Typography variant="body1">{props.data.motto}</Typography>
             </Box>
             <Box
               display="flex"
@@ -44,7 +44,7 @@ export function MissionSpecs(props) {
               <Typography variant="h3" mr={8} width="33%">
                 Music Theme:
               </Typography>
-              <Typography variant="body1">Music Theme</Typography>
+              <Typography variant="body1">{props.data.music}</Typography>
             </Box>
           </Grid>
           <Grid item xs={6}>
@@ -57,7 +57,7 @@ export function MissionSpecs(props) {
               <Typography variant="h3" mr={8} width="33%">
                 Difficulty:
               </Typography>
-              <Typography variant="body1">Extreme</Typography>
+              <Typography variant="body1">{props.data.difficulty}</Typography>
             </Box>
             <Box
               display="flex"
@@ -68,7 +68,9 @@ export function MissionSpecs(props) {
               <Typography variant="h3" mr={8} width="33%">
                 Mods Required:
               </Typography>
-              <Typography variant="body1">No</Typography>
+              <Typography variant="body1">
+                {props.data.mods ? "Yes" : "No"}
+              </Typography>
             </Box>
           </Grid>
         </Grid>
