@@ -34,7 +34,7 @@ router.get("/:id", (req, res) => {
     select = ["title", "author", "awards", "reviews"];
     populate.push({
       path: "reviews",
-      populate: { path: "author", select: "username" },
+      populate: { path: "author", select: ["username", "hasAvatar"] },
     });
   } else {
     select = ["-awards", "-reviews"];

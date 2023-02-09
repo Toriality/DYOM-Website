@@ -15,7 +15,7 @@ export function ReviewsBanner(props) {
       <Typography variant="h3">
         Created by:
         <Link href="/" sx={{ ml: "1ch", display: "inline" }}>
-          PARAM_AUTHOR
+          {props.data.author?.username}
         </Link>
       </Typography>
       {/* {
