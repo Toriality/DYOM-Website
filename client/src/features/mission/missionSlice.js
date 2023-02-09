@@ -54,15 +54,40 @@ export const listMissions = createAsyncThunk("mission/list", async () => {
   }
 });
 
+export const getMission = createAsyncThunk("mission/get", async (id) => {
+  try {
+    const response = await axios.get(`${backendURL}api/mission/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data.msg) {
+      return error.response.data.msg;
+    } else {
+      return error.msg;
+    }
+  }
+});
+
 export const missionSlice = createSlice({
   name: "mission",
   initialState,
   reducers: {},
   extraReducers: {
+    [getMission.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    [getMission.pending]: (state, { payload }) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [getMission.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+      state.missionInfo = payload;
+    },
     [listMissions.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
-      state.missionInfo = payload;
     },
     [listMissions.pending]: (state, { payload }) => {
       state.loading = true;

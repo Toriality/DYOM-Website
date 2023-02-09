@@ -26,6 +26,13 @@ router.get("/list", (req, res) => {
     });
 });
 
+// Get mission
+router.get("/:id", (req, res) => {
+  Mission.findOne({ _id: req.params.id }).then((mission) => {
+    res.json(mission);
+  });
+});
+
 // Downlaod mission file
 router.get("/download/:id", auth, (req, res) => {
   // ID of the audio as in the database
