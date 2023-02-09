@@ -1,4 +1,11 @@
-import { Box, CircularProgress, Grid, Skeleton } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  Link,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 
 export function MissionRightPanel(props) {
   const Loading = () => {
@@ -20,6 +27,7 @@ export function MissionRightPanel(props) {
       <Grid item xs={4} textAlign="right">
         <Box
           mt={2}
+          mb="1rem !important"
           width="100%"
           height="4rem"
           bgcolor="background.default"
@@ -27,6 +35,9 @@ export function MissionRightPanel(props) {
           border="1px solid"
           borderColor="stroke.default"
         />
+        <Link sx={{ display: "inline" }}>See all awards and reviews</Link>
+        <br />
+        <Link sx={{ display: "inline" }}>Write a review</Link>
       </Grid>
     );
   };
