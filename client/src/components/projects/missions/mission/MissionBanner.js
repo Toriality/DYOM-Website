@@ -271,7 +271,7 @@ export function MissionBanner(props) {
             <Typography variant="body1" maxWidth="72ch" mb={4}>
               {props.data.summary}
             </Typography>
-            <Button variant="contained">Download</Button>
+            <Button variant="download">Download</Button>
           </Grid>
           <Grid item xs={4}>
             <Typography align="right" variant="h3" mb={4}>

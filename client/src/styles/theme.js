@@ -119,6 +119,15 @@ export const theme = createTheme({
           },
         },
       },
+      variants: [
+        {
+          props: { variant: "download" },
+          style: {
+            color: colors.successColor,
+            border: "2px solid " + colors.successColor,
+          },
+        },
+      ],
     },
     MuiCssBaseline: {
       styleOverrides: {
