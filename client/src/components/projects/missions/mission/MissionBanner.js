@@ -6,6 +6,7 @@ import {
   Typography,
   Link,
   CircularProgress,
+  Skeleton,
 } from "@mui/material";
 import { FaRegClock, FaRegEye, FaStar } from "react-icons/fa";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
@@ -13,7 +14,51 @@ import nopreview from "../../../../images/nopreview.jpg";
 
 export function MissionBanner(props) {
   const Loading = () => {
-    return <CircularProgress />;
+    return (
+      <Box sx={{ backgroundColor: "black", p: 6, pl: 16, pr: 16 }}>
+        <Grid container mb={4}>
+          <Grid item xs={6}>
+            <Skeleton variant="text" sx={{ fontSize: "48pt", width: "80%" }} />
+            <Skeleton varaint="text" sx={{ fontSize: "16pt", width: "40%" }} />
+          </Grid>
+          <Grid item xs={6} mt="auto" align="right">
+            <Skeleton variant="text" sx={{ fontSize: "16pt", width: "30%" }} />
+            <Skeleton varaint="text" sx={{ fontSize: "16pt", width: "40%" }} />
+          </Grid>
+        </Grid>
+        <Grid container mb={4} spacing="1px">
+          <Grid item xs={3}>
+            <Skeleton
+              variant="retangle"
+              sx={{ aspectRatio: "2/3", width: "100%", height: "100%" }}
+            />
+          </Grid>
+          <Grid item xs={7}>
+            <Skeleton
+              variant="retangle"
+              sx={{ aspectRatio: "16/9", width: "100%", height: "100%" }}
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <Skeleton variant="retangle" sx={{ height: "100%" }} />
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={6}>
+            <Skeleton variant="retangle" width="72ch" height="6rem" mb={2} />
+            <Skeleton varaint="rounded" width="12rem" height="6rem" />
+          </Grid>
+          <Grid item xs={6} align="right">
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "16pt", width: "50%", mb: 2 }}
+            />
+            <Skeleton variant="text" sx={{ fontSize: "24pt", width: "50%" }} />
+            <Skeleton variant="text" sx={{ fontSize: "24pt", width: "50%" }} />
+          </Grid>
+        </Grid>
+      </Box>
+    );
   };
   const Loaded = () => {
     const changeUpdate = (e) => {

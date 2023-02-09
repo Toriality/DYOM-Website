@@ -1,8 +1,26 @@
-import { CircularProgress, Grid, Typography } from "@mui/material";
+import { CircularProgress, Grid, Skeleton, Typography } from "@mui/material";
 
 export function MissionLeftPanel(props) {
   const Loading = () => {
-    return <CircularProgress />;
+    return (
+      <Grid item xs={8}>
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: "32pt", width: "50%", mb: 2 }}
+        />
+        <Skeleton
+          variant="retangle"
+          width="80%"
+          height="25rem"
+          sx={{ mb: 4 }}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: "32pt", width: "50%", mb: 2 }}
+        />
+        <Skeleton variant="retangle" width="80%" height="12rem" />
+      </Grid>
+    );
   };
   const Loaded = () => {
     return (

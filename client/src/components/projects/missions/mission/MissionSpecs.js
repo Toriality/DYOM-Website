@@ -1,9 +1,34 @@
-import { Box, Grid, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  CircularProgress,
+  Typography,
+  Skeleton,
+} from "@mui/material";
 import React from "react";
 
 export function MissionSpecs(props) {
   const Loading = () => {
-    return <CircularProgress />;
+    return (
+      <>
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: "32pt", width: "20%", mb: 2 }}
+        />
+        <Grid container spacing={12}>
+          <Grid item xs={6} sx={{ "& *": { mb: 2 } }}>
+            <Skeleton variant="retangle" width="100%" height="3rem" />
+            <Skeleton variant="retangle" width="100%" height="3rem" />
+            <Skeleton variant="retangle" width="100%" height="3rem" />
+          </Grid>
+          <Grid item xs={6} sx={{ "& *": { mb: 2 } }}>
+            <Skeleton variant="retangle" width="100%" height="3rem" />
+            <Skeleton variant="retangle" width="100%" height="3rem" />
+            <Skeleton variant="retangle" width="100%" height="3rem" />
+          </Grid>
+        </Grid>
+      </>
+    );
   };
   const Loaded = () => {
     return (
