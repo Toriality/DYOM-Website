@@ -35,7 +35,9 @@ export function MissionRightPanel(props) {
           border="1px solid"
           borderColor="stroke.default"
         />
-        <Link sx={{ display: "inline" }}>See all awards and reviews</Link>
+        <Link sx={{ display: "inline" }} href="reviews">
+          See all awards and reviews
+        </Link>
         <br />
         <Link sx={{ display: "inline" }}>Write a review</Link>
       </Grid>

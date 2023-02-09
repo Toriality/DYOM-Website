@@ -12,6 +12,7 @@ import { Register } from "./components/register/Register";
 import { useLocation } from "react-router-dom";
 import React from "react";
 import { Mission } from "./components/projects/missions/mission/Mission";
+import { Reviews } from "./components/projects/missions/mission/reviews/Reviews";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -36,14 +37,17 @@ function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LayoutsWithNavbar />}>
-            <Route path="/" element={<Home />} />
+            <Route index element={<Home />} />
             <Route path="register" element={<Register />} />
             <Route path="missions">
-              <Route path="" element={<ListMissions />} />
+              <Route index element={<ListMissions />} />
               <Route path="add" element={<AddMission />} />
-              <Route path=":id" element={<Mission />} />
+              <Route path=":id">
+                <Route index element={<Mission />} />
+                <Route path="reviews" element={<Reviews />} />
+              </Route>
             </Route>
-            <Route path="/faq" element={<FAQ />} />
+            <Route path="faq" element={<FAQ />} />
           </Route>
         </Routes>
       </BrowserRouter>
