@@ -47,7 +47,7 @@ function App() {
                 <Route path="reviews" element={<Reviews />} />
               </Route>
             </Route>
-            <Route path="faq" element={<FAQ />} />
+            <Route path="/faq" element={<FAQ />} />
           </Route>
         </Routes>
       </BrowserRouter>

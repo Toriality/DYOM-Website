@@ -109,6 +109,7 @@ export function MissionBanner(props) {
           p: 6,
           pl: 16,
           pr: 16,
+          pt: 2,
           "& *": { lineHeight: "1" },
         }}
       >

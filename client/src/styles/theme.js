@@ -19,6 +19,15 @@ export const theme = createTheme({
     subtitle2: { fontFamily: "Verdana", fontSize: "6pt" },
   },
   components: {
+    MuiBreadcrumbs: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "black",
+          padding: ".5rem",
+          paddingLeft: "8rem",
+        },
+      },
+    },
     MuiInput: {
       styleOverrides: {
         root: {

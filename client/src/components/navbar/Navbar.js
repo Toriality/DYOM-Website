@@ -7,9 +7,12 @@ import { useGetUserDetailsQuery } from "../../features/user/authService";
 import { NavMenu } from "./NavMenu";
 import { NavSearch } from "./NavSearch";
 import { NavUser } from "./NavUser";
+import DYOMBreadcumbs from "./DYOMBreadcumbs";
+import { useLocation } from "react-router-dom";
 
 export function Navbar() {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
     pollingInterval: 900000,
@@ -21,21 +24,24 @@ export function Navbar() {
   }, [data, isFetching, dispatch]);
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        p: 12,
-        pb: 0,
-        pt: 0,
-        bgcolor: colors.backgroundDarker,
-        borderBottom: "2px " + colors.primaryColor + " solid",
-      }}
-    >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <NavMenu />
-        <NavSearch />
-        {isFetching ? <CircularProgress /> : <NavUser />}
-      </Toolbar>
-    </AppBar>
+    <>
+      <AppBar
+        position="static"
+        sx={{
+          p: 12,
+          pb: 0,
+          pt: 0,
+          bgcolor: colors.backgroundDarker,
+          borderBottom: "2px " + colors.primaryColor + " solid",
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <NavMenu />
+          <NavSearch />
+          {isFetching ? <CircularProgress /> : <NavUser />}
+        </Toolbar>
+      </AppBar>
+      {pathname.length > 1 ? <DYOMBreadcumbs /> : null}
+    </>
   );
 }
