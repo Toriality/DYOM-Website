@@ -1,64 +1,31 @@
 import { Box, Button, Grid, Link, Typography } from "@mui/material";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getMission } from "../../../../../features/mission/missionSlice";
 import nopreview from "../../../../../images/nopreview.jpg";
 import { DYOMContent } from "../../../../../styles/components/DYOMContainer";
 import { PagesBox } from "../../../../../styles/components/PagesBox";
+import { OfficialReviews } from "./OfficialReviews";
+import { ReviewsBanner } from "./ReviewsBanner";
+import { UserReviews } from "./UserReviews";
 
 export function Reviews(props) {
+  const { missionInfo, loading } = useSelector((state) => state.mission);
+  const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  React.useEffect(() => {
+    dispatch(getMission([id, "?reviews"]));
+  }, []);
+
   return (
     <>
-      <Box
-        sx={{
-          backgroundColor: "black",
-          p: 6,
-          pl: 16,
-          pr: 16,
-          "& *": { lineHeight: "1" },
-        }}
-      >
-        <Typography variant="h1">PARAM_TITLE</Typography>
-        <Typography variant="h3">
-          Created by:
-          <Link href="/" sx={{ ml: "1ch", display: "inline" }}>
-            PARAM_AUTHOR
-          </Link>
-        </Typography>
-        {/* {
- <Grid container mt={4}>
-        <Grid item xs={3}>
-          <Box
-            sx={{
-              aspectRatio: "2/3",
-              backgroundImage: `url(${nopreview})`,
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center center",
-            }}
-          />
-        </Grid>
-        <Grid item xs={9}>
-          <Box p={8}></Box>
-          </Grid>
-          </Grid>
-      } */}
-      </Box>
+      <ReviewsBanner loading={loading} data={missionInfo} />
+      <OfficialReviews loading={loading} data={missionInfo} />
       <DYOMContent>
-        <Grid container alignItems="baseline">
-          <Grid item xs={8}>
-            <Typography variant="h2">User reviews</Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <PagesBox />
-          </Grid>
-        </Grid>
-        {/* user review boxes */}
-        <Grid container alignItems="baseline">
-          <Grid item xs={8}>
-            <Button>Write review</Button>
-          </Grid>
-          <Grid item xs={4}>
-            <PagesBox />
-          </Grid>
-        </Grid>
+        <UserReviews loading={loading} data={missionInfo} />
       </DYOMContent>
     </>
   );

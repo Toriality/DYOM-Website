@@ -23,6 +23,7 @@ mongoose.connect(uri, () => {
 app.use("/api/user", require("./routes/user"));
 app.use("/api/mission", require("./routes/mission"));
 app.use("/api/article", require("./routes/article"));
+app.use("/api/review", require("./routes/review"));
 
 // Make uploads folder public
 app.use("/", express.static(path.join(__dirname, "/uploads")));

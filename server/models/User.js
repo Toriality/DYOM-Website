@@ -39,6 +39,6 @@ const userSchema = new Schema(
 );
 
 userSchema.plugin(AutoIncrement, { id: "user_seq", start_seq: 0 });
-const Users = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
-module.exports = Users;
+module.exports = User;

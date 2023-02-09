@@ -14,8 +14,10 @@ const missionSchema = new Schema(
       required: true,
     },
     summary: { type: String },
-    officialReviews: { type: [Schema.Types.Mixed] },
-    userReviews: { type: [Schema.Types.Mixed] },
+    reviews: {
+      type: [Schema.Types.ObjectId],
+      ref: "Review",
+    },
     description: { type: String },
     awards: { type: [Schema.Types.Mixed] },
     file: { type: String },

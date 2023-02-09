@@ -28,11 +28,20 @@ router.get("/list", (req, res) => {
 
 // Get mission
 router.get("/:id", (req, res) => {
+  let select;
+  let populate = [{ path: "author", select: "username" }];
+  if (req.query.hasOwnProperty("reviews")) {
+    select = ["title", "author", "awards", "reviews"];
+    populate.push({
+      path: "reviews",
+      populate: { path: "author", select: "username" },
+    });
+  } else {
+    select = ["-awards", "-reviews"];
+  }
   Mission.findOne({ _id: req.params.id })
-    .populate({
-      path: "author",
-      select: "username",
-    })
+    .populate(populate)
+    .select(select)
     .exec((err, events) => {
       res.json(events);
     });

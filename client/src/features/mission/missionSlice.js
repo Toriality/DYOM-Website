@@ -54,18 +54,24 @@ export const listMissions = createAsyncThunk("mission/list", async () => {
   }
 });
 
-export const getMission = createAsyncThunk("mission/get", async (id) => {
-  try {
-    const response = await axios.get(`${backendURL}api/mission/${id}`);
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.data.msg) {
-      return error.response.data.msg;
-    } else {
-      return error.msg;
+export const getMission = createAsyncThunk(
+  "mission/get",
+  async ([id, params]) => {
+    try {
+      const response = await axios.get(
+        `${backendURL}api/mission/${id}${params ? params : ""}`
+      );
+      console.log(`${backendURL}api/mission/${id}${params ? params : ""}`);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data.msg) {
+        return error.response.data.msg;
+      } else {
+        return error.msg;
+      }
     }
   }
-});
+);
 
 export const missionSlice = createSlice({
   name: "mission",
