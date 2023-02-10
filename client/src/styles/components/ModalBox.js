@@ -33,9 +33,6 @@ export const ModalBox = React.forwardRef((props, ref) => (
         height: "100%",
       }}
     >
-      <Typography variant="body1" component="div" mb="2rem">
-        {props.desc}
-      </Typography>
       {props.children}
     </Box>
   </Box>

@@ -3,8 +3,12 @@ import { PagesBox } from "../../../../../styles/components/PagesBox";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BsFillChatSquareDotsFill } from "react-icons/bs";
 import { HiChatAlt } from "react-icons/hi";
+import { WriteReview } from "../../../../../styles/components/WriteReview";
+import React from "react";
 
 export function UserReviews(props) {
+  const [openModal, setOpenModal] = React.useState(false);
+
   return (
     <>
       <Grid container alignItems="baseline">
@@ -94,12 +98,13 @@ export function UserReviews(props) {
         : null}
       <Grid container alignItems="baseline">
         <Grid item xs={8}>
-          <Button>Write review</Button>
+          <Button onClick={() => setOpenModal(true)}>Write review</Button>
         </Grid>
         <Grid item xs={4}>
           <PagesBox />
         </Grid>
       </Grid>
+      <WriteReview toggle={() => setOpenModal(!openModal)} open={openModal} />
     </>
   );
 }
