@@ -49,8 +49,9 @@ router.post("/add", auth, (req, res) => {
             $push: { reviews: review._id },
           },
           (err, data) => {}
-        ),
-          res.json(review);
+        );
+      res.json(review);
+      console.log(review);
     })
     .catch((err) => {
       console.log(err);

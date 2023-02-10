@@ -21,6 +21,13 @@ const config = {
   },
 };
 
+const configJson = {
+  headers: {
+    "Content-Type": "application/json",
+    "x-auth-token": token,
+  },
+};
+
 export const addMission = createAsyncThunk(
   "mission/add",
   async (formData, { rejectWithValue }) => {
@@ -72,6 +79,24 @@ export const getMission = createAsyncThunk(
     }
   }
 );
+
+export const writeReview = createAsyncThunk("mission/review", async (data) => {
+  try {
+    console.log(data);
+    const response = await axios.post(
+      `${backendURL}api/review/add`,
+      data,
+      configJson
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data.msg) {
+      return error.response.data.msg;
+    } else {
+      return error.msg;
+    }
+  }
+});
 
 export const missionSlice = createSlice({
   name: "mission",
