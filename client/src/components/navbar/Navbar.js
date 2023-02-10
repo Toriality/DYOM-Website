@@ -19,7 +19,6 @@ export function Navbar() {
   });
 
   React.useEffect(() => {
-    console.log(isFetching);
     if (data) dispatch(setCredentials(data));
   }, [data, isFetching, dispatch]);
 
@@ -41,6 +40,7 @@ export function Navbar() {
           {isFetching ? <CircularProgress /> : <NavUser />}
         </Toolbar>
       </AppBar>
+      {/* Only displays DYOMBreadcumbs if user is not in Homepage */}
       {pathname.length > 1 ? <DYOMBreadcumbs /> : null}
     </>
   );

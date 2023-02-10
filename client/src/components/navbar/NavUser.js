@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonBase, Typography, IconButton, Avatar } from "@mui/material";
+import { ButtonBase, Typography, Avatar } from "@mui/material";
 import { LoginModal } from "./LoginModal";
 import { useSelector } from "react-redux";
 
@@ -9,20 +9,20 @@ export function NavUser() {
 
   function Guest() {
     return (
-      <ButtonBase
-        onClick={(e) => {
-          setOpenModal(true);
-        }}
-        sx={{ display: "flex" }}
-      >
-        <Typography variant="h4" color="primary" mr={2}>
-          Log In
-        </Typography>
-        <IconButton sx={{ p: 0 }}>
+      <>
+        <ButtonBase
+          onClick={() => {
+            setOpenModal(true);
+          }}
+          sx={{ display: "flex" }}
+        >
+          <Typography variant="h4" color="primary" mr={2}>
+            Log In
+          </Typography>
           <Avatar alt="Profile Avatar" />
-        </IconButton>
-        <LoginModal toggle={() => setOpenModal(openModal)} open={openModal} />
-      </ButtonBase>
+        </ButtonBase>
+        <LoginModal toggle={() => setOpenModal(!openModal)} open={openModal} />
+      </>
     );
   }
 
@@ -32,16 +32,14 @@ export function NavUser() {
         <Typography variant="h4" color="primary" mr={2}>
           {userInfo?.username}
         </Typography>
-        <IconButton sx={{ p: 0 }}>
-          <Avatar
-            src={
-              userInfo?.hasAvatar
-                ? `http://localhost:5000/${userInfo._id}/avatar.jpg`
-                : null
-            }
-            alt="Profile Avatar"
-          />
-        </IconButton>
+        <Avatar
+          src={
+            userInfo?.hasAvatar
+              ? `http://localhost:5000/${userInfo._id}/avatar.jpg`
+              : null
+          }
+          alt="Profile Avatar"
+        />
       </ButtonBase>
     );
   }

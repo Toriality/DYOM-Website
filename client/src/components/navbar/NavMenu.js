@@ -8,10 +8,6 @@ import { Link as RouterLink } from "react-router-dom";
 export function NavMenu() {
   const [open, setOpen] = React.useState(false);
 
-  const toggle = () => {
-    setOpen(!open);
-  };
-
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Link component={RouterLink} to="/">
@@ -40,7 +36,7 @@ export function NavMenu() {
           Menu
         </Typography>
       </IconButton>
-      <Menu open={open} toggle={toggle} />
+      <Menu open={open} toggle={() => setOpen(!open)} />
     </Box>
   );
 }

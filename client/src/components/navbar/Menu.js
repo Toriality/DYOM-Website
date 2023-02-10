@@ -9,7 +9,6 @@ export function Menu(props) {
       open={props.open}
       ModalProps={{
         onBackdropClick: props.toggle,
-        sx: {},
       }}
       PaperProps={{
         sx: {
