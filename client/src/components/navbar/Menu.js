@@ -7,34 +7,11 @@ export function Menu(props) {
     <Drawer
       anchor={"top"}
       open={props.open}
-      ModalProps={{
-        onBackdropClick: props.toggle,
-      }}
-      PaperProps={{
-        sx: {
-          backgroundColor: "background.default",
-          opacity: "0.95",
-        },
-      }}
+      ModalProps={{ onBackdropClick: props.toggle }}
+      PaperProps={{ sx: styles.drawerPaper }}
     >
-      <Grid
-        container
-        sx={{
-          p: 14,
-          pt: 4,
-          pb: 6,
-          borderBottom: "2px solid",
-          borderColor: "primary.main",
-        }}
-      >
-        <Grid
-          container
-          sx={{
-            "& *": {
-              pb: 1,
-            },
-          }}
-        >
+      <Grid container sx={styles.drawerGrid}>
+        <Grid container>
           <Grid item xs={2.5}>
             <Typography variant="h2">General</Typography>
             <Link component={RouterLink} to="/" variant="body1">
@@ -74,7 +51,7 @@ export function Menu(props) {
               Text Tutorials
             </Link>
           </Grid>
-          <Grid item xs={4.5} sx={{ textAlign: "right" }}>
+          <Grid item xs={4.5} align="right">
             <Typography variant="h2">User</Typography>
             <Typography variant="body1">Logged in as: {}</Typography>
             <Link component={RouterLink} to="profile" variant="body1">
@@ -95,3 +72,21 @@ export function Menu(props) {
     </Drawer>
   );
 }
+
+const styles = {
+  drawerPaper: {
+    backgroundColor: "background.default",
+    opacity: "0.95",
+  },
+
+  drawerGrid: {
+    p: 14,
+    pt: 4,
+    pb: 6,
+    borderBottom: "2px solid",
+    borderColor: "primary.main",
+    "& *": {
+      pb: 1,
+    },
+  },
+};

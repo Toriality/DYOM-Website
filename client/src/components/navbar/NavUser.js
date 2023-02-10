@@ -14,7 +14,6 @@ export function NavUser() {
           onClick={() => {
             setOpenModal(true);
           }}
-          sx={{ display: "flex" }}
         >
           <Typography variant="h4" color="primary" mr={2}>
             Log In

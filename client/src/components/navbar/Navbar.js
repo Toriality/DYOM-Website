@@ -24,17 +24,8 @@ export function Navbar() {
 
   return (
     <>
-      <AppBar
-        position="static"
-        sx={{
-          p: 12,
-          pb: 0,
-          pt: 0,
-          bgcolor: colors.backgroundDarker,
-          borderBottom: "2px " + colors.primaryColor + " solid",
-        }}
-      >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+      <AppBar position="static" sx={styles.appBar}>
+        <Toolbar>
           <NavMenu />
           <NavSearch />
           {isFetching ? <CircularProgress /> : <NavUser />}
@@ -45,3 +36,16 @@ export function Navbar() {
     </>
   );
 }
+
+const styles = {
+  appBar: {
+    p: 12,
+    pb: 0,
+    pt: 0,
+    bgcolor: colors.backgroundDarker,
+    borderBottom: "2px " + colors.primaryColor + " solid",
+    "& .MuiToolbar-root": {
+      justifyContent: "space-between",
+    },
+  },
+};
