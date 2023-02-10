@@ -30,13 +30,14 @@ export function UserReviews(props) {
                 borderColor: "stroke.default",
               }}
             >
-              <Grid container alignItems="center">
+              <Grid container alignItems="start">
                 <Grid item xs={2}>
                   <Avatar
                     sx={{
-                      width: "10rem",
-                      height: "10rem",
+                      width: "80%",
+                      height: "80%",
                       aspectRatio: "1/1",
+                      mt: 1,
                     }}
                     src={
                       review.author?.hasAvatar
@@ -67,10 +68,11 @@ export function UserReviews(props) {
                   </Box>
                   <Typography
                     sx={{
-                      minHeight: "5rem",
+                      minHeight: "15rem",
                       borderBottom: "2px solid",
                       borderColor: "stroke.default",
                       mb: 1,
+                      pb: 4,
                     }}
                     variant="body1"
                   >
@@ -78,6 +80,7 @@ export function UserReviews(props) {
                   </Typography>
                   <Box
                     sx={{
+                      m: "0 !important",
                       display: "flex",
                       alignItems: "center",
                       "& *": { mr: 2 },

@@ -23,20 +23,38 @@ export function WriteReview(props) {
   const { pathname } = useLocation();
   const pathnames = pathname.split("/").filter(Boolean);
   const dispatch = useDispatch();
+  const [disabled, setDisabled] = React.useState(false);
   const [state, setState] = React.useState({
     mode: "userReview",
     mission: pathnames[0] === "missions" ? id : undefined,
     mp: pathnames[0] === "mps" ? id : undefined,
+    content: "",
+    overallRating: "",
   });
   const changeData = (e) => {
+    let { value, name } = e.target;
+    if (e.target.type === "number")
+      value = (
+        Math.round(Math.max(0, Math.min(10, Number(e.target.value))) * 10) / 10
+      )
+        .toString()
+        .replace(/^0-9/, "");
     setState((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
   const onSubmit = (e) => {
     e.preventDefault();
+    setDisabled(true);
+    setState((prevState) => ({
+      ...prevState,
+      content: "",
+      overallRating: "",
+    }));
     dispatch(writeReview(state));
+    props.toggle();
+    setDisabled(false);
   };
 
   return (
@@ -53,15 +71,24 @@ export function WriteReview(props) {
         >
           <FaStar />
           <TextField
+            type="number"
+            inputProps={{
+              step: ".1",
+            }}
+            value={state.overallRating}
             onChange={(e) => changeData(e)}
             name="overallRating"
-            sx={{ ...inputStyle, width: "7ch" }}
+            sx={{ ...inputStyle, width: "8ch" }}
           />
         </Box>
         <Typography variant="h3" mb={1}>
           Commentary
         </Typography>
         <TextField
+          inputProps={{
+            maxLength: "5000",
+          }}
+          value={state.content}
           onChange={(e) => changeData(e)}
           name="content"
           sx={{ ...inputStyle, mb: 4 }}
@@ -69,7 +96,9 @@ export function WriteReview(props) {
           rows={10}
         />
         <Box>
-          <Button onClick={(e) => onSubmit(e)}>Send Review</Button>
+          <Button disabled={disabled} onClick={(e) => onSubmit(e)}>
+            Send Review
+          </Button>
         </Box>
       </ModalBox>
     </Modal>
