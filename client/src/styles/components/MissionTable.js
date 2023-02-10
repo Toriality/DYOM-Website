@@ -8,6 +8,7 @@ import {
   TableBody,
   Link,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 export function MissionTable(props) {
   React.useEffect(() => {
@@ -46,10 +47,15 @@ export function MissionTable(props) {
             ? props.data.map((row) => (
                 <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
-                    <Link href={`/missions/${row._id}`}>{row.title}</Link>
+                    <Link component={RouterLink} to={`${row._id}`}>
+                      {row.title}
+                    </Link>
                   </TableCell>
                   <TableCell>
-                    <Link href={`/profile/${row.author._id}`}>
+                    <Link
+                      component={RouterLink}
+                      to={`profile/${row.author._id}`}
+                    >
                       {row.author.username}
                     </Link>
                   </TableCell>

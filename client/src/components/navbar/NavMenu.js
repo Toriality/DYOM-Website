@@ -3,6 +3,7 @@ import { Box, IconButton, Link, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../../images/logo.png";
 import { Menu } from "./Menu";
+import { Link as RouterLink } from "react-router-dom";
 
 export function NavMenu() {
   const [open, setOpen] = React.useState(false);
@@ -13,7 +14,7 @@ export function NavMenu() {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Link href="/">
+      <Link component={RouterLink} to="/">
         <Box
           component="img"
           sx={{

@@ -6,6 +6,7 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 export function MissionRightPanel(props) {
   const Loading = () => {
@@ -35,7 +36,7 @@ export function MissionRightPanel(props) {
           border="1px solid"
           borderColor="stroke.default"
         />
-        <Link sx={{ display: "inline" }} href="reviews">
+        <Link sx={{ display: "inline" }} component={RouterLink} to="reviews">
           See all awards and reviews
         </Link>
         <br />

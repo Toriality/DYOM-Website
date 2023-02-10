@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, TextField, Box, Modal, Typography, Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../features/user/userSlice";
 import { ModalBox } from "../../styles/components/ModalBox";
@@ -67,8 +68,12 @@ export function LoginModal(props) {
               Log in
             </Button>
             <Typography align="center" mt={2} variant="body1">
-              Don't have an account?{" "}
-              <Link sx={{ display: "inline" }} href="register">
+              Don't have an account?
+              <Link
+                component={RouterLink}
+                sx={{ display: "inline" }}
+                to="register"
+              >
                 Register here!
               </Link>
             </Typography>

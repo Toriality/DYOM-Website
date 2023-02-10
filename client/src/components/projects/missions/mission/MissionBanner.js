@@ -11,6 +11,7 @@ import {
 import { FaRegClock, FaRegEye, FaStar } from "react-icons/fa";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
 import nopreview from "../../../../images/nopreview.jpg";
+import { Link as RouterLink } from "react-router-dom";
 
 export function MissionBanner(props) {
   const Loading = () => {
@@ -118,7 +119,11 @@ export function MissionBanner(props) {
             <Typography variant="h1">{props.data.title}</Typography>
             <Typography variant="h3">
               Created by:
-              <Link href="/" sx={{ ml: "1ch", display: "inline" }}>
+              <Link
+                component={RouterLink}
+                to="/"
+                sx={{ ml: "1ch", display: "inline" }}
+              >
                 {props.data.author?.username}
               </Link>
             </Typography>

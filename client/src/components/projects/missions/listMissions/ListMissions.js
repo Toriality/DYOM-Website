@@ -9,10 +9,13 @@ import { PagesBox } from "../../../../styles/components/PagesBox";
 import { MissionTable } from "../../../../styles/components/MissionTable";
 import { listMissions } from "../../../../features/mission/missionSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
-    <Button href="/missions/add">Upload project</Button>
+    <Button component={Link} to="add">
+      Upload project
+    </Button>
   </Box>
 );
 

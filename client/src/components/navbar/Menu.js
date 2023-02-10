@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, Typography, Link, Drawer } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 export function Menu(props) {
   return (
@@ -37,56 +38,56 @@ export function Menu(props) {
         >
           <Grid item xs={2.5}>
             <Typography variant="h2">General</Typography>
-            <Link href="/" variant="body1">
+            <Link component={RouterLink} to="/" variant="body1">
               Homepage
             </Link>
-            <Link href="/news" variant="body1">
+            <Link component={RouterLink} to="news" variant="body1">
               News
             </Link>
-            <Link href="/hall-of-fame" variant="body1">
+            <Link component={RouterLink} to="hall-of-fame" variant="body1">
               Hall of Fame
             </Link>
-            <Link href="/members" variant="body1">
+            <Link component={RouterLink} to="members" variant="body1">
               Member List
             </Link>
-            <Link href="/faq" variant="body1">
+            <Link component={RouterLink} to="faq" variant="body1">
               F.A.Q.
             </Link>
           </Grid>
           <Grid item xs={2.5}>
             <Typography variant="h2">Projects</Typography>
-            <Link href="/missions" variant="body1">
+            <Link component={RouterLink} to="missions" variant="body1">
               Single Missions
             </Link>
-            <Link href="/mission-packs" variant="body1">
+            <Link component={RouterLink} to="mission-packs" variant="body1">
               Mission Packs
             </Link>
-            <Link href="/dumping-grounds" variant="body1">
+            <Link component={RouterLink} to="dumping-grounds" variant="body1">
               Dumping Grounds
             </Link>
           </Grid>
           <Grid item xs={2.5}>
             <Typography variant="h2">Tutorials</Typography>
-            <Link href="/video-tutorials" variant="body1">
+            <Link component={RouterLink} to="video-tutorials" variant="body1">
               Video Tutorials
             </Link>
-            <Link href="/text-tutorials" variant="body1">
+            <Link component={RouterLink} to="/text-tutorials" variant="body1">
               Text Tutorials
             </Link>
           </Grid>
           <Grid item xs={4.5} sx={{ textAlign: "right" }}>
             <Typography variant="h2">User</Typography>
             <Typography variant="body1">Logged in as: {}</Typography>
-            <Link href="/profile" variant="body1">
+            <Link component={RouterLink} to="profile" variant="body1">
               View Profile
             </Link>
-            <Link href="/profile/inbox" variant="body1">
+            <Link component={RouterLink} to="profile/inbox" variant="body1">
               Inbox
             </Link>
-            <Link href="/profile/settings" variant="body1">
+            <Link component={RouterLink} to="profile/settings" variant="body1">
               Account Settings
             </Link>
-            <Link href="/profile/logout" variant="body1">
+            <Link component={RouterLink} to="profile/logout" variant="body1">
               Log Out
             </Link>
           </Grid>

@@ -8,6 +8,8 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { MdForum } from "react-icons/md";
+import { Link as RouterLink } from "react-router-dom";
+
 export function Footer() {
   return (
     <>
@@ -100,7 +102,7 @@ export function Footer() {
             <MdForum />
           </Link>
         </Box>
-        <Link href="/report" variant="subtitle1">
+        <Link component={RouterLink} to="report" variant="subtitle1">
           Report an issue
         </Link>
         <Typography variant="subtitle1">

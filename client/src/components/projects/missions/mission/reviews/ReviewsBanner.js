@@ -1,4 +1,5 @@
 import { Box, Button, Grid, Link, Typography } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 export function ReviewsBanner(props) {
   return (
@@ -14,7 +15,11 @@ export function ReviewsBanner(props) {
       <Typography variant="h1">{props.data.title}</Typography>
       <Typography variant="h3">
         Created by:
-        <Link href="/" sx={{ ml: "1ch", display: "inline" }}>
+        <Link
+          component={RouterLink}
+          to="/"
+          sx={{ ml: "1ch", display: "inline" }}
+        >
           {props.data.author?.username}
         </Link>
       </Typography>
