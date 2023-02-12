@@ -13,7 +13,7 @@ export const ModalBox = React.forwardRef((props, ref) => (
       left: "50%",
       transform: "translate(-50%, -50%)",
       width: props.size === "big" ? "90%" : "50%",
-      height: props.size === "big" ? "90%" : "50%",
+      [props.size === "big" ? "height" : "maxHeight"]: "90%",
       bgcolor: "background.default",
       borderRadius: "16px",
       border: "1px solid",
