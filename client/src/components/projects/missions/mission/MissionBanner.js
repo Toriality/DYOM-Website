@@ -199,15 +199,29 @@ export function MissionBanner(props) {
           }}
         >
           <Grid item xs={3}>
-            <Box
-              sx={{
-                aspectRatio: "2/3",
-                backgroundImage: () => getImageURL(props.data.banner),
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundPosition: "center center",
-              }}
-            />
+            {props.data.banner ? (
+              <ButtonBase
+                onClick={() => setOpenBannerModal(true)}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  flex: "1",
+                  flexDirection: "column",
+                }}
+              >
+                <Box
+                  sx={{
+                    flexGrow: "1",
+                    aspectRatio: "2/3",
+                    backgroundImage: () => getImageURL(props.data.banner),
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center center",
+                  }}
+                />
+              </ButtonBase>
+            ) : null}
           </Grid>
           <Grid item xs={8}>
             <Box
@@ -332,6 +346,8 @@ export function MissionBanner(props) {
           toggle={() => setOpenGalleryModal(!openGalleryModal)}
         />
         <BannerModal
+          getImageURL={getImageURL}
+          banner={props.data.banner}
           open={openBannerModal}
           toggle={() => setOpenBannerModal(!openBannerModal)}
         />
