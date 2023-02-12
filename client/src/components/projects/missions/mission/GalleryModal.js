@@ -51,6 +51,7 @@ export function GalleryModal(props) {
               backgroundRepeat: "no-repeat",
               backgroundSize: "contain",
               backgroundPosition: "center center",
+              transition: "80ms linear",
             }}
           />
         </Box>
