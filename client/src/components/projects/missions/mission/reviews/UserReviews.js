@@ -21,24 +21,11 @@ export function UserReviews(props) {
       </Grid>
       {!props.loading
         ? props.data.reviews?.map((review) => (
-            <Box
-              sx={{
-                p: 4,
-                backgroundColor: "background.default",
-                borderRadius: "20px",
-                border: "1px solid",
-                borderColor: "stroke.default",
-              }}
-            >
+            <Box sx={styles.reviewBox}>
               <Grid container alignItems="start">
                 <Grid item xs={2}>
                   <Avatar
-                    sx={{
-                      width: "80%",
-                      height: "80%",
-                      aspectRatio: "1/1",
-                      mt: 1,
-                    }}
+                    sx={styles.avatar}
                     src={
                       review.author?.hasAvatar
                         ? `http://localhost:5000/${review.author?._id}/avatar.jpg`
@@ -47,46 +34,16 @@ export function UserReviews(props) {
                   />
                 </Grid>
                 <Grid item xs={10}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mb: 2,
-                      borderBottom: "2px solid",
-                      borderColor: "stroke.default",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "primary.main",
-                      }}
-                      variant="h3"
-                    >
+                  <Box sx={styles.upper}>
+                    <Typography color="primary" variant="h3">
                       {review.author?.username}
                     </Typography>
                     <Typography variant="h3">{review.updatedAt}</Typography>
                   </Box>
-                  <Typography
-                    sx={{
-                      minHeight: "15rem",
-                      borderBottom: "2px solid",
-                      borderColor: "stroke.default",
-                      mb: 1,
-                      pb: 4,
-                    }}
-                    variant="body1"
-                  >
+                  <Typography sx={styles.content} variant="body1">
                     {review.content}
                   </Typography>
-                  <Box
-                    sx={{
-                      m: "0 !important",
-                      display: "flex",
-                      alignItems: "center",
-                      "& *": { mr: 2 },
-                      "& svg": { fontSize: "24pt" },
-                    }}
-                  >
+                  <Box sx={styles.bottom}>
                     <AiFillLike />
                     <Typography variant="h3">{review.likes}</Typography>
                     <AiFillDislike />
@@ -111,3 +68,44 @@ export function UserReviews(props) {
     </>
   );
 }
+
+const styles = {
+  reviewBox: {
+    p: 4,
+    backgroundColor: "background.default",
+    borderRadius: "20px",
+    border: "1px solid",
+    borderColor: "stroke.default",
+  },
+
+  avatar: {
+    width: "80%",
+    height: "80%",
+    aspectRatio: "1/1",
+    mt: 1,
+  },
+
+  upper: {
+    display: "flex",
+    justifyContent: "space-between",
+    mb: 2,
+    borderBottom: "2px solid",
+    borderColor: "stroke.default",
+  },
+
+  content: {
+    minHeight: "15rem",
+    borderBottom: "2px solid",
+    borderColor: "stroke.default",
+    mb: 1,
+    pb: 4,
+  },
+
+  bottom: {
+    m: "0 !important",
+    display: "flex",
+    alignItems: "center",
+    "& *": { mr: 2 },
+    "& svg": { fontSize: "24pt" },
+  },
+};

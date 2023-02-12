@@ -34,14 +34,7 @@ export function ListMissions() {
         container
         spacing={1}
         alignItems="center"
-        pt={4}
-        pb={4}
-        pr={20}
-        pl={20}
-        sx={{
-          backgroundSize: "cover",
-          backgroundImage: "url(" + banner + ")",
-        }}
+        sx={styles.titleGrid}
       >
         <Grid item xs={12}>
           <Typography variant="h2">Single Missions</Typography>
@@ -67,13 +60,7 @@ export function ListMissions() {
             <Box width="100%" height="100%" bgcolor="background.default" />
           </Grid>
         </Grid>
-        <Grid
-          container
-          justifyContent="space-between"
-          spacing={2}
-          mt={4}
-          mb={4}
-        >
+        <Grid container justifyContent="space-between" spacing={2} my={4}>
           <Grid item xs={10}>
             <Typography mb={4} variant="h2">
               Pinned Projects
@@ -88,13 +75,7 @@ export function ListMissions() {
             <ProjectBox />
           </Grid>
         </Grid>
-        <Grid
-          container
-          justifyContent="space-between"
-          spacing={2}
-          mt={4}
-          mb={4}
-        >
+        <Grid container justifyContent="space-between" spacing={2} my={4}>
           <Grid item xs={12}>
             <Typography variant="h2">List of uploaded missions</Typography>
           </Grid>
@@ -124,3 +105,12 @@ export function ListMissions() {
     </>
   );
 }
+
+const styles = {
+  titleGrid: {
+    px: 20,
+    py: 4,
+    backgroundImage: "url(" + banner + ")",
+    backgroundSize: "cover",
+  },
+};

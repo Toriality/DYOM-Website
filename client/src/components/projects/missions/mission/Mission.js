@@ -34,16 +34,8 @@ export function Mission() {
           <MissionSpecs loading={loading} data={missionInfo} />
         </Grid>
         {isAuthor ? (
-          <Box
-            mt={14}
-            mb={4}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              "& svg": { mr: 1 },
-            }}
-          >
-            <Link sx={{ display: "flex", alignItems: "center" }}>
+          <Box mt={14} mb={4} sx={styles.editMission}>
+            <Link>
               <FaEdit />
               Edit mission
             </Link>
@@ -55,3 +47,12 @@ export function Mission() {
     </>
   );
 }
+
+const styles = {
+  editMission: {
+    display: "flex",
+    justifyContent: "center",
+    "& svg": { mr: 1 },
+    "& a": { display: "flex", alignItems: "center" },
+  },
+};

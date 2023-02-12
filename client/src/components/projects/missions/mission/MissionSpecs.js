@@ -38,64 +38,33 @@ export function MissionSpecs(props) {
         </Typography>
         <Grid container spacing={12}>
           <Grid item xs={6}>
-            <Box
-              display="flex"
-              alignItems="center"
-              borderBottom="2px solid"
-              borderColor="stroke.default"
-            >
-              <Typography variant="h3" mr={8} width="33%">
-                Original name:
-              </Typography>
-              <Typography variant="body1">{props.data.original}</Typography>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              borderBottom="2px solid"
-              borderColor="stroke.default"
-            >
-              <Typography variant="h3" mr={8} width="33%">
-                MOTTO:
-              </Typography>
-              <Typography variant="body1">{props.data.motto}</Typography>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              borderBottom="2px solid"
-              borderColor="stroke.default"
-            >
-              <Typography variant="h3" mr={8} width="33%">
-                Music Theme:
-              </Typography>
-              <Typography variant="body1">{props.data.music}</Typography>
+            <Box sx={styles.specs}>
+              <Box>
+                <Typography variant="h3">Original name:</Typography>
+                <Typography variant="body1">{props.data.original}</Typography>
+              </Box>
+              <Box>
+                <Typography variant="h3">MOTTO:</Typography>
+                <Typography variant="body1">{props.data.motto}</Typography>
+              </Box>
+              <Box>
+                <Typography variant="h3">Music Theme:</Typography>
+                <Typography variant="body1">{props.data.music}</Typography>
+              </Box>
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Box
-              display="flex"
-              alignItems="center"
-              borderBottom="2px solid"
-              borderColor="stroke.default"
-            >
-              <Typography variant="h3" mr={8} width="33%">
-                Difficulty:
-              </Typography>
-              <Typography variant="body1">{props.data.difficulty}</Typography>
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              borderBottom="2px solid"
-              borderColor="stroke.default"
-            >
-              <Typography variant="h3" mr={8} width="33%">
-                Mods Required:
-              </Typography>
-              <Typography variant="body1">
-                {props.data.mods ? "Yes" : "No"}
-              </Typography>
+            <Box sx={styles.specs}>
+              <Box>
+                <Typography variant="h3">Difficulty:</Typography>
+                <Typography variant="body1">{props.data.difficulty}</Typography>
+              </Box>
+              <Box>
+                <Typography variant="h3">Mods Required:</Typography>
+                <Typography variant="body1">
+                  {props.data.mods ? "Yes" : "No"}
+                </Typography>
+              </Box>
             </Box>
           </Grid>
         </Grid>
@@ -105,3 +74,18 @@ export function MissionSpecs(props) {
 
   return props.loading ? <Loading /> : <Loaded />;
 }
+
+const styles = {
+  specs: {
+    "& div": {
+      display: "flex",
+      alignItems: "center",
+      borderBottom: "2px solid",
+      borderColor: "stroke.default",
+      "& .MuiTypography-root:first-child": {
+        mr: 8,
+        width: "33%",
+      },
+    },
+  },
+};

@@ -4,36 +4,9 @@ import img from "../../images/image.jpg";
 
 export function Banner() {
   return (
-    <Box
-      sx={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        backgroundColor: "#000",
-        height: "88vh",
-      }}
-    >
-      <Box
-        sx={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          background:
-            "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,212,255,0) 100%)",
-        }}
-      />
-      <Box
-        sx={{
-          zIndex: "1",
-          ml: "12%",
-          mr: 0,
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
+    <Box sx={styles.banner}>
+      <Box sx={styles.bannerGradient} />
+      <Box sx={styles.bannerContent}>
         <Box mb={5}>
           <Typography variant="h2" lineHeight={"1"}>
             Design Your Own Mission
@@ -53,7 +26,7 @@ export function Banner() {
         <Typography variant="subtitle1" mb={"2px"}>
           Latest version: DYOM 8.1
         </Typography>
-        <Box sx={{ display: "block" }}>
+        <Box>
           <Button
             href="https://www.gtagarage.com/mods/show.php?id=5038"
             target="_blank"
@@ -63,15 +36,43 @@ export function Banner() {
           </Button>
         </Box>
       </Box>
-      <Box
-        bgcolor={"blue"}
-        sx={{
-          width: "60%",
-          backgroundImage: "url(" + img + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
-      ></Box>
+      <Box sx={styles.bannerImage} />
     </Box>
   );
 }
+
+const styles = {
+  banner: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#000",
+    height: "88vh",
+  },
+
+  bannerGradient: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    background:
+      "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,212,255,0) 100%)",
+  },
+
+  bannerContent: {
+    zIndex: "1",
+    ml: "12%",
+    mr: 0,
+    flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+
+  bannerImage: {
+    width: "60%",
+    backgroundImage: "url(" + img + ")",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+  },
+};

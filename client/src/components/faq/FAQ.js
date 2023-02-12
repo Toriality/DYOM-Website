@@ -19,17 +19,7 @@ export function FAQ() {
       <FilterBox />
       {faqStrings.map((el) => (
         <Accordion>
-          <AccordionSummary
-            expandIcon={
-              <ExpandMoreIcon
-                sx={{
-                  color: "white",
-                  bgcolor: "background.box",
-                  borderRadius: "20px",
-                }}
-              />
-            }
-          >
+          <AccordionSummary expandIcon={<ExpandMoreIcon sx={styles.icon} />}>
             <Typography variant="body1">{el.q}</Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -40,3 +30,11 @@ export function FAQ() {
     </DYOMContent>
   );
 }
+
+const styles = {
+  icon: {
+    color: "white",
+    bgcolor: "background.box",
+    borderRadius: "20px",
+  },
+};

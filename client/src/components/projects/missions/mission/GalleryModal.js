@@ -17,15 +17,9 @@ export function GalleryModal(props) {
   return (
     <Modal open={props.open} onClose={props.toggle}>
       <ModalBox title="Gallery" size="big" toggle={props.toggle}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            "& svg": { color: "primary.main" },
-          }}
-        >
+        <Box sx={styles.wrapper}>
           <Typography variant="h3">Misison Gallery</Typography>
-          <Box sx={{ display: "flex" }}>
+          <Box>
             <IconButton onClick={previousIndex}>
               <AiOutlineLeft />
             </IconButton>
@@ -37,21 +31,10 @@ export function GalleryModal(props) {
             </IconButton>
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexGrow: "1",
-            bgcolor: "black",
-          }}
-        >
+        <Box sx={styles.img}>
           <Box
             sx={{
-              width: "100%",
               backgroundImage: () => props.getImageURL(props.gallery[index]),
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "contain",
-              backgroundPosition: "center center",
-              transition: "80ms linear",
             }}
           />
         </Box>
@@ -59,3 +42,25 @@ export function GalleryModal(props) {
     </Modal>
   );
 }
+
+const styles = {
+  wrapper: {
+    display: "flex",
+    justifyContent: "space-between",
+    "& svg": { color: "primary.main" },
+    "& div": { display: "flex" },
+  },
+
+  img: {
+    display: "flex",
+    flexGrow: "1",
+    bgcolor: "black",
+    "& div": {
+      width: "100%",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "contain",
+      backgroundPosition: "center center",
+      transition: "80ms linear",
+    },
+  },
+};

@@ -110,50 +110,20 @@ export function MissionBanner(props) {
     };
 
     return (
-      <Box
-        sx={{
-          backgroundColor: "black",
-          p: 6,
-          pl: 16,
-          pr: 16,
-          pt: 2,
-          "& *": { lineHeight: "1" },
-        }}
-      >
+      <Box sx={styles.missionBanner}>
         <Grid container mb={4}>
           <Grid item xs={8}>
             <Typography variant="h1">{props.data.title}</Typography>
             <Typography variant="h3">
               Created by:
-              <Link
-                component={RouterLink}
-                to="/"
-                sx={{ ml: "1ch", display: "inline" }}
-              >
+              <Link component={RouterLink} to="/">
                 {props.data.author?.username}
               </Link>
             </Typography>
           </Grid>
           <Grid item xs={4} textAlign="right" mt="auto">
             <Typography variant="h3">Single Mission</Typography>
-            <Box
-              display="flex"
-              gap={3}
-              sx={{
-                justifyContent: "flex-end",
-                "& .MuiBox-root": {
-                  display: "flex",
-                  alignItems: "center",
-                  "& svg": {
-                    mr: 1,
-                    color: "secondary.main",
-                  },
-                  "& .MuiTypography-root": {
-                    color: "text.primary",
-                  },
-                },
-              }}
-            >
+            <Box id="stats" gap={3}>
               <Box>
                 <FaRegClock fontSize="16pt" />
                 <Typography variant="h3">
@@ -171,64 +141,30 @@ export function MissionBanner(props) {
             </Box>
           </Grid>
         </Grid>
-        <Grid
-          container
-          mb={4}
-          spacing="1px"
-          sx={{
-            "& .MuiGrid-item": {
-              transition: "200ms ease-out",
-            },
-            "& .MuiGrid-item:hover": {
-              transform: "scale(1.02, 1.02)",
-              transition: "200ms ease-in",
-            },
-            "& > *:nth-child(1):hover": {
-              zIndex: 1,
-              boxShadow: "50px 0 30px rgba(0,0,0,0.5)",
-            },
-            "& > *:nth-child(2):hover": {
-              zIndex: 1,
-              boxShadow:
-                "50px 0 100px rgba(0,0,0,0.5), -50px 0 100px rgba(0,0,0,0.5) ",
-            },
-            "& > *:nth-child(3):hover": {
-              zIndex: 1,
-              boxShadow: "-50px 0 30px rgba(0,0,0,0.5)",
-            },
-          }}
-        >
+        <Grid container mb={4} spacing="1px" id="media">
           <Grid item xs={3}>
             {props.data.banner ? (
               <ButtonBase
                 onClick={() => setOpenBannerModal(true)}
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  flex: "1",
-                  flexDirection: "column",
-                }}
+                sx={styles.banner}
               >
                 <Box
                   sx={{
-                    flexGrow: "1",
-                    aspectRatio: "2/3",
                     backgroundImage: () => getImageURL(props.data.banner),
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center center",
                   }}
                 />
               </ButtonBase>
-            ) : null}
+            ) : (
+              <Box
+                sx={{
+                  ...styles.banner_noprev,
+                  backgroundImage: () => getImageURL(props.data.banner),
+                }}
+              />
+            )}
           </Grid>
           <Grid item xs={8}>
-            <Box
-              sx={{
-                aspectRatio: "16/9",
-              }}
-            >
+            <Box sx={styles.trailer}>
               {props.data.trailer !== "null" ? (
                 <iframe
                   src={props.data.trailer}
@@ -239,16 +175,7 @@ export function MissionBanner(props) {
                   title="Trailer"
                 />
               ) : (
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundImage: `url(${nopreview})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center center",
-                  }}
-                />
+                <Box />
               )}
             </Box>
           </Grid>
@@ -256,38 +183,14 @@ export function MissionBanner(props) {
             {props.data.gallery?.length > 0 ? (
               <ButtonBase
                 onClick={() => setOpenGalleryModal(true)}
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  flex: "1",
-                  flexDirection: "column",
-                }}
+                sx={styles.gallery}
               >
                 {props.data.gallery?.map((img) => (
-                  <Box
-                    sx={{
-                      width: "100%",
-                      flexGrow: "1",
-                      backgroundImage: () => getImageURL(img),
-                      backgroundRepeat: "no-repeat",
-                      backgroundSize: "cover",
-                      backgroundPosition: "center center",
-                    }}
-                  />
+                  <Box sx={{ backgroundImage: () => getImageURL(img) }} />
                 ))}
               </ButtonBase>
             ) : (
-              <Box
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  backgroundImage: `url(${nopreview})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center center",
-                }}
-              />
+              <Box sx={styles.gallery_noprev} />
             )}
           </Grid>
         </Grid>
@@ -307,35 +210,15 @@ export function MissionBanner(props) {
             <Typography align="right" variant="h3" mb={4}>
               Rating and Reviews
             </Typography>
-            <Box
-              display="flex"
-              justifyContent="end"
-              alignItems="center"
-              mb={1}
-              sx={{ "& svg": { color: "secondary.main" } }}
-            >
-              <Typography variant="h3" mr={4} sx={{ color: "primary.main" }}>
-                Official Reviews:
-              </Typography>
+            <Box sx={styles.review}>
+              <Typography variant="h3">Official Reviews:</Typography>
               <FaStar fontSize="24pt" />
-              <Typography ml={2} variant="h2">
-                --
-              </Typography>
+              <Typography variant="h2">--</Typography>
             </Box>
-            <Box
-              display="flex"
-              justifyContent="end"
-              alignItems="center"
-              mb={2}
-              sx={{ "& svg": { color: "secondary.main" } }}
-            >
-              <Typography variant="h3" mr={4} sx={{ color: "primary.main" }}>
-                User Reviews:
-              </Typography>
+            <Box sx={styles.review}>
+              <Typography variant="h3">User Reviews:</Typography>
               <FaStar fontSize="24pt" />
-              <Typography ml={2} variant="h2">
-                --
-              </Typography>
+              <Typography variant="h2">--</Typography>
             </Box>
           </Grid>
         </Grid>
@@ -357,3 +240,130 @@ export function MissionBanner(props) {
 
   return props.loading ? <Loading /> : <Loaded />;
 }
+
+const styles = {
+  missionBanner: {
+    backgroundColor: "black",
+    px: 16,
+    pb: 6,
+    pt: 2,
+    "& *": { lineHeight: "1" },
+    "& a": { ml: "1ch", display: "inline" },
+    "& #stats": {
+      display: "flex",
+      justifyContent: "flex-end",
+      "& .MuiBox-root": {
+        display: "flex",
+        alignItems: "center",
+        "& svg": {
+          mr: 1,
+          color: "secondary.main",
+        },
+        "& .MuiTypography-root": {
+          color: "text.primary",
+        },
+      },
+    },
+    "& #media": {
+      "& .MuiGrid-item": {
+        transition: "200ms ease-out",
+      },
+      "& .MuiGrid-item:hover": {
+        transform: "scale(1.02, 1.02)",
+        transition: "200ms ease-in",
+      },
+      "& > *:nth-child(1):hover": {
+        zIndex: 1,
+        boxShadow: "50px 0 30px rgba(0,0,0,0.5)",
+      },
+      "& > *:nth-child(2):hover": {
+        zIndex: 1,
+        boxShadow:
+          "50px 0 100px rgba(0,0,0,0.5), -50px 0 100px rgba(0,0,0,0.5) ",
+      },
+      "& > *:nth-child(3):hover": {
+        zIndex: 1,
+        boxShadow: "-50px 0 30px rgba(0,0,0,0.5)",
+      },
+    },
+  },
+
+  banner: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flex: "1",
+    flexDirection: "column",
+    "& div": {
+      flexGrow: "1",
+      aspectRatio: "2/3",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    },
+  },
+
+  banner_noprev: {
+    width: "100%",
+    flexGrow: "1",
+    aspectRatio: "2/3",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+  },
+
+  trailer: {
+    aspectRatio: "16/9",
+    "& div": {
+      width: "100%",
+      height: "100%",
+      backgroundImage: `url(${nopreview})`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    },
+  },
+
+  gallery: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flex: "1",
+    flexDirection: "column",
+    "& div": {
+      width: "100%",
+      flexGrow: "1",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    },
+  },
+
+  gallery_noprev: {
+    width: "100%",
+    height: "100%",
+    backgroundImage: `url(${nopreview})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+  },
+
+  review: {
+    display: "flex",
+    justifyContent: "end",
+    alignItems: "center",
+    mb: 1,
+    "& svg": {
+      color: "secondary.main",
+    },
+    "& .MuiTypography-root": {
+      "&:nth-child(1)": {
+        color: "primary.main",
+        mr: 4,
+      },
+      "&:nth-child(3)": {
+        ml: 2,
+      },
+    },
+  },
+};

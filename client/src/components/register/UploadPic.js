@@ -10,14 +10,9 @@ export function UploadPic(props) {
       <ButtonBase
         component="label"
         sx={{
-          aspectRatio: "1/1",
-          width: "400px",
-          borderRadius: "100%",
+          ...styles.pic,
           backgroundImage:
             "url(" + (props.preview ? props.preview : nopreview) + ")",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
         }}
       >
         <input
@@ -34,3 +29,14 @@ export function UploadPic(props) {
     </>
   );
 }
+
+const styles = {
+  pic: {
+    aspectRatio: "1/1",
+    width: "400px",
+    borderRadius: "100%",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+  },
+};

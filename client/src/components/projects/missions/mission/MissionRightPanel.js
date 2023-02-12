@@ -25,25 +25,36 @@ export function MissionRightPanel(props) {
   };
   const Loaded = () => {
     return (
-      <Grid item xs={4} textAlign="right">
-        <Box
-          mt={2}
-          mb="1rem !important"
-          width="100%"
-          height="4rem"
-          bgcolor="background.default"
-          borderRadius="20px"
-          border="1px solid"
-          borderColor="stroke.default"
-        />
-        <Link sx={{ display: "inline" }} component={RouterLink} to="reviews">
-          See all awards and reviews
-        </Link>
-        <br />
-        <Link sx={{ display: "inline" }}>Write a review</Link>
+      <Grid item xs={4} align="right">
+        <Box sx={styles.panel}>
+          <Box />
+          <Link sx={{ display: "inline" }} component={RouterLink} to="reviews">
+            See all awards and reviews
+          </Link>
+          <br />
+          <Link sx={{ display: "inline" }}>Write a review</Link>
+        </Box>
       </Grid>
     );
   };
 
   return props.loading ? <Loading /> : <Loaded />;
 }
+
+const styles = {
+  panel: {
+    "& div": {
+      mt: 2,
+      mb: "1rem !important",
+      width: "100%",
+      height: "4rem",
+      bgcolor: "background.default",
+      borderRadius: "20px",
+      border: "1px solid",
+      borderColor: "stroke.default",
+    },
+    "& a": {
+      display: "inline",
+    },
+  },
+};

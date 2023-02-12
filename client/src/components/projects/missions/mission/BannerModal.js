@@ -7,22 +7,11 @@ export function BannerModal(props) {
     <Modal open={props.open} onClose={props.toggle}>
       <ModalBox title="Banner" size="big" toggle={props.toggle}>
         <Typography variant="h3">Misison Banner</Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexGrow: "1",
-            bgcolor: "black",
-          }}
-        >
+        <Box sx={styles.wrapper}>
           <Box
             sx={{
-              aspectRatio: "2/3",
+              ...styles.img,
               backgroundImage: () => props.getImageURL(props.banner),
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center center",
-              transition: "80ms linear",
             }}
           />
         </Box>
@@ -30,3 +19,20 @@ export function BannerModal(props) {
     </Modal>
   );
 }
+
+const styles = {
+  wrapper: {
+    display: "flex",
+    justifyContent: "center",
+    flexGrow: "1",
+    bgcolor: "black",
+  },
+
+  img: {
+    aspectRatio: "2/3",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    transition: "80ms linear",
+  },
+};
