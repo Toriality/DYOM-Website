@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
+import { AiFillCloseCircle, AiOutlineClose } from "react-icons/ai";
 
 export const ModalBox = React.forwardRef((props, ref) => (
   <Box
@@ -20,10 +21,29 @@ export const ModalBox = React.forwardRef((props, ref) => (
       boxShadow: 24,
     }}
   >
-    <Box mb={4}>
+    <Box
+      mb={4}
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
       <Typography variant="h2" component="div">
         {props.title}
       </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          "& *": { color: "primary.main" },
+          "& svg": { mr: "1ch" },
+        }}
+      >
+        <IconButton onClick={props.toggle}>
+          <AiOutlineClose />
+          <Typography variant="h3">Close</Typography>
+        </IconButton>
+      </Box>
     </Box>
     <Box
       sx={{

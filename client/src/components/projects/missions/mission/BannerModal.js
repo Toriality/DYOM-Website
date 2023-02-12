@@ -5,7 +5,7 @@ import { ModalBox } from "../../../../styles/components/ModalBox";
 export function BannerModal(props) {
   return (
     <Modal open={props.open} onClose={props.toggle}>
-      <ModalBox title="Banner" size="big">
+      <ModalBox title="Banner" size="big" toggle={props.toggle}>
         <Typography variant="h3">Misison Banner</Typography>
         <Box
           sx={{

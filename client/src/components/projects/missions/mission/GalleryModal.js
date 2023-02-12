@@ -16,7 +16,7 @@ export function GalleryModal(props) {
 
   return (
     <Modal open={props.open} onClose={props.toggle}>
-      <ModalBox title="Gallery" size="big">
+      <ModalBox title="Gallery" size="big" toggle={props.toggle}>
         <Box
           sx={{
             display: "flex",
