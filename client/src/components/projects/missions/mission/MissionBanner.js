@@ -7,11 +7,14 @@ import {
   Link,
   CircularProgress,
   Skeleton,
+  ButtonBase,
 } from "@mui/material";
 import { FaRegClock, FaRegEye, FaStar } from "react-icons/fa";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
 import nopreview from "../../../../images/nopreview.jpg";
 import { Link as RouterLink } from "react-router-dom";
+import { GalleryModal } from "./GalleryModal";
+import { BannerModal } from "./BannerModal";
 
 export function MissionBanner(props) {
   const Loading = () => {
@@ -62,6 +65,9 @@ export function MissionBanner(props) {
     );
   };
   const Loaded = () => {
+    const [openGalleryModal, setOpenGalleryModal] = React.useState(false);
+    const [openBannerModal, setOpenBannerModal] = React.useState(false);
+
     const changeUpdate = (e) => {
       let date = new Date(e);
       date = date.toLocaleString("en", {
@@ -233,18 +239,21 @@ export function MissionBanner(props) {
             </Box>
           </Grid>
           <Grid item xs={1}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                flex: "1",
-                height: "100%",
-              }}
-            >
-              {props.data.gallery?.length > 0 ? (
-                props.data.gallery?.map((img) => (
+            {props.data.gallery?.length > 0 ? (
+              <ButtonBase
+                onClick={() => setOpenGalleryModal(true)}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  flex: "1",
+                  flexDirection: "column",
+                }}
+              >
+                {props.data.gallery?.map((img) => (
                   <Box
                     sx={{
+                      width: "100%",
                       flexGrow: "1",
                       backgroundImage: () => getImageURL(img),
                       backgroundRepeat: "no-repeat",
@@ -252,19 +261,20 @@ export function MissionBanner(props) {
                       backgroundPosition: "center center",
                     }}
                   />
-                ))
-              ) : (
-                <Box
-                  sx={{
-                    flexGrow: "1",
-                    backgroundImage: `url(${nopreview})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center center",
-                  }}
-                />
-              )}
-            </Box>
+                ))}
+              </ButtonBase>
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundImage: `url(${nopreview})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center center",
+                }}
+              />
+            )}
           </Grid>
         </Grid>
         <Grid container>
@@ -315,6 +325,16 @@ export function MissionBanner(props) {
             </Box>
           </Grid>
         </Grid>
+        <GalleryModal
+          getImageURL={getImageURL}
+          gallery={props.data.gallery}
+          open={openGalleryModal}
+          toggle={() => setOpenGalleryModal(!openGalleryModal)}
+        />
+        <BannerModal
+          open={openBannerModal}
+          toggle={() => setOpenBannerModal(!openBannerModal)}
+        />
       </Box>
     );
   };
