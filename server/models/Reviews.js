@@ -28,7 +28,10 @@ const reviewSchema = new Schema(
     gameplayRating: { type: Number },
     historyRating: { type: Number },
     soundRating: { type: Number },
-    likes: { type: Number, default: 0 },
+    likes: {
+      type: [Schema.Types.Number],
+      ref: "User",
+    },
     dislikes: { type: Number, default: 0 },
     comments: { type: [Schema.Types.ObjectId] },
   },

@@ -1,13 +1,28 @@
-import { Grid, Box, Typography, Button, Avatar } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Typography,
+  Button,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 import { PagesBox } from "../../../../../styles/components/PagesBox";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BsFillChatSquareDotsFill } from "react-icons/bs";
 import { HiChatAlt } from "react-icons/hi";
 import { WriteReview } from "../../../../../styles/components/WriteReview";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { likeReview } from "../../../../../features/mission/missionSlice";
 
 export function UserReviews(props) {
   const [openModal, setOpenModal] = React.useState(false);
+  const dispatch = useDispatch();
+  const like = (id) => {
+    dispatch(likeReview(id));
+  };
+  const dislike = () => {};
+  const comments = () => {};
 
   return (
     <>
@@ -20,41 +35,121 @@ export function UserReviews(props) {
         </Grid>
       </Grid>
       {!props.loading
-        ? props.data.reviews?.map((review) => (
-            <Box sx={styles.reviewBox}>
-              <Grid container alignItems="start">
-                <Grid item xs={2}>
-                  <Avatar
-                    sx={styles.avatar}
-                    src={
-                      review.author?.hasAvatar
-                        ? `http://localhost:5000/${review.author?._id}/avatar.jpg`
-                        : null
-                    }
-                  />
-                </Grid>
-                <Grid item xs={10}>
-                  <Box sx={styles.upper}>
-                    <Typography color="primary" variant="h3">
-                      {review.author?.username}
+        ? props.data.reviews?.map((review) =>
+            review._id === props.reviewInfo._id ? (
+              <Box sx={styles.reviewBox}>
+                <Grid container alignItems="start">
+                  <Grid item xs={2}>
+                    <Avatar
+                      sx={styles.avatar}
+                      src={
+                        review.author?.hasAvatar
+                          ? `http://localhost:5000/${review.author?._id}/avatar.jpg`
+                          : null
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Box sx={styles.upper}>
+                      <Typography color="primary" variant="h3">
+                        {review.author?.username}
+                      </Typography>
+                      <Typography variant="h3">{review.updatedAt}</Typography>
+                    </Box>
+                    <Typography sx={styles.content} variant="body1">
+                      {review.content}
                     </Typography>
-                    <Typography variant="h3">{review.updatedAt}</Typography>
-                  </Box>
-                  <Typography sx={styles.content} variant="body1">
-                    {review.content}
-                  </Typography>
-                  <Box sx={styles.bottom}>
-                    <AiFillLike />
-                    <Typography variant="h3">{review.likes}</Typography>
-                    <AiFillDislike />
-                    <Typography variant="h3">{review.dislikes}</Typography>
-                    <HiChatAlt />
-                    <Typography variant="h3">0</Typography>
-                  </Box>
+                    {props.loadingReview ? null : (
+                      <Box sx={styles.bottom}>
+                        <IconButton
+                          onClick={() => like(review._id)}
+                          sx={{
+                            "& *": {
+                              color: props.reviewInfo.likes.includes(
+                                props.userData._id
+                              )
+                                ? "primary.main"
+                                : "white",
+                            },
+                          }}
+                        >
+                          <AiFillLike />
+                          <Typography variant="h3">
+                            {props.reviewInfo.likes.length}
+                          </Typography>
+                        </IconButton>
+                        <IconButton onClick={dislike}>
+                          <AiFillDislike />
+                          <Typography variant="h3">
+                            {props.reviewInfo.dislikes}
+                          </Typography>
+                        </IconButton>
+                        <IconButton onClick={comments}>
+                          <HiChatAlt />
+                          <Typography variant="h3">0</Typography>
+                        </IconButton>
+                      </Box>
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
-          ))
+              </Box>
+            ) : (
+              <Box sx={styles.reviewBox}>
+                <Grid container alignItems="start">
+                  <Grid item xs={2}>
+                    <Avatar
+                      sx={styles.avatar}
+                      src={
+                        review.author?.hasAvatar
+                          ? `http://localhost:5000/${review.author?._id}/avatar.jpg`
+                          : null
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Box sx={styles.upper}>
+                      <Typography color="primary" variant="h3">
+                        {review.author?.username}
+                      </Typography>
+                      <Typography variant="h3">{review.updatedAt}</Typography>
+                    </Box>
+                    <Typography sx={styles.content} variant="body1">
+                      {review.content}
+                    </Typography>
+                    {props.loadingReview ? null : (
+                      <Box sx={styles.bottom}>
+                        <IconButton
+                          onClick={() => like(review._id)}
+                          sx={{
+                            "& *": {
+                              color: review.likes.includes(props.userData._id)
+                                ? "primary.main"
+                                : "white",
+                            },
+                          }}
+                        >
+                          <AiFillLike />
+                          <Typography variant="h3">
+                            {review.likes.length}
+                          </Typography>
+                        </IconButton>
+                        <IconButton onClick={dislike}>
+                          <AiFillDislike />
+                          <Typography variant="h3">
+                            {review.dislikes}
+                          </Typography>
+                        </IconButton>
+                        <IconButton onClick={comments}>
+                          <HiChatAlt />
+                          <Typography variant="h3">0</Typography>
+                        </IconButton>
+                      </Box>
+                    )}
+                  </Grid>
+                </Grid>
+              </Box>
+            )
+          )
         : null}
       <Grid container alignItems="baseline">
         <Grid item xs={8}>
@@ -106,6 +201,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     "& *": { mr: 2 },
-    "& svg": { fontSize: "24pt" },
+    "& svg": { fontSize: "24pt", color: "white" },
   },
 };

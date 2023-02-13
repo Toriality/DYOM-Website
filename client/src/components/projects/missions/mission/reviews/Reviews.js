@@ -11,7 +11,9 @@ import { ReviewsBanner } from "./ReviewsBanner";
 import { UserReviews } from "./UserReviews";
 
 export function Reviews(props) {
-  const { missionInfo, loading } = useSelector((state) => state.mission);
+  const { missionInfo, loading, loadingReview, reviewInfo } = useSelector(
+    (state) => state.mission
+  );
   const { userInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -25,7 +27,13 @@ export function Reviews(props) {
       <ReviewsBanner loading={loading} data={missionInfo} />
       <OfficialReviews loading={loading} data={missionInfo} />
       <DYOMContent>
-        <UserReviews loading={loading} data={missionInfo} />
+        <UserReviews
+          loading={loading}
+          data={missionInfo}
+          userData={userInfo}
+          loadingReview={loadingReview}
+          reviewInfo={reviewInfo}
+        />
       </DYOMContent>
     </>
   );

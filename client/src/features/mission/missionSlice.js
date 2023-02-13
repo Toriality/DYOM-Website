@@ -9,7 +9,9 @@ const token = localStorage.getItem("token")
 
 const initialState = {
   loading: false,
+  loadingReview: false,
   missionInfo: {},
+  reviewInfo: {},
   error: null,
   success: false,
 };
@@ -98,6 +100,39 @@ export const writeReview = createAsyncThunk("mission/review", async (data) => {
   }
 });
 
+export const likeReview = createAsyncThunk("mission/like", async (reviewId) => {
+  try {
+    const response = await axios.post(
+      `${backendURL}api/review/${reviewId}/like`,
+      { reviewId },
+      configJson
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data.msg) {
+      return error.response.data.msg;
+    } else {
+      return error.msg;
+    }
+  }
+});
+
+export const getReview = createAsyncThunk(
+  "mission/getReview",
+  async (reviewId) => {
+    try {
+      const response = await axios.get(`${backendURL}api/review/${reviewId}`);
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data.msg) {
+        return error.response.data.msg;
+      } else {
+        return error.msg;
+      }
+    }
+  }
+);
+
 export const missionSlice = createSlice({
   name: "mission",
   initialState,
@@ -141,6 +176,31 @@ export const missionSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.missionInfo = payload;
+    },
+    [likeReview.rejected]: (state, { payload }) => {
+      state.loadingReview = false;
+      state.error = payload;
+    },
+    [likeReview.pending]: (state, { paylaod }) => {
+      state.loadingReview = true;
+      state.error = null;
+    },
+    [likeReview.fulfilled]: (state, { payload }) => {
+      state.loadingReview = false;
+      state.error = null;
+      state.reviewInfo = payload;
+    },
+    [getReview.rejected]: (state, { payload }) => {
+      state.loadingReview = false;
+      state.error = payload;
+    },
+    [getReview.pending]: (state, { paylaod }) => {
+      state.loadingReview = true;
+      state.error = null;
+    },
+    [getReview.fulfilled]: (state, { payload }) => {
+      state.loadingReview = false;
+      state.reviewInfo = payload;
     },
   },
 });
