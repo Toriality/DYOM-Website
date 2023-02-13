@@ -7,8 +7,9 @@ export function Home() {
   return (
     <>
       <Banner />
+      <TrendingProjects />
+
       <DYOMContent>
-        <TrendingProjects />
         <LatestNews />
       </DYOMContent>
     </>
