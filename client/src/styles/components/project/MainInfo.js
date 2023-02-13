@@ -5,7 +5,9 @@ export function MainInfo(props) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={8}>
-        <InputLabel>Mission Title</InputLabel>
+        <InputLabel>
+          {props.type === "mission" ? "Mission" : "Mission-Pack"} Title
+        </InputLabel>
         <Input name="title" onChange={(e) => props.changeInfo(e)} fullWidth />
       </Grid>
       <Grid item xs={2}>

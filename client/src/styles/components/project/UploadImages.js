@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, ButtonBase, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import nopreview from "../../../../images/nopreview.jpg";
+import nopreview from "../../../images/nopreview.jpg";
 
 const iconButtonStyle = {
   color: "error.main",
@@ -102,9 +102,9 @@ export function UploadImages(props) {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="subtitle1" align="center">
-          Insert up to one banner and five different images for your mission's
-          gallery. Click in the images above to upload/replace a image. (Maximum
-          of 2 MB per image upload)
+          Insert up to one banner and five different images for your{" "}
+          {props.type}'s gallery. Click in the images above to upload/replace a
+          image. (Maximum of 2 MB per image upload)
         </Typography>
       </Grid>
     </Grid>
