@@ -1,6 +1,6 @@
 import { CircularProgress, Grid, Skeleton, Typography } from "@mui/material";
 
-export function MissionLeftPanel(props) {
+export function ProjectLeftPanel(props) {
   const Loading = () => {
     return (
       <Grid item xs={8}>

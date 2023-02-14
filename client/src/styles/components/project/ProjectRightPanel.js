@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-export function MissionRightPanel(props) {
+export function ProjectRightPanel(props) {
   const Loading = () => {
     return (
       <Grid item xs={4} align="right">

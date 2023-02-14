@@ -11,12 +11,12 @@ import {
 } from "@mui/material";
 import { FaRegClock, FaRegEye, FaStar } from "react-icons/fa";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
-import nopreview from "../../../../images/nopreview.jpg";
+import nopreview from "../../../images/nopreview.jpg";
 import { Link as RouterLink } from "react-router-dom";
 import { GalleryModal } from "./GalleryModal";
 import { BannerModal } from "./BannerModal";
 
-export function MissionBanner(props) {
+export function ProjectBanner(props) {
   const Loading = () => {
     return (
       <Box sx={{ backgroundColor: "black", p: 6, pl: 16, pr: 16 }}>
@@ -122,7 +122,9 @@ export function MissionBanner(props) {
             </Typography>
           </Grid>
           <Grid item xs={4} textAlign="right" mt="auto">
-            <Typography variant="h3">Single Mission</Typography>
+            <Typography variant="h3">
+              {props.type === "mission" ? "Single Mission" : "Mission-Pack"}
+            </Typography>
             <Box id="stats" gap={3}>
               <Box>
                 <FaRegClock fontSize="16pt" />

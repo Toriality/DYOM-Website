@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-export function MissionSpecs(props) {
+export function ProjectSpecs(props) {
   const Loading = () => {
     return (
       <>
@@ -65,6 +65,12 @@ export function MissionSpecs(props) {
                   {props.data.mods ? "Yes" : "No"}
                 </Typography>
               </Box>
+              {props.type === "mp" ? (
+                <Box>
+                  <Typography variant="h3">Number of Missions:</Typography>
+                  <Typography variant="body1">{props.data.num}</Typography>
+                </Box>
+              ) : null}
             </Box>
           </Grid>
         </Grid>

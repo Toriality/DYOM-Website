@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
 import React from "react";
+import { Project } from "../../../../styles/components/project/Project";
 import { useDispatch, useSelector } from "react-redux";
 import { getProject } from "../../../../features/project/projectSlice";
-import { Project } from "../../../../styles/components/project/Project";
+import { useParams } from "react-router-dom";
 
-export function Mission() {
+export function Mp() {
   const { single, loading } = useSelector((state) => state.project);
   const { userInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -13,15 +13,10 @@ export function Mission() {
   const isAuthor = userInfo?._id === single?.author?._id;
 
   React.useEffect(() => {
-    dispatch(getProject(["mission", id]));
+    dispatch(getProject(["mp", id]));
   }, []);
 
   return (
-    <Project
-      type="mission"
-      loading={loading}
-      data={single}
-      isAuthor={isAuthor}
-    />
+    <Project type="mp" loading={loading} data={single} isAuthor={isAuthor} />
   );
 }
