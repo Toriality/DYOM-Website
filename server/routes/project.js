@@ -2,7 +2,7 @@ const router = require("express").Router();
 let Mission = require("../models/Mission");
 let User = require("../models/User");
 const auth = require("../middleware/auth");
-const { upload } = require("../multer/mission");
+const { upload } = require("../multer/project");
 const fs = require("fs");
 const MissionPack = require("../models/MissionPack");
 
@@ -120,7 +120,7 @@ router.post(
     }
 
     // Limit tags and links ammount to a maximum of 3 tags
-    if (req.body.tags?.length > 3)
+    if (tags.length > 3)
       return res.status(400).json({ msg: "No more than 3 tags are allowed!" });
 
     if (type === "mission") {

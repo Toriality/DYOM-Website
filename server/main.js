@@ -20,10 +20,10 @@ mongoose.connect(uri, () => {
 });
 
 // Pages
-app.use("/api/user", require("./routes/user"));
-app.use("/api/project", require("./routes/project"));
-app.use("/api/article", require("./routes/article"));
-app.use("/api/review", require("./routes/review"));
+app.use("/api/users", require("./routes/user"));
+app.use("/api/projects", require("./routes/project"));
+app.use("/api/articles", require("./routes/article"));
+app.use("/api/reviews", require("./routes/review"));
 
 // Make uploads folder public
 app.use("/", express.static(path.join(__dirname, "/uploads")));
