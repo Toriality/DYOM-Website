@@ -35,7 +35,7 @@ export function Menu(props) {
             <Link component={RouterLink} to="missions" variant="body1">
               Single Missions
             </Link>
-            <Link component={RouterLink} to="mission-packs" variant="body1">
+            <Link component={RouterLink} to="mps" variant="body1">
               Mission Packs
             </Link>
             <Link component={RouterLink} to="dumping-grounds" variant="body1">

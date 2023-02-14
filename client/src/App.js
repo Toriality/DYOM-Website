@@ -7,6 +7,7 @@ import { Home } from "./components/home/Home";
 import { Footer } from "./components/footer/Footer";
 import { AddMission } from "./components/projects/missions/addMission/AddMission";
 import { ListMissions } from "./components/projects/missions/listMissions/ListMissions";
+import { ListMps } from "./components/projects/mps/listMps/ListMps";
 import { FAQ } from "./components/faq/FAQ";
 import { Register } from "./components/register/Register";
 import { useLocation } from "react-router-dom";
@@ -50,6 +51,9 @@ function App() {
                   <Route path=":reviewId" element={<Comments />} />
                 </Route>
               </Route>
+            </Route>
+            <Route path="mps">
+              <Route index element={<ListMps />} />
             </Route>
             <Route path="/faq" element={<FAQ />} />
           </Route>
