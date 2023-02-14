@@ -4,39 +4,36 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const missionPackSchema = new Schema(
   {
-    missionTitle: {
+    title: {
       type: String,
       required: true,
     },
-    missionAuthor: {
-      type: Schema.Types.ObjectId,
+    author: {
+      type: Schema.Types.Number,
+      ref: "User",
       required: true,
     },
-    missionUploadDate: {
-      type: Date,
-      default: Date.now,
-      required: true,
+    summary: { type: String },
+    reviews: {
+      type: [Schema.Types.ObjectId],
+      ref: "Review",
     },
-    missionSummary: { type: String },
-    officialReviews: { type: [Schema.Types.Mixed] },
-    userReviews: { type: [Schema.Types.Mixed] },
-    missionFullDescription: { type: String },
-    missionAwards: { type: [Schema.Types.Mixed] },
-    missionFile: {
-      filename: { type: String, required: true },
-      filedest: { type: String, required: true },
-    },
+    description: { type: String },
+    awards: { type: [Schema.Types.Mixed] },
+    file: { type: String },
+    banner: { type: String },
+    gallery: { type: [String] },
+    tags: { type: [String] },
+    trailer: { type: String },
     credits: { type: String },
-    cast: { type: Schema.Types.Mixed },
-    specsOriginalName: { type: String },
-    specsMotto: { type: String },
-    specsMainTheme: { type: String },
-    specsDifficulty: { type: String },
-    specsModsRequired: { type: String },
-    specsNumberOfMissions: { type: Number },
+    original: { type: String },
+    motto: { type: String },
+    music: { type: String },
+    difficulty: { type: String },
+    mods: { type: Boolean },
+    num: { type: Number },
     views: { type: Number, default: 0 },
     downloads: { type: Number, default: 0 },
-    tags: { type: [String] },
   },
   {
     _id: false,
@@ -46,5 +43,4 @@ const missionPackSchema = new Schema(
 
 missionPackSchema.plugin(AutoIncrement, { id: "mp_seq", start_seq: 0 });
 const MissionPack = mongoose.model("MissionPack", missionPackSchema);
-
 module.exports = MissionPack;

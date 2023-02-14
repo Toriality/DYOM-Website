@@ -4,30 +4,50 @@ let User = require("../models/User");
 const auth = require("../middleware/auth");
 const { upload } = require("../multer/mission");
 const fs = require("fs");
+const MissionPack = require("../models/MissionPack");
 
 // Get list of missions
-router.get("/list", (req, res) => {
+router.get("/list/:type", (req, res) => {
+  const type = req.params.type;
   const resultsPerPage = req.query.limit || 10;
   const page = req.query.page || 1;
   const regex = new RegExp(req.query.search, "i");
   const filter = req.query.search ? { title: { $regex: regex } } : {};
 
-  Mission.find(filter)
-    .select("title author updatedAt rating views downloads comments")
-    .limit(resultsPerPage)
-    .skip(resultsPerPage * (page - 1))
-    .sort({ updatedAt: "desc" })
-    .populate({
-      path: "author",
-      select: "username",
-    })
-    .exec((err, events) => {
-      res.json(events);
-    });
+  if (type === "missions") {
+    Mission.find(filter)
+      .select("title author updatedAt rating views downloads comments")
+      .limit(resultsPerPage)
+      .skip(resultsPerPage * (page - 1))
+      .sort({ updatedAt: "desc" })
+      .populate({
+        path: "author",
+        select: "username",
+      })
+      .exec((err, events) => {
+        res.json(events);
+      });
+  }
+
+  if (type === "mps") {
+    MissionPack.find(filter)
+      .select("title author updatedAt rating views downloads comments")
+      .limit(resultsPerPage)
+      .skip(resultsPerPage * (page - 1))
+      .sort({ updatedAt: "desc" })
+      .populate({
+        path: "author",
+        select: "username",
+      })
+      .exec((err, events) => {
+        res.json(events);
+      });
+  }
 });
 
 // Get mission
-router.get("/:id", (req, res) => {
+router.get("/:type/:id", (req, res) => {
+  const type = req.params.type;
   let select;
   let populate = [{ path: "author", select: "username" }];
   if (req.query.hasOwnProperty("reviews")) {
@@ -39,12 +59,24 @@ router.get("/:id", (req, res) => {
   } else {
     select = ["-awards", "-reviews"];
   }
-  Mission.findOne({ _id: req.params.id })
-    .populate(populate)
-    .select(select)
-    .exec((err, events) => {
-      res.json(events);
-    });
+
+  if (type === "missions") {
+    Mission.findOne({ _id: req.params.id })
+      .populate(populate)
+      .select(select)
+      .exec((err, events) => {
+        res.json(events);
+      });
+  }
+
+  if (type === "mps") {
+    MissionPack.findOne({ _id: req.params.id })
+      .populate(populate)
+      .select(select)
+      .exec((err, events) => {
+        res.json(events);
+      });
+  }
 });
 
 // Downlaod mission file
