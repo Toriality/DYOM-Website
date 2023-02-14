@@ -261,7 +261,7 @@ export function ProjectInput(props) {
   return (
     <DYOMContent>
       <Typography variant="h3" align="center" mb="2rem">
-        Add a new {props.type}
+        Add a new {props.type === "mission" ? "Mission" : "Mission-Pack"}
       </Typography>
       <Grid container spacing={5} mb={5}>
         <Grid item xs={4}>

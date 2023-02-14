@@ -8,6 +8,7 @@ import { Footer } from "./components/footer/Footer";
 import { AddMission } from "./components/projects/missions/addMission/AddMission";
 import { ListMissions } from "./components/projects/missions/listMissions/ListMissions";
 import { ListMps } from "./components/projects/mps/listMps/ListMps";
+import { AddMp } from "./components/projects/mps/addMp/AddMp";
 import { FAQ } from "./components/faq/FAQ";
 import { Register } from "./components/register/Register";
 import { useLocation } from "react-router-dom";
@@ -54,6 +55,7 @@ function App() {
             </Route>
             <Route path="mps">
               <Route index element={<ListMps />} />
+              <Route path="add" element={<AddMp />} />
             </Route>
             <Route path="/faq" element={<FAQ />} />
           </Route>
