@@ -110,74 +110,78 @@ router.post(
     tags = tags.filter((empty) => empty !== "");
 
     // Mission params
-    const {
-      title,
-      date,
-      summary,
-      description,
-      trailer,
-      credits,
-      original,
-      motto,
-      music,
-      difficulty,
-      mods,
-    } = req.body;
+    const { type } = req.body;
 
     // Required fields
-    if (!title || !file) {
+    if (!req.body.title || !req.body.file) {
       return res
         .status(400)
         .json({ msg: "Please insert the required fields." });
     }
 
     // Limit tags and links ammount to a maximum of 3 tags
-    if (tags.length > 3)
+    if (req.body.tags?.length > 3)
       return res.status(400).json({ msg: "No more than 3 tags are allowed!" });
 
-    const newMission = new Mission({
-      title,
-      author,
-      date,
-      summary,
-      description,
-      banner,
-      trailer,
-      gallery,
-      file,
-      credits,
-      tags,
-      original,
-      motto,
-      music,
-      difficulty,
-      mods,
-    });
+    if (type === "mission") {
+      const newMission = new Mission({ ...req.body });
+      newMission
+        .save()
+        .then((mission) => {
+          fs.rename(
+            `./uploads/${author}/missions/uploading/`,
+            `./uploads/${author}/missions/${mission._id}`,
+            (err) => {
+              if (err) console.log(err);
+            }
+          );
+          // Add request to user database
+          User.updateOne(
+            { _id: author },
+            {
+              $push: { missions: mission._id },
+            },
+            (err, data) => {}
+          );
+          res.json(mission);
+        })
+        .catch((err) => {
+          console.log(err);
+          res
+            .status(400)
+            .json({ msg: "Something went wrong. Try again later." });
+        });
+    }
 
-    newMission
-      .save()
-      .then((mission) => {
-        fs.rename(
-          `./uploads/${author}/missions/uploading/`,
-          `./uploads/${author}/missions/${mission._id}`,
-          (err) => {
-            if (err) console.log(err);
-          }
-        );
-        // Add request to user database
-        User.updateOne(
-          { _id: author },
-          {
-            $push: { missions: mission._id },
-          },
-          (err, data) => {}
-        );
-        res.json(mission);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).json({ msg: "Something went wrong. Try again later." });
-      });
+    if (type === "mp") {
+      const newMp = new MissionPack({ ...req.body });
+      newMp
+        .save()
+        .then((mp) => {
+          fs.rename(
+            `./uploads/${author}/mps/uploading/`,
+            `./uploads/${author}/mps/${mp._id}`,
+            (err) => {
+              if (err) console.log(err);
+            }
+          );
+          // Add request to user database
+          User.updateOne(
+            { _id: author },
+            {
+              $push: { mps: mp._id },
+            },
+            (err, data) => {}
+          );
+          res.json(mp);
+        })
+        .catch((err) => {
+          console.log(err);
+          res
+            .status(400)
+            .json({ msg: "Something went wrong. Try again later." });
+        });
+    }
   }
 );
 
