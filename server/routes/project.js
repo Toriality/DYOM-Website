@@ -14,7 +14,7 @@ router.get("/list/:type", (req, res) => {
   const regex = new RegExp(req.query.search, "i");
   const filter = req.query.search ? { title: { $regex: regex } } : {};
 
-  if (type === "missions") {
+  if (type === "mission") {
     Mission.find(filter)
       .select("title author updatedAt rating views downloads comments")
       .limit(resultsPerPage)
@@ -29,7 +29,7 @@ router.get("/list/:type", (req, res) => {
       });
   }
 
-  if (type === "mps") {
+  if (type === "mp") {
     MissionPack.find(filter)
       .select("title author updatedAt rating views downloads comments")
       .limit(resultsPerPage)
@@ -60,7 +60,7 @@ router.get("/:type/:id", (req, res) => {
     select = ["-awards", "-reviews"];
   }
 
-  if (type === "missions") {
+  if (type === "mission") {
     Mission.findOne({ _id: req.params.id })
       .populate(populate)
       .select(select)
@@ -69,7 +69,7 @@ router.get("/:type/:id", (req, res) => {
       });
   }
 
-  if (type === "mps") {
+  if (type === "mp") {
     MissionPack.findOne({ _id: req.params.id })
       .populate(populate)
       .select(select)
@@ -77,14 +77,6 @@ router.get("/:type/:id", (req, res) => {
         res.json(events);
       });
   }
-});
-
-// Downlaod mission file
-router.get("/download/:id", auth, (req, res) => {
-  // ID of the audio as in the database
-  const { id } = req.params;
-  // Return the link
-  Mission.findOne({ _id: id }).then((mission) => res.json(mission.missionFile));
 });
 
 // Add mission
