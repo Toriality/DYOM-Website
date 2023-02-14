@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { ModalBox } from "./ModalBox";
 import { FaStar } from "react-icons/fa";
-import { writeReview } from "../../features/mission/missionSlice";
+import { writeReview } from "../../features/project/projectSlice";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 

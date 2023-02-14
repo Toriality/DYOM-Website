@@ -13,7 +13,7 @@ import { HiChatAlt } from "react-icons/hi";
 import { WriteReview } from "../../../../../styles/components/WriteReview";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { likeReview } from "../../../../../features/mission/missionSlice";
+import { likeReview } from "../../../../../features/project/projectSlice";
 
 export function UserReviews(props) {
   const [openModal, setOpenModal] = React.useState(false);
@@ -36,7 +36,7 @@ export function UserReviews(props) {
       </Grid>
       {!props.loading
         ? props.data.reviews?.map((review) =>
-            review._id === props.reviewInfo._id ? (
+            review._id === props.reviewInfo?._id ? (
               <Box sx={styles.reviewBox}>
                 <Grid container alignItems="start">
                   <Grid item xs={2}>

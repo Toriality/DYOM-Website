@@ -7,7 +7,7 @@ import { SearchBox } from "../../../../styles/components/SearchBox";
 import { FilterBox } from "../../../../styles/components/FilterBox";
 import { PagesBox } from "../../../../styles/components/PagesBox";
 import { MissionTable } from "../../../../styles/components/MissionTable";
-import { listMissions } from "../../../../features/mission/missionSlice";
+import { listProjects } from "../../../../features/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -21,10 +21,10 @@ const UploadProject = () => (
 
 export function ListMissions() {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.mission.missionInfo);
+  const data = useSelector((state) => state.project.list);
 
   React.useEffect(() => {
-    dispatch(listMissions());
+    dispatch(listProjects("mission"));
   }, [dispatch]);
 
   return (

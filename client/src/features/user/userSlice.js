@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `${backendURL}api/user/register`,
+        `${backendURL}api/users/register`,
         formData,
         config
       );
@@ -53,7 +53,7 @@ export const loginUser = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        `${backendURL}api/user/login`,
+        `${backendURL}api/users/login`,
         { username, password },
         config
       );

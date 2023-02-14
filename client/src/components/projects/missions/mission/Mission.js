@@ -7,31 +7,31 @@ import { MissionLeftPanel } from "./MissionLeftPanel";
 import { MissionRightPanel } from "./MissionRightPanel";
 import { MissionSpecs } from "./MissionSpecs";
 import { useDispatch, useSelector } from "react-redux";
-import { getMission } from "../../../../features/mission/missionSlice";
+import { getProject } from "../../../../features/project/projectSlice";
 import { FaEdit } from "react-icons/fa";
 
 export function Mission() {
-  const { missionInfo, loading } = useSelector((state) => state.mission);
+  const { single, loading } = useSelector((state) => state.project);
   const { userInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const isAuthor = userInfo?._id === missionInfo?.author?._id;
+  const isAuthor = userInfo?._id === single?.author?._id;
 
   React.useEffect(() => {
-    dispatch(getMission(id));
+    dispatch(getProject(["mission", id]));
   }, []);
 
   return (
     <>
-      <MissionBanner loading={loading} data={missionInfo} />
+      <MissionBanner loading={loading} data={single} />
       <DYOMContent>
         <Grid container mb={8}>
-          <MissionLeftPanel loading={loading} data={missionInfo} />
-          <MissionRightPanel loading={loading} data={missionInfo} />
+          <MissionLeftPanel loading={loading} data={single} />
+          <MissionRightPanel loading={loading} data={single} />
         </Grid>
         <Grid container>
-          <MissionSpecs loading={loading} data={missionInfo} />
+          <MissionSpecs loading={loading} data={single} />
         </Grid>
         {isAuthor ? (
           <Box mt={14} mb={4} sx={styles.editMission}>

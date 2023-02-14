@@ -5,7 +5,7 @@ import { UploadImages } from "./UploadImages";
 import { MainInfo } from "./MainInfo";
 import { Specs } from "./Specs";
 import { useDispatch, useSelector } from "react-redux";
-import { addMission } from "../../../features/mission/missionSlice";
+import { addProject } from "../../../features/project/projectSlice";
 import { useNavigate } from "react-router-dom";
 
 export function ProjectInput(props) {
@@ -57,7 +57,7 @@ export function ProjectInput(props) {
     minute: "2-digit",
   });
   const { userInfo } = useSelector((state) => state.user);
-  const { missionInfo, loading } = useSelector((state) => state.mission);
+  const { single, loading } = useSelector((state) => state.project);
   let user = userInfo.username ? userInfo.username : "loading...";
   const dispatch = useDispatch();
 
@@ -249,14 +249,14 @@ export function ProjectInput(props) {
       console.log(pair[0] + ", " + pair[1]);
     }
 
-    dispatch(addMission(formData));
+    dispatch(addProject(formData));
   };
 
   React.useEffect(() => {
-    if (missionInfo._id) {
-      navigate(`/missions/${missionInfo._id}`);
+    if (single._id) {
+      navigate(`/missions/${single._id}`);
     }
-  }, [missionInfo]);
+  }, [single]);
 
   return (
     <DYOMContent>

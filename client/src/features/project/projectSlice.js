@@ -10,10 +10,10 @@ const token = localStorage.getItem("token")
 const initialState = {
   loading: false,
   loadingReview: false,
-  missionInfo: {},
-  reviewInfo: {},
+  list: {},
+  single: {},
+  review: {},
   error: null,
-  success: false,
 };
 
 const config = {
@@ -30,12 +30,12 @@ const configJson = {
   },
 };
 
-export const addMission = createAsyncThunk(
-  "mission/add",
+export const addProject = createAsyncThunk(
+  "project/add",
   async (formData, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `${backendURL}api/mission/add`,
+        `${backendURL}api/projects/add`,
         formData,
         config
       );
@@ -50,9 +50,9 @@ export const addMission = createAsyncThunk(
   }
 );
 
-export const listMissions = createAsyncThunk("mission/list", async () => {
+export const listProjects = createAsyncThunk("projects/list", async (type) => {
   try {
-    const response = await axios.get(`${backendURL}api/mission/list`);
+    const response = await axios.get(`${backendURL}api/projects/list/${type}`);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data.msg) {
@@ -63,14 +63,13 @@ export const listMissions = createAsyncThunk("mission/list", async () => {
   }
 });
 
-export const getMission = createAsyncThunk(
-  "mission/get",
-  async ([id, params]) => {
+export const getProject = createAsyncThunk(
+  "project/get",
+  async ([type, id, params]) => {
     try {
       const response = await axios.get(
-        `${backendURL}api/mission/${id}${params ? params : ""}`
+        `${backendURL}api/projects/${type}/${id}${params ? params : ""}`
       );
-      console.log(`${backendURL}api/mission/${id}${params ? params : ""}`);
       return response.data;
     } catch (error) {
       if (error.response && error.response.data.msg) {
@@ -82,11 +81,11 @@ export const getMission = createAsyncThunk(
   }
 );
 
-export const writeReview = createAsyncThunk("mission/review", async (data) => {
+export const writeReview = createAsyncThunk("projects/review", async (data) => {
   try {
     console.log(data);
     const response = await axios.post(
-      `${backendURL}api/review/add`,
+      `${backendURL}api/reviews/add`,
       data,
       configJson
     );
@@ -100,10 +99,10 @@ export const writeReview = createAsyncThunk("mission/review", async (data) => {
   }
 });
 
-export const likeReview = createAsyncThunk("mission/like", async (reviewId) => {
+export const likeReview = createAsyncThunk("project/like", async (reviewId) => {
   try {
     const response = await axios.post(
-      `${backendURL}api/review/${reviewId}/like`,
+      `${backendURL}api/reviews/${reviewId}/like`,
       { reviewId },
       configJson
     );
@@ -118,10 +117,10 @@ export const likeReview = createAsyncThunk("mission/like", async (reviewId) => {
 });
 
 export const getReview = createAsyncThunk(
-  "mission/getReview",
+  "project/getReview",
   async (reviewId) => {
     try {
-      const response = await axios.get(`${backendURL}api/review/${reviewId}`);
+      const response = await axios.get(`${backendURL}api/reviews/${reviewId}`);
       return response.data;
     } catch (error) {
       if (error.response && error.response.data.msg) {
@@ -133,49 +132,49 @@ export const getReview = createAsyncThunk(
   }
 );
 
-export const missionSlice = createSlice({
-  name: "mission",
+export const projectSlice = createSlice({
+  name: "project",
   initialState,
   reducers: {},
   extraReducers: {
-    [getMission.rejected]: (state, { payload }) => {
+    [getProject.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
-    [getMission.pending]: (state, { payload }) => {
+    [getProject.pending]: (state, { payload }) => {
       state.loading = true;
       state.error = null;
     },
-    [getMission.fulfilled]: (state, { payload }) => {
+    [getProject.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.error = null;
-      state.missionInfo = payload;
+      state.single = payload;
     },
-    [listMissions.rejected]: (state, { payload }) => {
+    [listProjects.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
-    [listMissions.pending]: (state, { payload }) => {
+    [listProjects.pending]: (state, { payload }) => {
       state.loading = true;
       state.error = null;
     },
-    [listMissions.fulfilled]: (state, { payload }) => {
+    [listProjects.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.error = null;
-      state.missionInfo = payload;
+      state.list = payload;
     },
-    [addMission.rejected]: (state, { payload }) => {
+    [addProject.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     },
-    [addMission.pending]: (state, { paylaod }) => {
+    [addProject.pending]: (state, { paylaod }) => {
       state.loading = true;
       state.error = null;
     },
-    [addMission.fulfilled]: (state, { payload }) => {
+    [addProject.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.error = null;
-      state.missionInfo = payload;
+      state.single = payload;
     },
     [likeReview.rejected]: (state, { payload }) => {
       state.loadingReview = false;
@@ -205,4 +204,4 @@ export const missionSlice = createSlice({
   },
 });
 
-export default missionSlice.reducer;
+export default projectSlice.reducer;
