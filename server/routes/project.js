@@ -113,7 +113,8 @@ router.post(
     const { type } = req.body;
 
     // Required fields
-    if (!req.body.title || !req.body.file) {
+    if (!req.body.title || !file) {
+      console.log(req.body.file);
       return res
         .status(400)
         .json({ msg: "Please insert the required fields." });
@@ -123,8 +124,27 @@ router.post(
     if (tags.length > 3)
       return res.status(400).json({ msg: "No more than 3 tags are allowed!" });
 
+    const newProject = {
+      title: req.body.title,
+      author,
+      summary: req.body.summary,
+      description: req.body.description,
+      banner,
+      trailer: req.body.trailer,
+      gallery,
+      file,
+      credits: req.body.credits,
+      tags,
+      original: req.body.original,
+      motto: req.body.moto,
+      music: req.body.music,
+      difficulty: req.body.difficulty,
+      mods: req.body.mods,
+      num: req.body.num,
+    };
+
     if (type === "mission") {
-      const newMission = new Mission({ ...req.body });
+      const newMission = new Mission(newProject);
       newMission
         .save()
         .then((mission) => {
@@ -154,7 +174,7 @@ router.post(
     }
 
     if (type === "mp") {
-      const newMp = new MissionPack({ ...req.body });
+      const newMp = new MissionPack(newProject);
       newMp
         .save()
         .then((mp) => {
