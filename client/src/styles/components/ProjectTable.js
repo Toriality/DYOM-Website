@@ -28,7 +28,7 @@ export function ProjectTable(props) {
     return date;
   };
 
-  return (
+  return props.loading ? null : (
     <TableContainer>
       <Table>
         <TableHead>
@@ -43,8 +43,8 @@ export function ProjectTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.data.length > 0
-            ? props.data.map((row) => (
+          {props.data?.list?.length > 0
+            ? props.data?.list?.map((row) => (
                 <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
                     <Link component={RouterLink} to={`${row._id}`}>

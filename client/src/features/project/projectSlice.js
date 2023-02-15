@@ -50,18 +50,23 @@ export const addProject = createAsyncThunk(
   }
 );
 
-export const listProjects = createAsyncThunk("projects/list", async (type) => {
-  try {
-    const response = await axios.get(`${backendURL}api/projects/list/${type}`);
-    return response.data;
-  } catch (error) {
-    if (error.response && error.response.data.msg) {
-      return error.response.data.msg;
-    } else {
-      return error.msg;
+export const listProjects = createAsyncThunk(
+  "projects/list",
+  async ([type, params]) => {
+    try {
+      const response = await axios.get(
+        `${backendURL}api/projects/list/${type}${params ? params : ""}`
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.data.msg) {
+        return error.response.data.msg;
+      } else {
+        return error.msg;
+      }
     }
   }
-});
+);
 
 export const getProject = createAsyncThunk(
   "project/get",

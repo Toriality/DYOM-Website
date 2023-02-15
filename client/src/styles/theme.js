@@ -19,6 +19,20 @@ export const theme = createTheme({
     subtitle2: { fontFamily: "Verdana", fontSize: "6pt" },
   },
   components: {
+    MuiPaginationItem: {
+      styleOverrides: {
+        root: {
+          color: colors.primaryColor,
+          fontSize: "24pt",
+          fontFamily: "Pricedown",
+          "&.Mui-selected": {
+            color: "white",
+            backgroundColor: colors.backgroundLighter,
+            pointerEvents: "none",
+          },
+        },
+      },
+    },
     MuiBreadcrumbs: {
       styleOverrides: {
         root: {

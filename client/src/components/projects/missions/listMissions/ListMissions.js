@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Pagination, Typography } from "@mui/material";
 import React from "react";
 import { DYOMContent } from "../../../../styles/components/DYOMContainer";
 import banner from "../../../../images/single_mission.jpg";
@@ -10,6 +10,7 @@ import { listProjects } from "../../../../features/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ProjectTable } from "../../../../styles/components/ProjectTable";
+import ReactPaginate from "react-paginate";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
@@ -20,12 +21,29 @@ const UploadProject = () => (
 );
 
 export function ListMissions() {
+  const [offset, setOffset] = React.useState(0);
+  const [pdata, setpData] = React.useState([]);
+  const [perPage] = React.useState(20);
+  const [page, setPage] = React.useState(1);
+  const [pageCount, setPageCount] = React.useState(0);
+
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.project.list);
+  const { list, loading } = useSelector((state) => state.project);
+
+  const handleChange = (event, value) => {
+    setPage(value);
+    dispatch(listProjects(["mission", `?page=${value}`]));
+  };
+
+  const getData = () => {
+    dispatch(listProjects(["mission", `?page=${page}`]));
+  };
 
   React.useEffect(() => {
-    dispatch(listProjects("mission"));
-  }, [dispatch]);
+    if (list.list) {
+      setPageCount(Math.ceil(list.total / 20));
+    } else return getData();
+  }, [list]);
 
   return (
     <>
@@ -89,13 +107,13 @@ export function ListMissions() {
             <FilterBox />
           </Grid>
           <Grid item xs={4}>
-            <PagesBox />
+            <PagesBox count={pageCount} page={page} onChange={handleChange} />
           </Grid>
           <Grid item xs={12}>
-            <ProjectTable data={data} />
+            <ProjectTable data={list} loading={loading} />
           </Grid>
           <Grid item xs={4}>
-            <PagesBox />
+            <PagesBox count={pageCount} page={page} onChange={handleChange} />
           </Grid>
           <Grid item xs={6}>
             <UploadProject />
