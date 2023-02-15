@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-export function MissionTable(props) {
+export function ProjectTable(props) {
   React.useEffect(() => {
     if (props.data.length > 0) {
     }
@@ -33,7 +33,7 @@ export function MissionTable(props) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Mission Name</TableCell>
+            <TableCell>Project Name</TableCell>
             <TableCell>Author</TableCell>
             <TableCell>Last Update</TableCell>
             <TableCell>Rating</TableCell>

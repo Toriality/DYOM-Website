@@ -6,7 +6,7 @@ import { ProjectBox } from "../../../../styles/components/ProjectBox";
 import { SearchBox } from "../../../../styles/components/SearchBox";
 import { FilterBox } from "../../../../styles/components/FilterBox";
 import { PagesBox } from "../../../../styles/components/PagesBox";
-import { MissionTable } from "../../../../styles/components/MissionTable";
+import { ProjectTable } from "../../../../styles/components/ProjectTable";
 import { listProjects } from "../../../../features/project/projectSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -95,7 +95,7 @@ export function ListMps() {
             <PagesBox />
           </Grid>
           <Grid item xs={12}>
-            <MissionTable data={data} />
+            <ProjectTable data={data} />
           </Grid>
           <Grid item xs={4}>
             <PagesBox />
