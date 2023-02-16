@@ -17,6 +17,7 @@ import { Comments } from "./components/projects/missions/Comments";
 import { ListMps } from "./components/projects/mps/ListMps";
 import { AddMp } from "./components/projects/mps/AddMp";
 import { Mp } from "./components/projects/mps/Mp";
+import { Profile } from "./components/profile/Profile";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -59,6 +60,11 @@ function App() {
               <Route path="add" element={<AddMp />} />
               <Route path=":id">
                 <Route index element={<Mp />} />
+              </Route>
+            </Route>
+            <Route path="profile">
+              <Route path=":id">
+                <Route index element={<Profile />} />
               </Route>
             </Route>
             <Route path="/faq" element={<FAQ />} />
