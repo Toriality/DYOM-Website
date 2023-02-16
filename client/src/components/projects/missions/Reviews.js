@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getProject } from "../../../../../features/project/projectSlice";
-import { ProjectReviews } from "../../../../../styles/components/project/reviews/ProjectReviews";
+import { getProject } from "../../../features/project/projectSlice";
+import { ProjectReviews } from "../../../styles/components/project/reviews/ProjectReviews";
 
 export function Reviews(props) {
   const { single, loading, loadingReview, reviewInfo } = useSelector(

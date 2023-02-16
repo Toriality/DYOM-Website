@@ -5,18 +5,18 @@ import { CssBaseline } from "@mui/material";
 import { Navbar } from "./components/navbar/Navbar";
 import { Home } from "./components/home/Home";
 import { Footer } from "./components/footer/Footer";
-import { AddMission } from "./components/projects/missions/addMission/AddMission";
-import { ListMissions } from "./components/projects/missions/listMissions/ListMissions";
-import { ListMps } from "./components/projects/mps/listMps/ListMps";
-import { AddMp } from "./components/projects/mps/addMp/AddMp";
 import { FAQ } from "./components/faq/FAQ";
 import { Register } from "./components/register/Register";
 import { useLocation } from "react-router-dom";
 import React from "react";
-import { Mission } from "./components/projects/missions/mission/Mission";
-import { Reviews } from "./components/projects/missions/mission/reviews/Reviews";
-import { Comments } from "./components/projects/missions/mission/reviews/comments/Comments";
-import { Mp } from "./components/projects/mps/mp/Mp";
+import { ListMissions } from "./components/projects/missions/ListMissions";
+import { AddMission } from "./components/projects/missions/AddMission";
+import { Mission } from "./components/projects/missions/Mission";
+import { Reviews } from "./components/projects/missions/Reviews";
+import { Comments } from "./components/projects/missions/Comments";
+import { ListMps } from "./components/projects/mps/ListMps";
+import { AddMp } from "./components/projects/mps/AddMp";
+import { Mp } from "./components/projects/mps/Mp";
 
 function ScrollToTop() {
   const { pathname } = useLocation();

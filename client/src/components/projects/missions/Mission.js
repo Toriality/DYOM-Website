@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProject } from "../../../../features/project/projectSlice";
-import { Project } from "../../../../styles/components/project/Project";
+import { getProject } from "../../../features/project/projectSlice";
+import { Project } from "../../../styles/components/project/Project";
 
 export function Mission() {
   const { single, loading } = useSelector((state) => state.project);

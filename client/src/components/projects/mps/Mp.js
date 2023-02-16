@@ -1,8 +1,8 @@
 import React from "react";
-import { Project } from "../../../../styles/components/project/Project";
 import { useDispatch, useSelector } from "react-redux";
-import { getProject } from "../../../../features/project/projectSlice";
 import { useParams } from "react-router-dom";
+import { getProject } from "../../../features/project/projectSlice";
+import { Project } from "../../../styles/components/project/Project";
 
 export function Mp() {
   const { single, loading } = useSelector((state) => state.project);

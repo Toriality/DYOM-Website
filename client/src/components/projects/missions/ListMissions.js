@@ -1,16 +1,15 @@
 import { Box, Button, Grid, Pagination, Typography } from "@mui/material";
 import React from "react";
-import { DYOMContent } from "../../../../styles/components/DYOMContainer";
-import banner from "../../../../images/single_mission.jpg";
-import { ProjectBox } from "../../../../styles/components/ProjectBox";
-import { SearchBox } from "../../../../styles/components/SearchBox";
-import { FilterBox } from "../../../../styles/components/FilterBox";
-import { PagesBox } from "../../../../styles/components/PagesBox";
-import { listProjects } from "../../../../features/project/projectSlice";
+import { DYOMContent } from "../../../styles/components/DYOMContainer";
+import banner from "../../../images/single_mission.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { ProjectTable } from "../../../../styles/components/ProjectTable";
-import ReactPaginate from "react-paginate";
+import { SearchBox } from "../../../styles/components/SearchBox";
+import { ProjectBox } from "../../../styles/components/ProjectBox";
+import { ProjectTable } from "../../../styles/components/ProjectTable";
+import { PagesBox } from "../../../styles/components/PagesBox";
+import { FilterBox } from "../../../styles/components/FilterBox";
+import { listProjects } from "../../../features/project/projectSlice";
 
 const UploadProject = () => (
   <Box display="flex" justifyContent={"flex-end"}>
