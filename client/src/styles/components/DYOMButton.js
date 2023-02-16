@@ -4,6 +4,8 @@ import { ButtonBase, Typography } from "@mui/material";
 export function DYOMButton(props) {
   return (
     <ButtonBase
+      id={props.componentId}
+      onClick={props.onClick}
       sx={{
         p: 1,
         pr: props.page ? 2 : 3,

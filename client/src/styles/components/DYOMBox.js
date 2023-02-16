@@ -14,6 +14,7 @@ export function DYOMBox(props) {
         borderColor: "stroke.default",
         display: "flex",
         alignItems: "center",
+        justifyContent: props.center ? "center" : "normal",
         "& *": {
           lineHeight: "1",
         },
