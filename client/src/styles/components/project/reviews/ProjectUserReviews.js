@@ -6,16 +6,16 @@ import {
   Avatar,
   IconButton,
 } from "@mui/material";
-import { PagesBox } from "../../../../../styles/components/PagesBox";
+import { PagesBox } from "../../PagesBox";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { BsFillChatSquareDotsFill } from "react-icons/bs";
 import { HiChatAlt } from "react-icons/hi";
-import { WriteReview } from "../../../../../styles/components/WriteReview";
+import { WriteReview } from "../..//WriteReview";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { likeReview } from "../../../../../features/project/projectSlice";
+import { likeReview } from "../../../../features/project/projectSlice";
 
-export function UserReviews(props) {
+export function ProjectUserReviews(props) {
   const [openModal, setOpenModal] = React.useState(false);
   const dispatch = useDispatch();
   const like = (id) => {

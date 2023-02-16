@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Link, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-export function ReviewsBanner(props) {
+export function ProjectReviewsBanner(props) {
   return (
     <Box sx={styles.reviewBanner}>
       <Typography variant="h1">{props.data.title}</Typography>
