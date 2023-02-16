@@ -99,7 +99,7 @@ export const theme = createTheme({
     MuiTableRow: {
       styleOverrides: {
         root: {
-          "&:nth-child(even)": {
+          "&:nth-of-type(even)": {
             filter: "brightness(125%)",
             backgroundColor: colors.backgroundColor,
           },
@@ -155,10 +155,10 @@ export const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         "@font-face": {
-          "font-family": "Priceodwn",
-          "font-style": "normal",
-          "font-display": "swap",
-          "font-weight": "400",
+          fontFamily: "Priceodwn",
+          fontStyle: "normal",
+          fontDisplay: "swap",
+          fontWeigth: "400",
           src: `local('Pricedown'), url(${Pricedown}) format('ttf')`,
         },
         body: {

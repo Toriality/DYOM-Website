@@ -26,8 +26,8 @@ export function GalleryModal(props) {
             <Typography variant="h3">
               {index + 1}/{props.gallery?.length}
             </Typography>
-            <IconButton>
-              <AiOutlineRight onClick={nextIndex} />
+            <IconButton onClick={nextIndex}>
+              <AiOutlineRight />
             </IconButton>
           </Box>
         </Box>

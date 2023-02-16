@@ -18,7 +18,7 @@ export function FAQ() {
       </Typography>
       <FilterBox />
       {faqStrings.map((el) => (
-        <Accordion>
+        <Accordion key={el.q}>
           <AccordionSummary expandIcon={<ExpandMoreIcon sx={styles.icon} />}>
             <Typography variant="body1">{el.q}</Typography>
           </AccordionSummary>

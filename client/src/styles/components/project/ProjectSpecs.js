@@ -88,7 +88,7 @@ const styles = {
       alignItems: "center",
       borderBottom: "2px solid",
       borderColor: "stroke.default",
-      "& .MuiTypography-root:first-child": {
+      "& .MuiTypography-root:first-of-type": {
         mr: 8,
         width: "33%",
       },

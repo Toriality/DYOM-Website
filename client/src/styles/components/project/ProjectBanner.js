@@ -274,16 +274,16 @@ const styles = {
         transform: "scale(1.02, 1.02)",
         transition: "200ms ease-in",
       },
-      "& > *:nth-child(1):hover": {
+      "& > *:nth-of-type(1):hover": {
         zIndex: 1,
         boxShadow: "50px 0 30px rgba(0,0,0,0.5)",
       },
-      "& > *:nth-child(2):hover": {
+      "& > *:nth-of-type(2):hover": {
         zIndex: 1,
         boxShadow:
           "50px 0 100px rgba(0,0,0,0.5), -50px 0 100px rgba(0,0,0,0.5) ",
       },
-      "& > *:nth-child(3):hover": {
+      "& > *:nth-of-type(3):hover": {
         zIndex: 1,
         boxShadow: "-50px 0 30px rgba(0,0,0,0.5)",
       },
@@ -359,11 +359,11 @@ const styles = {
       color: "secondary.main",
     },
     "& .MuiTypography-root": {
-      "&:nth-child(1)": {
+      "&:nth-of-type(1)": {
         color: "primary.main",
         mr: 4,
       },
-      "&:nth-child(3)": {
+      "&:nth-of-type(3)": {
         ml: 2,
       },
     },
