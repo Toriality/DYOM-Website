@@ -10,6 +10,7 @@ const token = localStorage.getItem("token")
 const initialState = {
   loading: false,
   userInfo: {},
+  profile: {},
   token,
   userToken: null,
   error: null,
@@ -70,6 +71,27 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const getUser = createAsyncThunk(
+  "user/get",
+  async (id, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const { data } = await axios.get(`${backendURL}api/users/${id}`);
+      return data;
+    } catch (error) {
+      if (error.response && error.response.data.msg) {
+        return rejectWithValue(error.response.data.msg);
+      } else {
+        return rejectWithValue(error.msg);
+      }
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -105,6 +127,18 @@ export const userSlice = createSlice({
     [registerUser.rejected]: (state, { payload }) => {
       state.loading = false;
       state.error = payload;
+    },
+    [getUser.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    },
+    [getUser.pending]: (state, { payload }) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [getUser.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.profile = payload;
     },
   },
 });

@@ -147,4 +147,14 @@ router.get("/profile", auth, (req, res) => {
     });
 });
 
+// Get user
+router.get("/:id", (req, res) => {
+  User.findById(req.params.id)
+    .select("-password")
+    .then((user) => {
+      console.log(user);
+      res.json(user);
+    });
+});
+
 module.exports = router;

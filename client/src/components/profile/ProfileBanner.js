@@ -11,7 +11,7 @@ export function ProfileBanner(props) {
           <Box sx={styles.profileInfo}>
             <Box>
               <Typography variant="h1" color="primary">
-                Toriality
+                {props.profile.username}
               </Typography>
               <Typography variant="h2">Junior member</Typography>
             </Box>

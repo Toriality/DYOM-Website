@@ -2,6 +2,9 @@ import { DYOMBox } from "../../styles/components/DYOMBox";
 import { DYOMButton } from "../../styles/components/DYOMButton";
 import { DYOMContent } from "../../styles/components/DYOMContainer";
 import React from "react";
+import { Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 export function ProfileContent(props) {
   const [value, setValue] = React.useState("0");
@@ -26,7 +29,7 @@ export function ProfileContent(props) {
           Activity
         </DYOMButton>
       </DYOMBox>
-      <Content value={value} />
+      <Content profile={props.profile} value={value} />
     </DYOMContent>
   );
 }
@@ -35,7 +38,13 @@ function Content(props) {
   switch (props.value) {
     case "0":
       // About me
-      return null;
+      return (
+        <>
+          <Typography variant="h2" align="center">
+            {props.profile.username}'s About Me
+          </Typography>
+        </>
+      );
     case "1":
       // Projects
       return null;
