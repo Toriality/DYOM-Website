@@ -7,6 +7,7 @@ require("dotenv").config();
 const User = require("../models/User");
 const { upload } = require("../multer/register");
 const fs = require("fs");
+const { populate } = require("../models/Mission");
 
 // Get list of users
 router.get("/", (req, res) => {
@@ -149,8 +150,27 @@ router.get("/profile", auth, (req, res) => {
 
 // Get user
 router.get("/:id", (req, res) => {
+  const populateSelection = [
+    "title",
+    "updatedAt",
+    "downloads",
+    "views",
+    "ratings",
+    "comments",
+  ];
+
   User.findById(req.params.id)
-    .select("-password")
+    .select("-password -email")
+    .populate([
+      {
+        path: "missions",
+        select: populateSelection,
+      },
+      {
+        path: "missionPacks",
+        select: populateSelection,
+      },
+    ])
     .then((user) => {
       console.log(user);
       res.json(user);

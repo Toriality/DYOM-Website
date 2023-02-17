@@ -11,10 +11,20 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 
 export function ProjectTable(props) {
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
   React.useEffect(() => {
-    if (props.data.length > 0) {
+    if (loading) {
+      if (props.data.length > 0) {
+        setData(JSON.parse(JSON.stringify(props.data)));
+        if (data.length > 0) {
+          setHeaders();
+        }
+      }
     }
-  }, [props.data]);
+    if (!props.custom) setLoading(false);
+  }, [props.data, data, loading]);
 
   const changeUpdate = (e) => {
     let date = new Date(e);
@@ -28,22 +38,99 @@ export function ProjectTable(props) {
     return date;
   };
 
-  return props.loading ? null : (
+  const setHeaders = () => {
+    const fieldMap = {
+      title: "Project Title",
+      views: "Views",
+      downloads: "Downloads",
+      type: "Type",
+      updatedAt: "Last Update",
+    };
+    const fieldOrder = [
+      "Project Title",
+      "Type",
+      "Last Update",
+      "Views",
+      "Downloads",
+    ];
+
+    let newData = [];
+
+    data.map((element) => {
+      delete element._id;
+      let outputObject = Object.keys(element).reduce((acc, key) => {
+        if (fieldMap.hasOwnProperty(key)) {
+          acc[fieldMap[key]] = element[key];
+        } else {
+          acc[key] = element[key];
+        }
+        return acc;
+      }, {});
+
+      const sortedObject = fieldOrder.reduce((acc, key) => {
+        if (outputObject.hasOwnProperty(key)) {
+          acc[key] = outputObject[key];
+        }
+        return acc;
+      }, {});
+
+      newData.push(sortedObject);
+    });
+
+    setData(newData);
+    setLoading(false);
+  };
+
+  console.log(data);
+
+  return loading || props.loading ? null : (
     <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Project Name</TableCell>
-            <TableCell>Author</TableCell>
-            <TableCell>Last Update</TableCell>
-            <TableCell>Rating</TableCell>
-            <TableCell>Views</TableCell>
-            <TableCell>Downloads</TableCell>
-            <TableCell>Comments</TableCell>
+            {props.custom ? (
+              Object.keys(data[0]).map((k) => (
+                <TableCell key={k}>{k}</TableCell>
+              ))
+            ) : (
+              <>
+                <TableCell>Project Name</TableCell>
+                <TableCell>Author</TableCell>
+                <TableCell>Last Update</TableCell>
+                <TableCell>Rating</TableCell>
+                <TableCell>Views</TableCell>
+                <TableCell>Downloads</TableCell>
+                <TableCell>Comments</TableCell>
+              </>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.data?.list?.length > 0
+          {props.custom
+            ? data.map((element, index) => (
+                <TableRow key={element["Project Title"]}>
+                  {Object.entries(element).map(([k, v]) => (
+                    <TableCell>
+                      {console.log(index)}
+                      {k === "Project Title" ? (
+                        <Link
+                          component={RouterLink}
+                          to={`/${
+                            element["Type"] === "Mission Pack"
+                              ? "mps"
+                              : "missions"
+                          }/${props.data[index]._id}`}
+                        >
+                          {v}
+                        </Link>
+                      ) : (
+                        v
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            : props.data?.list?.length > 0
             ? props.data?.list?.map((row) => (
                 <TableRow key={row._id}>
                   <TableCell component="th" scope="row">

@@ -197,7 +197,7 @@ router.post(
           User.updateOne(
             { _id: author },
             {
-              $push: { mps: mp._id },
+              $push: { missionPacks: mp._id },
             },
             (err, data) => {}
           );

@@ -2,16 +2,44 @@ import { DYOMBox } from "../../styles/components/DYOMBox";
 import { DYOMButton } from "../../styles/components/DYOMButton";
 import { DYOMContent } from "../../styles/components/DYOMContainer";
 import React from "react";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { ProjectTable } from "../../styles/components/ProjectTable";
 
 export function ProfileContent(props) {
   const [value, setValue] = React.useState("0");
+  const [projects, setProjects] = React.useState([{}]);
 
   const handleClick = (e) => {
     setValue(e.currentTarget.id);
   };
+
+  const sortProjects = () => {
+    if (props.profile.missions) {
+      let missions = JSON.parse(JSON.stringify([...props.profile.missions]));
+      let missionPacks = JSON.parse(
+        JSON.stringify([...props.profile.missionPacks])
+      );
+      missions = missions.map((obj) => {
+        obj.type = "Single Mission";
+        return obj;
+      });
+      missionPacks = missionPacks.map((obj, k) => {
+        obj.type = "Mission Pack";
+        return obj;
+      });
+      let p = [...missions, ...missionPacks];
+      p.sort((a, b) => {
+        return new Date(a.updatedAt) - new Date(b.updatedAt);
+      });
+      setProjects(p);
+    }
+  };
+
+  React.useEffect(() => {
+    sortProjects();
+  }, [props.profile]);
 
   return (
     <DYOMContent>
@@ -29,7 +57,7 @@ export function ProfileContent(props) {
           Activity
         </DYOMButton>
       </DYOMBox>
-      <Content profile={props.profile} value={value} />
+      <Content profile={props.profile} value={value} projects={projects} />
     </DYOMContent>
   );
 }
@@ -40,14 +68,24 @@ function Content(props) {
       // About me
       return (
         <>
-          <Typography variant="h2" align="center">
+          <Typography variant="h2" align="center" mb={4}>
             {props.profile.username}'s About Me
           </Typography>
+          <Box sx={styles.aboutMe}>
+            <Typography variant="body1">{props.profile.aboutMe}</Typography>
+          </Box>
         </>
       );
     case "1":
       // Projects
-      return null;
+      return (
+        <>
+          <Typography variant="h2" align="center" mb={4}>
+            {props.profile.username}'s Projects
+          </Typography>
+          <ProjectTable data={props.projects} custom={true} />
+        </>
+      );
     case "2":
       // Comments
       return null;
@@ -58,3 +96,10 @@ function Content(props) {
       return null;
   }
 }
+
+const styles = {
+  aboutMe: {
+    maxWidth: "72ch",
+    margin: "auto",
+  },
+};

@@ -18,8 +18,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    missions: [Schema.Types.ObjectId],
-    missionPacks: [Schema.Types.ObjectId],
+    missions: {
+      type: [Schema.Types.Number],
+      ref: "Mission",
+    },
+    missionPacks: {
+      type: [Schema.Types.Number],
+      ref: "MissionPack",
+    },
     tutorials: [Schema.Types.ObjectId],
     reviews: [Schema.Types.ObjectId],
     points: { type: Number, default: 0 },
