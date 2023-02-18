@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
+const cron = require("node-cron");
+const setDailyPicks = require("./daily");
 
 // Reading environement variables
 // Check readme.txt to make your own .env.development variables
@@ -24,9 +26,22 @@ app.use("/api/users", require("./routes/user"));
 app.use("/api/projects", require("./routes/project"));
 app.use("/api/articles", require("./routes/article"));
 app.use("/api/reviews", require("./routes/review"));
+app.use("/api/daily", require("./routes/dailyPicks"));
 
 // Make uploads folder public
 app.use("/", express.static(path.join(__dirname, "/uploads")));
+
+// Cron funcs
+cron.schedule(
+  "0 0 * * *",
+  () => {
+    setDailyPicks();
+  },
+  {
+    scheduled: true,
+    timezone: "America/Los_Angeles",
+  }
+);
 
 // Log server info
 app.listen(port, () => {
