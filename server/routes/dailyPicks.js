@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
   DailyPick.find({})
     .populate(populate)
     .exec((err, picks) => {
-      res.json(picks);
+      res.json(picks[0]);
     });
 });
 

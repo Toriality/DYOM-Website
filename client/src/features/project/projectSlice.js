@@ -13,6 +13,7 @@ const initialState = {
   list: {},
   single: {},
   review: {},
+  daily: {},
   error: null,
 };
 
@@ -85,6 +86,19 @@ export const getProject = createAsyncThunk(
     }
   }
 );
+
+export const getDaily = createAsyncThunk("project/daily", async () => {
+  try {
+    const response = await axios.get(`${backendURL}api/daily/`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data.msg) {
+      return error.response.data.msg;
+    } else {
+      return error.msg;
+    }
+  }
+});
 
 export const writeReview = createAsyncThunk("projects/review", async (data) => {
   try {
@@ -205,6 +219,18 @@ export const projectSlice = createSlice({
     [getReview.fulfilled]: (state, { payload }) => {
       state.loadingReview = false;
       state.reviewInfo = payload;
+    },
+    [getDaily.rejected]: (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
+    },
+    [getDaily.pending]: (state, { payload }) => {
+      state.error = null;
+      state.loading = true;
+    },
+    [getDaily.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.daily = payload;
     },
   },
 });
