@@ -1,45 +1,15 @@
 const mongoose = require("mongoose");
+const Project = require("./Project");
 const Schema = mongoose.Schema;
-const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const missionSchema = new Schema(
   {
-    title: {
-      type: String,
-      required: true,
-    },
-    author: {
-      type: Schema.Types.Number,
-      ref: "User",
-      required: true,
-    },
-    summary: { type: String },
-    reviews: {
-      type: [Schema.Types.ObjectId],
-      ref: "Review",
-    },
-    description: { type: String },
-    awards: { type: [Schema.Types.Mixed] },
-    file: { type: String },
-    banner: { type: String },
-    gallery: { type: [String] },
-    tags: { type: [String] },
-    trailer: { type: String },
-    credits: { type: String },
-    original: { type: String },
-    motto: { type: String },
-    music: { type: String },
-    difficulty: { type: String },
-    mods: { type: Boolean },
-    views: { type: Number, default: 0 },
-    downloads: { type: Number, default: 0 },
+    // Mission specific fields
   },
   {
-    _id: false,
-    timestamps: true,
+    discriminatorKey: "type",
   }
 );
 
-missionSchema.plugin(AutoIncrement, { id: "mission_seq", start_seq: 0 });
-const Mission = mongoose.model("Mission", missionSchema);
+const Mission = Project.discriminator("Mission", missionSchema);
 module.exports = Mission;
