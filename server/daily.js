@@ -2,26 +2,32 @@ const DailyPick = require("./models/DailyPicks");
 const Mission = require("./models/Mission");
 const MissionPack = require("./models/MissionPack");
 
+function getRandom(object) {
+  let rand = Math.floor(Math.random() * object.length);
+  return rand;
+}
+
 async function setDailyPicks() {
   const missions = await Mission.find({});
   const mps = await MissionPack.find({});
 
-  let randomMission1 = Math.floor(Math.random() * missions.length);
-  let randomMission2 = Math.floor(Math.random() * missions.length);
-  let randomMp1 = Math.floor(Math.random() * mps.length);
-  let randomMp2 = Math.floor(Math.random() * mps.length);
+  let randomMissions = [getRandom(missions), getRandom(missions)];
+  let randomMissionPacks = [getRandom(mps), getRandom(mps)];
 
-  while (randomMission1 === randomMission2) {
-    randomMission1 = Math.floor(Math.random() * missions.length);
+  while (randomMissions[0] === randomMissions[1]) {
+    randomMissions[0] = getRandom(missions);
   }
-  while (randomMp1 === randomMp2) {
-    randomMp1 = Math.floor(Math.random() * mps.length);
+  while (randomMissionPacks[0] === randomMissionPacks[1]) {
+    randomMissionPacks[0] = getRandom(mps);
   }
 
-  const dailyPicks = {
-    missions: [missions[randomMission1]._id, missions[randomMission2]._id],
-    mps: [mps[randomMp1]._id, mps[randomMp2]._id],
-  };
+  const dailyPicks = [];
+  randomMissions.forEach((mission) => {
+    dailyPicks.push({ project: missions[mission]._id, projectType: "Mission" });
+  });
+  randomMissionPacks.forEach((mp) => {
+    dailyPicks.push({ project: mps[mp]._id, projectType: "MissionPack" });
+  });
 
   await DailyPick.deleteMany({})
     .then(() => {
@@ -31,7 +37,7 @@ async function setDailyPicks() {
 
   await DailyPick.create(dailyPicks)
     .then(() => {
-      console.log("Daily Picks created successfully!");
+      console.log("Daily Picks created successfully!", dailyPicks);
     })
     .catch((err) => console.log(err));
 }

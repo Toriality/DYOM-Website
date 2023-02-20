@@ -5,14 +5,7 @@ const router = require("express").Router();
 router.get("/", (req, res) => {
   const populate = [
     {
-      path: "missions",
-      populate: {
-        path: "author",
-        select: "username",
-      },
-    },
-    {
-      path: "mps",
+      path: "project",
       populate: {
         path: "author",
         select: "username",
@@ -20,10 +13,10 @@ router.get("/", (req, res) => {
     },
   ];
 
-  DailyPick.find({})
+  DailyPick.find()
     .populate(populate)
     .exec((err, picks) => {
-      res.json(picks[0]);
+      res.json(picks);
     });
 });
 

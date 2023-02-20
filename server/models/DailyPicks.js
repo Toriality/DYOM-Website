@@ -2,13 +2,19 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const dailyPickSchema = new Schema({
-  missions: {
-    type: [Schema.Types.Number],
-    ref: "Mission",
+  project: {
+    type: Schema.Types.Number,
+    required: true,
+    refPath: "projectType",
   },
-  mps: {
+  projectType: {
+    type: String,
+    required: true,
+    enum: ["Mission", "MissionPack"],
+  },
+  completedBy: {
     type: [Schema.Types.Number],
-    ref: "MissionPack",
+    ref: "User",
   },
 });
 

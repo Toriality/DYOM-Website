@@ -33,6 +33,7 @@ app.use("/", express.static(path.join(__dirname, "/uploads")));
 
 // Cron funcs
 cron.schedule(
+  // (debug) "*/5 * * * * *",
   "0 0 * * *",
   () => {
     setDailyPicks();
