@@ -5,17 +5,28 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import bannerimg from "../../images/single_mission.jpg";
 
 export function TitleAndData(props) {
+  const [page, setPage] = React.useState(1);
+  const pages = 2;
+
   return (
     <Box sx={styles.wrapper}>
       <Typography variant="h3">{props.title}</Typography>
       <Box>
-        <IconButton>
+        <IconButton
+          id="previous"
+          onClick={props.changePage}
+          disabled={props.page === 1}
+        >
           <AiOutlineLeft />
         </IconButton>
         <Typography variant="h3">
-          {page}/{pages}
+          {props.page}/{props.pages}
         </Typography>
-        <IconButton>
+        <IconButton
+          id="next"
+          onClick={props.changePage}
+          disabled={props.page === props.pages}
+        >
           <AiOutlineRight />
         </IconButton>
       </Box>
@@ -25,9 +36,15 @@ export function TitleAndData(props) {
 
 const styles = {
   wrapper: {
+    mb: 4,
     display: "flex",
     justifyContent: "space-between",
-    "& svg": { color: "primary.main" },
+    "& button": {
+      color: "primary.main",
+      "&[disabled]": {
+        color: "primary.dark",
+      },
+    },
     "& div": { display: "flex" },
   },
 };
