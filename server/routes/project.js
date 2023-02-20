@@ -55,6 +55,7 @@ router.get("/list/:type", (req, res) => {
 
 // Get mission
 router.get("/:type/:id", (req, res) => {
+  const week = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
   const type = req.params.type;
   let select;
   let populate = [{ path: "author", select: "username" }];
@@ -69,20 +70,30 @@ router.get("/:type/:id", (req, res) => {
   }
 
   if (type === "mission") {
+    const cookieName = `view_mission_${req.params.id}`;
     Mission.findOne({ _id: req.params.id })
       .populate(populate)
       .select(select)
-      .exec((err, events) => {
-        res.json(events);
+      .then((project) => {
+        if (!req.cookies[cookieName]) {
+          project.updateOne({ $inc: { views: 1 } }).exec();
+          res.cookie(cookieName, true, { maxAge: week });
+        }
+        res.json(project);
       });
   }
 
   if (type === "mp") {
+    const cookieName = `view_mp_${req.params.id}`;
     MissionPack.findOne({ _id: req.params.id })
       .populate(populate)
       .select(select)
-      .exec((err, events) => {
-        res.json(events);
+      .then((project) => {
+        if (!req.cookies[cookieName]) {
+          project.updateOne({ $inc: { views: 1 } }).exec();
+          res.cookie(cookieName, true, { maxAge: week });
+        }
+        res.json(project);
       });
   }
 });

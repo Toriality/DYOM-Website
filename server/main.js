@@ -1,6 +1,7 @@
 // Importing packages
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const path = require("path");
 const cron = require("node-cron");
@@ -13,8 +14,9 @@ require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 // Start server and connect to the database
 const app = express();
 const port = process.env.PORT;
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 const uri = process.env.ATLAS_URI;
 mongoose.set("strictQuery", false);
 mongoose.connect(uri, () => {

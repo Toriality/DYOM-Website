@@ -74,7 +74,8 @@ export const getProject = createAsyncThunk(
   async ([type, id, params]) => {
     try {
       const response = await axios.get(
-        `${backendURL}api/projects/${type}/${id}${params ? params : ""}`
+        `${backendURL}api/projects/${type}/${id}${params ? params : ""}`,
+        { withCredentials: true }
       );
       return response.data;
     } catch (error) {
