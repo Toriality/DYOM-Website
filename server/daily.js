@@ -1,3 +1,4 @@
+const Project = require("./models/Project");
 const DailyPick = require("./models/DailyPicks");
 const Mission = require("./models/Mission");
 const MissionPack = require("./models/MissionPack");
@@ -8,8 +9,8 @@ function getRandom(object) {
 }
 
 async function setDailyPicks() {
-  const missions = await Mission.find({});
-  const mps = await MissionPack.find({});
+  const missions = await Project.find({ type: "Mission" });
+  const mps = await Project.find({ type: "MissionPack" });
 
   let randomMissions = [getRandom(missions), getRandom(missions)];
   let randomMissionPacks = [getRandom(mps), getRandom(mps)];
@@ -23,10 +24,10 @@ async function setDailyPicks() {
 
   const dailyPicks = [];
   randomMissions.forEach((mission) => {
-    dailyPicks.push({ project: missions[mission]._id, projectType: "Mission" });
+    dailyPicks.push({ project: missions[mission]._id });
   });
   randomMissionPacks.forEach((mp) => {
-    dailyPicks.push({ project: mps[mp]._id, projectType: "MissionPack" });
+    dailyPicks.push({ project: mps[mp]._id });
   });
 
   await DailyPick.deleteMany({})
