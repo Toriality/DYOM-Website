@@ -18,13 +18,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    missions: {
+    projects: {
       type: [Schema.Types.Number],
-      ref: "Mission",
-    },
-    missionPacks: {
-      type: [Schema.Types.Number],
-      ref: "MissionPack",
+      ref: "Project",
     },
     tutorials: [Schema.Types.ObjectId],
     reviews: [Schema.Types.ObjectId],

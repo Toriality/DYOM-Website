@@ -127,7 +127,7 @@ router.post(
       );
       await User.updateOne(
         { _id: author },
-        { $push: { missions: project._id } }
+        { $push: { projects: project._id } }
       );
 
       res.json(project);
