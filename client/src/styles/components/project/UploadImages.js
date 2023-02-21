@@ -102,9 +102,10 @@ export function UploadImages(props) {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="subtitle1" align="center">
-          Insert up to one banner and five different images for your{" "}
-          {props.type}'s gallery. Click in the images above to upload/replace a
-          image. (Maximum of 2 MB per image upload)
+          Insert up to one banner and five different images for your
+          {props.type === "Mission" ? "mission" : "mission-pack"}'s gallery.
+          Click in the images above to upload/replace a image. (Maximum of 2 MB
+          per image upload)
         </Typography>
       </Grid>
     </Grid>

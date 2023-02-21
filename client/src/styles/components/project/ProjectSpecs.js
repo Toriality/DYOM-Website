@@ -65,7 +65,7 @@ export function ProjectSpecs(props) {
                   {props.data.mods ? "Yes" : "No"}
                 </Typography>
               </Box>
-              {props.type === "mp" ? (
+              {props.type === "MissionPack" ? (
                 <Box>
                   <Typography variant="h3">Number of Missions:</Typography>
                   <Typography variant="body1">{props.data.num}</Typography>

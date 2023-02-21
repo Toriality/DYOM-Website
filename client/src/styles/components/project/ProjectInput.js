@@ -28,8 +28,8 @@ export function ProjectInput(props) {
     difficulty: { input: null, error: false },
     mods: { input: false, error: false },
     num: {
-      input: props.type === "mission" ? undefined : 0,
-      error: props.type === "mission" ? undefined : false,
+      input: props.type === "Mission" ? undefined : 0,
+      error: props.type === "Mission" ? undefined : false,
     },
   });
 
@@ -261,7 +261,7 @@ export function ProjectInput(props) {
   return (
     <DYOMContent>
       <Typography variant="h3" align="center" mb="2rem">
-        Add a new {props.type === "mission" ? "Mission" : "Mission-Pack"}
+        Add a new {props.type === "Mission" ? "Mission" : "Mission-Pack"}
       </Typography>
       <Grid container spacing={5} mb={5}>
         <Grid item xs={4}>

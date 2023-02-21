@@ -70,7 +70,7 @@ export function Specs(props) {
             <InputLabel>Mods required</InputLabel>
             <Checkbox name="mods" onChange={(e) => props.changeSpecs(e)} />
           </Grid>
-          {props.type === "mp" ? (
+          {props.type === "MissionPack" ? (
             <Grid item xs={6}>
               <InputLabel>Number of misions</InputLabel>
               <Input name="num" onChange={(e) => props.changeSpecs(e)} />

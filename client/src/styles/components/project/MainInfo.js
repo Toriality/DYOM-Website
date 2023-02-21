@@ -6,7 +6,7 @@ export function MainInfo(props) {
     <Grid container spacing={2}>
       <Grid item xs={8}>
         <InputLabel>
-          {props.type === "mission" ? "Mission" : "Mission-Pack"} Title
+          {props.type === "Mission" ? "Mission" : "Mission-Pack"} Title
         </InputLabel>
         <Input name="title" onChange={(e) => props.changeInfo(e)} fullWidth />
       </Grid>

@@ -123,7 +123,7 @@ export function ProjectBanner(props) {
           </Grid>
           <Grid item xs={4} textAlign="right" mt="auto">
             <Typography variant="h3">
-              {props.type === "mission" ? "Single Mission" : "Mission-Pack"}
+              {props.type === "Mission" ? "Single Mission" : "Mission-Pack"}
             </Typography>
             <Box id="stats" gap={3}>
               <Box>
