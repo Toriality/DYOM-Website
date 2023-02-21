@@ -37,9 +37,11 @@ const projectSchema = new Schema(
   {
     _id: false,
     timestamps: true,
+    discriminatorKey: "type",
   }
 );
 
 projectSchema.plugin(AutoIncrement, { id: "project_seq", start_seq: 0 });
 const Project = mongoose.model("Project", projectSchema);
+
 module.exports = Project;
