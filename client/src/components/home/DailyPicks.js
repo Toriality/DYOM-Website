@@ -3,13 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDaily } from "../../features/project/projectSlice";
 import { DYOMBanner } from "../../styles/components/DYOMBanner";
 export function DailyPicks() {
+  const [data, setData] = React.useState([]);
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(getDaily());
-  }, []);
-
   const { daily, loading } = useSelector((state) => state.project);
 
-  return <DYOMBanner data={daily} title="Daily Picks" loading={loading} />;
+  React.useEffect(() => {
+    if (Array.isArray(daily)) {
+      const projects = daily.map((dailypick) => {
+        return dailypick.project;
+      });
+      setData(projects);
+      console.log(data);
+    } else {
+      dispatch(getDaily());
+    }
+  }, [daily]);
+
+  return <DYOMBanner data={data} title="Daily Picks" loading={loading} />;
 }

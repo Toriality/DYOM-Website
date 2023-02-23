@@ -63,10 +63,24 @@ router.get("/:type/:id", (req, res) => {
     .select(select)
     .then((project) => {
       if (!req.cookies[cookieName]) {
-        project.updateOne({ $inc: { views: 1 } }).exec();
+        project.updateOne({ $inc: { views: 1, weekViews: 1 } }).exec();
         res.cookie(cookieName, true, { maxAge: week });
       }
       res.json(project);
+    });
+});
+
+// Trending Projects
+router.get("/trending", (req, res) => {
+  Project.find()
+    .sort({ weekViews: "desc" })
+    .limit(4)
+    .populate({
+      path: "author",
+      select: "username",
+    })
+    .then((projects) => {
+      res.json(projects);
     });
 });
 

@@ -14,6 +14,7 @@ const initialState = {
   single: {},
   review: {},
   daily: {},
+  trending: {},
   error: null,
 };
 
@@ -152,6 +153,19 @@ export const getReview = createAsyncThunk(
   }
 );
 
+export const getTrending = createAsyncThunk("project/trending", async () => {
+  try {
+    const response = await axios.get(`${backendURL}api/projects/trending/`);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data.msg) {
+      return error.response.data.msg;
+    } else {
+      return error.msg;
+    }
+  }
+});
+
 export const projectSlice = createSlice({
   name: "project",
   initialState,
@@ -232,6 +246,18 @@ export const projectSlice = createSlice({
     [getDaily.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.daily = payload;
+    },
+    [getTrending.rejected]: (state, { payload }) => {
+      state.error = payload;
+      state.loading = false;
+    },
+    [getTrending.pending]: (state, { payload }) => {
+      state.error = null;
+      state.loading = true;
+    },
+    [getTrending.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.trending = payload;
     },
   },
 });

@@ -9,17 +9,14 @@ export function ProjectBox(props) {
   const getProject = () => {
     setProject((prevState) => ({
       ...prevState,
-      type:
-        props.data.projectType === "Mission"
-          ? "Single Mission"
-          : "Mission Pack",
-      typeURL: props.data.projectType === "Mission" ? "missions" : "mps",
-      banner: props.data.project.banner
+      type: props.data.type === "Mission" ? "Single Mission" : "Mission Pack",
+      typeURL: props.data.type === "Mission" ? "missions" : "mps",
+      banner: props.data.banner
         ? `url(
         http://localhost:5000/api/
-        ${props.data.projectType === "Mission" ? "missions" : "mps"}/
-        ${props.data.project._id}/
-        ${props.data.project.banner}
+        ${props.data.type === "Mission" ? "missions" : "mps"}/
+        ${props.data._id}/
+        ${props.data.banner}
         )`
         : `url(${nopreview})`,
     }));
@@ -43,23 +40,21 @@ export function ProjectBox(props) {
         <Box textAlign={"left"}>
           <Link
             component={RouteLink}
-            to={`/${project.typeURL}/${props.data?.project._id}`}
+            to={`/${project.typeURL}/${props.data?._id}`}
             variant="h3"
           >
-            {props.data?.project.title}
+            {props.data?.title}
           </Link>
           <Typography variant="h4">
             Created by:
-            <Link sx={styles.author}>
-              {props.data?.project.author.username}
-            </Link>
+            <Link sx={styles.author}>{props.data?.author.username}</Link>
           </Typography>
           <Typography variant="h4" color="text.primary">
             {project.type}
           </Typography>
           <Box>
             <Typography mt={5} variant="body1">
-              {props.data?.project.summary}
+              {props.data?.summary}
             </Typography>
           </Box>
         </Box>

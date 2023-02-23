@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const cron = require("node-cron");
 const setDailyPicks = require("./daily");
+const resetWeekViews = require("./trending");
 
 // Reading environement variables
 // Check readme.txt to make your own .env.development variables
@@ -40,6 +41,17 @@ cron.schedule(
   "0 0 * * *",
   () => {
     setDailyPicks();
+  },
+  {
+    scheduled: true,
+    timezone: "America/Los_Angeles",
+  }
+);
+cron.schedule(
+  // (debug) "*/5 * * * * *",
+  "0 0 * * 0",
+  () => {
+    resetWeekViews();
   },
   {
     scheduled: true,

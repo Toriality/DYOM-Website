@@ -32,6 +32,7 @@ const projectSchema = new Schema(
     difficulty: { type: String },
     mods: { type: Boolean },
     views: { type: Number, default: 0 },
+    weekViews: { type: Number, default: 0 },
     downloads: { type: Number, default: 0 },
   },
   {
