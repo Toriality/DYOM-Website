@@ -24,6 +24,7 @@ mongoose.connect(uri, () => {
 });
 
 // Pages
+app.use("/api/stats", require("./routes/stats"));
 app.use("/api/users", require("./routes/user"));
 app.use("/api/projects", require("./routes/project"));
 app.use("/api/articles", require("./routes/article"));
