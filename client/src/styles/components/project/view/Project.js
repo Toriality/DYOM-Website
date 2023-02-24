@@ -1,6 +1,6 @@
 import { Box, Grid, Link, Typography } from "@mui/material";
 import React from "react";
-import { DYOMContent } from "../DYOMContainer";
+import { DYOMContent } from "../../dyom/DYOMContainer";
 import { ProjectBanner } from "./ProjectBanner";
 import { ProjectLeftPanel } from "./ProjectLeftPanel";
 import { ProjectRightPanel } from "./ProjectRightPanel";

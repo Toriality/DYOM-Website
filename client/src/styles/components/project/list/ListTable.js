@@ -1,8 +1,8 @@
 import { Grid, Typography } from "@mui/material";
-import { FilterBox } from "../FilterBox";
-import { PagesBox } from "../PagesBox";
-import { ProjectTable } from "../ProjectTable";
-import { SearchBox } from "../SearchBox";
+import { FilterBox } from "../../query/FilterBox";
+import { PagesBox } from "../../query/PagesBox";
+import { ProjectTable } from "./ProjectTable";
+import { SearchBox } from "../../query/SearchBox";
 import { UploadProjectButton } from "./UploadProjectButton";
 
 export function ListTable(props) {

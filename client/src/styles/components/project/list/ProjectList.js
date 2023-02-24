@@ -4,9 +4,9 @@ import {
   getDaily,
   listProjects,
   resetList,
-} from "../../../features/project/projectSlice";
-import { DYOMBanner } from "../DYOMBanner";
-import { DYOMContent } from "../DYOMContainer";
+} from "../../../../features/project/projectSlice";
+import { DYOMBanner } from "../../dyom/DYOMBanner";
+import { DYOMContent } from "../../dyom/DYOMContainer";
 import { ListTable } from "./ListTable";
 import { ListTitle } from "./ListTitle";
 

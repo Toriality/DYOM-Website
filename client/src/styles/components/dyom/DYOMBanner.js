@@ -1,9 +1,9 @@
 import React from "react";
 import { Typography, Box, IconButton } from "@mui/material";
-import { ProjectBox } from "../../styles/components/ProjectBox";
+import { ProjectBox } from "../ProjectBox";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import bannerimg from "../../images/single_mission.jpg";
-import { TitleAndData } from "./TitleAndPages";
+import bannerimg from "../../../images/single_mission.jpg";
+import { TitleAndData } from "../TitleAndPages";
 
 export function DYOMBanner(props) {
   const [page, setPage] = React.useState(1);

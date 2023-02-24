@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { DYOMBox } from "./DYOMBox";
-import { DYOMButton } from "./DYOMButton";
+import { DYOMBox } from "../dyom/DYOMBox";
+import { DYOMButton } from "../dyom/DYOMButton";
 
 export function FilterBox() {
   return (

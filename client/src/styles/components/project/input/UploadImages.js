@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, ButtonBase, Grid, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import nopreview from "../../../images/nopreview.jpg";
+import nopreview from "../../../../images/nopreview.jpg";
 
 const iconButtonStyle = {
   color: "error.main",

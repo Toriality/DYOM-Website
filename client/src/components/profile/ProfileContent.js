@@ -1,11 +1,11 @@
-import { DYOMBox } from "../../styles/components/DYOMBox";
-import { DYOMButton } from "../../styles/components/DYOMButton";
-import { DYOMContent } from "../../styles/components/DYOMContainer";
+import { DYOMBox } from "../../styles/components/dyom/DYOMBox";
+import { DYOMButton } from "../../styles/components/dyom/DYOMButton";
+import { DYOMContent } from "../../styles/components/dyom/DYOMContainer";
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { ProjectTable } from "../../styles/components/ProjectTable";
+import { ProjectTable } from "../../styles/components/project/list/ProjectTable";
 
 export function ProfileContent(props) {
   const [value, setValue] = React.useState("0");

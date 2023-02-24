@@ -6,11 +6,10 @@ import {
   Avatar,
   IconButton,
 } from "@mui/material";
-import { PagesBox } from "../../PagesBox";
+import { PagesBox } from "../../query/PagesBox";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
-import { BsFillChatSquareDotsFill } from "react-icons/bs";
 import { HiChatAlt } from "react-icons/hi";
-import { WriteReview } from "../..//WriteReview";
+import { WriteReview } from "../reviews/WriteReview";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { likeReview } from "../../../../features/project/projectSlice";

@@ -7,9 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { ModalBox } from "./ModalBox";
+import { ModalBox } from "../../ModalBox";
 import { FaStar } from "react-icons/fa";
-import { writeReview } from "../../features/project/projectSlice";
+import { writeReview } from "../../../../features/project/projectSlice";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 

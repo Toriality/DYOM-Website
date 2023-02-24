@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { FaRegClock, FaRegEye, FaStar } from "react-icons/fa";
 import { MdOutlineDownloadForOffline } from "react-icons/md";
-import nopreview from "../../../images/nopreview.jpg";
+import nopreview from "../../../../images/nopreview.jpg";
 import { Link as RouterLink } from "react-router-dom";
 import { GalleryModal } from "./GalleryModal";
 import { BannerModal } from "./BannerModal";

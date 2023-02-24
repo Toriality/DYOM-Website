@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Button, Box, Typography } from "@mui/material";
-import { DYOMContent } from "../../styles/components/DYOMContainer";
+import { DYOMContent } from "../../styles/components/dyom/DYOMContainer";
 import { UploadPic } from "./UploadPic";
 import { ProfileInfo } from "./ProfileInfo";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,5 +1,5 @@
 import React from "react";
-import { DYOMContent } from "../DYOMContainer";
+import { DYOMContent } from "../../dyom/DYOMContainer";
 import { Button, CircularProgress, Grid, Typography, Box } from "@mui/material";
 import { UploadImages } from "./UploadImages";
 import { MainInfo } from "./MainInfo";
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addProject,
   resetSingle,
-} from "../../../features/project/projectSlice";
+} from "../../../../features/project/projectSlice";
 import { useNavigate } from "react-router-dom";
 
 export function ProjectInput(props) {

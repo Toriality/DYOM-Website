@@ -1,7 +1,7 @@
 import { Box, IconButton, Modal, Typography } from "@mui/material";
 import React from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { ModalBox } from "../ModalBox";
+import { ModalBox } from "../../ModalBox";
 
 export function GalleryModal(props) {
   const [index, setIndex] = React.useState(0);

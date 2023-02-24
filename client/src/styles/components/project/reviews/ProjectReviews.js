@@ -1,4 +1,4 @@
-import { DYOMContent } from "../../DYOMContainer";
+import { DYOMContent } from "../../dyom/DYOMContainer";
 import { ProjectOfficialReviews } from "./ProjectOfficialReviews";
 import { ProjectReviewsBanner } from "./ProjectReviewsBanner";
 import { ProjectUserReviews } from "./ProjectUserReviews";

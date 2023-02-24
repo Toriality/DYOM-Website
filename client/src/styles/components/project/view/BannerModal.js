@@ -1,6 +1,6 @@
 import { Box, Modal, Typography } from "@mui/material";
 import React from "react";
-import { ModalBox } from "../ModalBox";
+import { ModalBox } from "../../ModalBox";
 
 export function BannerModal(props) {
   return (

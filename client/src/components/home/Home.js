@@ -1,4 +1,4 @@
-import { DYOMContent } from "../../styles/components/DYOMContainer";
+import { DYOMContent } from "../../styles/components/dyom/DYOMContainer";
 import { Banner } from "./Banner";
 import { DailyPicks } from "./DailyPicks";
 import { LatestNews } from "./LatestNews";

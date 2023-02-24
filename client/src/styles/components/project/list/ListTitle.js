@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { UploadProjectButton } from "./UploadProjectButton";
-import banner from "../../../images/single_mission.jpg";
+import banner from "../../../../images/single_mission.jpg";
 
 export function ListTitle(props) {
   return (

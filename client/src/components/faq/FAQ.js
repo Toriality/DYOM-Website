@@ -5,8 +5,8 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { DYOMContent } from "../../styles/components/DYOMContainer";
-import { FilterBox } from "../../styles/components/FilterBox";
+import { DYOMContent } from "../../styles/components/dyom/DYOMContainer";
+import { FilterBox } from "../../styles/components/query/FilterBox";
 import { faqStrings } from "./faqStrings";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
