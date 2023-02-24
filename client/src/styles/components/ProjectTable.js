@@ -81,8 +81,6 @@ export function ProjectTable(props) {
     setLoading(false);
   };
 
-  console.log(data);
-
   return loading || props.loading ? null : (
     <TableContainer>
       <Table>

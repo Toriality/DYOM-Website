@@ -169,7 +169,21 @@ export const getTrending = createAsyncThunk("project/trending", async () => {
 export const projectSlice = createSlice({
   name: "project",
   initialState,
-  reducers: {},
+  reducers: {
+    resetList: (state) => {
+      state.list = {};
+    },
+    resetSingle: (state) => {
+      state.single = {};
+    },
+    resetAll: (state) => {
+      state.list = {};
+      state.single = {};
+      state.review = {};
+      state.daily = {};
+      state.trending = {};
+    },
+  },
   extraReducers: {
     [getProject.rejected]: (state, { payload }) => {
       state.loading = false;
@@ -262,4 +276,5 @@ export const projectSlice = createSlice({
   },
 });
 
+export const { resetList, resetSingle, resetAll } = projectSlice.actions;
 export default projectSlice.reducer;

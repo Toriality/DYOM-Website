@@ -5,10 +5,14 @@ import { UploadImages } from "./UploadImages";
 import { MainInfo } from "./MainInfo";
 import { Specs } from "./Specs";
 import { useDispatch, useSelector } from "react-redux";
-import { addProject } from "../../../features/project/projectSlice";
+import {
+  addProject,
+  resetSingle,
+} from "../../../features/project/projectSlice";
 import { useNavigate } from "react-router-dom";
 
 export function ProjectInput(props) {
+  const [reset, setReset] = React.useState(false);
   const [info, setInfo] = React.useState({
     title: { input: null, error: false },
     author: { input: null, error: false },
@@ -60,6 +64,17 @@ export function ProjectInput(props) {
   const { single, loading } = useSelector((state) => state.project);
   let user = userInfo.username ? userInfo.username : "loading...";
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(resetSingle());
+    setReset(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (single._id && reset) {
+      navigate(`/missions/${single._id}`);
+    }
+  }, [single, reset]);
 
   const changeBanner = (e) => {
     if (e.target.files.length !== 0) {
@@ -251,12 +266,6 @@ export function ProjectInput(props) {
 
     dispatch(addProject(formData));
   };
-
-  React.useEffect(() => {
-    if (single._id) {
-      navigate(`/missions/${single._id}`);
-    }
-  }, [single]);
 
   return (
     <DYOMContent>

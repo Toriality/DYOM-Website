@@ -1,6 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDaily, listProjects } from "../../../features/project/projectSlice";
+import {
+  getDaily,
+  listProjects,
+  resetList,
+} from "../../../features/project/projectSlice";
 import { DYOMBanner } from "../DYOMBanner";
 import { DYOMContent } from "../DYOMContainer";
 import { ListTable } from "./ListTable";
@@ -10,26 +14,32 @@ export function ProjectList(props) {
   const [filteredDaily, setFilteredDaily] = React.useState({});
   //const [pinned, setPinned] = React.useState({});
   const [data, setData] = React.useState({});
+  const [reset, setReset] = React.useState(false);
 
   const dispatch = useDispatch();
   const { daily, list, loading } = useSelector((state) => state.project);
 
   React.useEffect(() => {
-    if (Object.keys(list).length === 0) {
-      dispatch(listProjects([props.type]));
-    } else {
-      setData(list);
+    dispatch(resetList());
+    dispatch(listProjects([props.type]));
+    dispatch(getDaily());
+    setReset(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (reset) {
+      if (Object.keys(list).length > 0) {
+        setData(list);
+      }
+      if (Object.keys(daily).length > 0) {
+        const projects = daily.map((dailypick) => {
+          return dailypick.project;
+        });
+        const filtered = projects.filter((el) => el.type === props.type);
+        setFilteredDaily(filtered);
+      }
     }
-    if (!Array.isArray(daily)) {
-      dispatch(getDaily());
-    } else {
-      const projects = daily.map((dailypick) => {
-        return dailypick.project;
-      });
-      const filtered = projects.filter((el) => el.type === props.type);
-      setFilteredDaily(filtered);
-    }
-  }, [daily, list]);
+  }, [daily, list, reset]);
 
   return Object.keys(data).length === 0 ? null : (
     <>
