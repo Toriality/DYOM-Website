@@ -1,12 +1,15 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { ProjectBox } from "../ProjectBox";
-import bannerimg from "../../../images/single_mission.jpg";
 import { TitleAndData } from "../TitleAndPages";
+import trending_banner from "../../../images/trending_projects.jpg";
+import daily_banner from "../../.././images/daily_picks.jpg";
 
 export function DYOMBanner(props) {
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
+  const banner =
+    props.type === "Trending Projects" ? trending_banner : daily_banner;
 
   React.useEffect(() => {
     if (props.data) {
@@ -21,9 +24,12 @@ export function DYOMBanner(props) {
   };
 
   return props.loading ? null : (
-    <Box align="center" sx={styles.banner}>
+    <Box
+      align="center"
+      sx={{ ...styles.banner, backgroundImage: `url(${banner})` }}
+    >
       <TitleAndData
-        title={props.title}
+        title={props.type}
         page={page}
         pages={pages}
         changePage={changePage}
@@ -38,13 +44,12 @@ export function DYOMBanner(props) {
 
 const styles = {
   banner: {
-    backgroundImage: `url(${bannerimg})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center center",
-    minHeight: "45rem",
     px: 20,
-    py: 3,
+    pt: 5,
+    pb: 10,
   },
 
   projects: {

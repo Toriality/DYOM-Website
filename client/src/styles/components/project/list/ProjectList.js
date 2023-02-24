@@ -44,7 +44,7 @@ export function ProjectList(props) {
   return Object.keys(data).length === 0 ? null : (
     <>
       <ListTitle type={props.type} />
-      <DYOMBanner data={filteredDaily} title="Daily Picks" loading={loading} />
+      <DYOMBanner data={filteredDaily} type="Daily Picks" loading={loading} />
       {/* <DYOMBanner data={pinned} title="Pinned Projects" loading={loading} /> */}
       <DYOMContent>
         <ListTable type={props.type} data={data} />

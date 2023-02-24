@@ -2,6 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDaily } from "../../features/project/projectSlice";
 import { DYOMBanner } from "../../styles/components/dyom/DYOMBanner";
+import banner from "../../images/daily_picks.jpg";
+
 export function DailyPicks() {
   const [data, setData] = React.useState([]);
   const dispatch = useDispatch();
@@ -18,5 +20,12 @@ export function DailyPicks() {
     }
   }, [daily, dispatch]);
 
-  return <DYOMBanner data={data} title="Daily Picks" loading={loading} />;
+  return (
+    <DYOMBanner
+      banner={banner}
+      data={data}
+      type="Daily Picks"
+      loading={loading}
+    />
+  );
 }

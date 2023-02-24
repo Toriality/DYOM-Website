@@ -2,6 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTrending } from "../../features/project/projectSlice";
 import { DYOMBanner } from "../../styles/components/dyom/DYOMBanner";
+import banner from "../../images/trending_projects.jpg";
+
 export function TrendingProjects() {
   const dispatch = useDispatch();
 
@@ -12,6 +14,11 @@ export function TrendingProjects() {
   const { trending, loading } = useSelector((state) => state.project);
 
   return (
-    <DYOMBanner data={trending} title="Trending Projects" loading={loading} />
+    <DYOMBanner
+      banner={banner}
+      data={trending}
+      type="Trending Projects"
+      loading={loading}
+    />
   );
 }
