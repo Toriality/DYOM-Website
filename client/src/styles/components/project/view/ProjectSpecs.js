@@ -1,10 +1,4 @@
-import {
-  Box,
-  Grid,
-  CircularProgress,
-  Typography,
-  Skeleton,
-} from "@mui/material";
+import { Box, Grid, Typography, Skeleton } from "@mui/material";
 import React from "react";
 
 export function ProjectSpecs(props) {

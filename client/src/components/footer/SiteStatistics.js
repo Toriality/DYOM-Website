@@ -5,12 +5,12 @@ import { getStats } from "../../features/stats/statsSlice";
 import { Link as RouterLink } from "react-router-dom";
 
 export function SiteStatistics() {
-  const { stats, loading, error } = useSelector((state) => state.stats);
+  const { stats } = useSelector((state) => state.stats);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     dispatch(getStats());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box sx={styles.siteStatistics}>

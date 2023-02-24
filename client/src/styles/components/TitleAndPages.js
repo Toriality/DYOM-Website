@@ -1,13 +1,8 @@
 import React from "react";
 import { Typography, Box, IconButton } from "@mui/material";
-import { ProjectBox } from "../../styles/components/ProjectBox";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import bannerimg from "../../images/single_mission.jpg";
 
 export function TitleAndData(props) {
-  const [page, setPage] = React.useState(1);
-  const pages = 2;
-
   return (
     <Box sx={styles.wrapper}>
       <Typography variant="h3">{props.title}</Typography>

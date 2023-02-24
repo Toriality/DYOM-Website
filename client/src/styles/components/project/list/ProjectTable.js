@@ -15,6 +15,49 @@ export function ProjectTable(props) {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    function setHeaders() {
+      const fieldMap = {
+        title: "Project Title",
+        views: "Views",
+        downloads: "Downloads",
+        type: "Type",
+        updatedAt: "Last Update",
+      };
+      const fieldOrder = [
+        "Project Title",
+        "Type",
+        "Last Update",
+        "Views",
+        "Downloads",
+      ];
+
+      let newData = [];
+
+      data.forEach((element) => {
+        delete element._id;
+        let outputObject = Object.keys(element).reduce((acc, key) => {
+          if (fieldMap.hasOwnProperty(key)) {
+            acc[fieldMap[key]] = element[key];
+          } else {
+            acc[key] = element[key];
+          }
+          return acc;
+        }, {});
+
+        const sortedObject = fieldOrder.reduce((acc, key) => {
+          if (outputObject.hasOwnProperty(key)) {
+            acc[key] = outputObject[key];
+          }
+          return acc;
+        }, {});
+
+        newData.push(sortedObject);
+      });
+
+      setData(newData);
+      setLoading(false);
+    }
+
     if (loading) {
       if (props.data.length > 0) {
         setData(JSON.parse(JSON.stringify(props.data)));
@@ -24,7 +67,7 @@ export function ProjectTable(props) {
       }
     }
     if (!props.custom) setLoading(false);
-  }, [props.data, data, loading]);
+  }, [props.data, data, loading, props.custom]);
 
   const changeUpdate = (e) => {
     let date = new Date(e);
@@ -36,49 +79,6 @@ export function ProjectTable(props) {
       minute: "2-digit",
     });
     return date;
-  };
-
-  const setHeaders = () => {
-    const fieldMap = {
-      title: "Project Title",
-      views: "Views",
-      downloads: "Downloads",
-      type: "Type",
-      updatedAt: "Last Update",
-    };
-    const fieldOrder = [
-      "Project Title",
-      "Type",
-      "Last Update",
-      "Views",
-      "Downloads",
-    ];
-
-    let newData = [];
-
-    data.map((element) => {
-      delete element._id;
-      let outputObject = Object.keys(element).reduce((acc, key) => {
-        if (fieldMap.hasOwnProperty(key)) {
-          acc[fieldMap[key]] = element[key];
-        } else {
-          acc[key] = element[key];
-        }
-        return acc;
-      }, {});
-
-      const sortedObject = fieldOrder.reduce((acc, key) => {
-        if (outputObject.hasOwnProperty(key)) {
-          acc[key] = outputObject[key];
-        }
-        return acc;
-      }, {});
-
-      newData.push(sortedObject);
-    });
-
-    setData(newData);
-    setLoading(false);
   };
 
   return loading || props.loading ? null : (

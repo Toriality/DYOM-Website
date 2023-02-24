@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, Skeleton, Typography } from "@mui/material";
+import { Grid, Skeleton, Typography } from "@mui/material";
 
 export function ProjectLeftPanel(props) {
   const Loading = () => {

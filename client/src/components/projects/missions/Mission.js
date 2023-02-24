@@ -14,7 +14,7 @@ export function Mission() {
 
   React.useEffect(() => {
     dispatch(getProject(["mission", id]));
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <Project

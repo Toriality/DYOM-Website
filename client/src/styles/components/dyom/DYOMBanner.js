@@ -1,7 +1,6 @@
 import React from "react";
-import { Typography, Box, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import { ProjectBox } from "../ProjectBox";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import bannerimg from "../../../images/single_mission.jpg";
 import { TitleAndData } from "../TitleAndPages";
 

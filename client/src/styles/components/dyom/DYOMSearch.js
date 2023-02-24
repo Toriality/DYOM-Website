@@ -2,11 +2,10 @@ import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { InputBase } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
-import { useSearchParams } from "react-router-dom";
 
 export function DYOMSearch(props) {
-  let [query, setQuery] = React.useState("");
-  let [searchParams, setSearchParams] = useSearchParams();
+  //let [query, setQuery] = React.useState("");
+  //let [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <Search>
@@ -16,9 +15,10 @@ export function DYOMSearch(props) {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) =>
-          e.key === "Enter" ? setSearchParams(props.searchString + query) : null
+        //onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={
+          (e) => {}
+          //e.key === "Enter" ? setSearchParams(props.searchString + query) : null
         }
       />
     </Search>

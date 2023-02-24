@@ -18,7 +18,7 @@ export function Register() {
     aboutme: null,
   });
 
-  const { userInfo, token, loading } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

@@ -6,23 +6,23 @@ import { Link as RouteLink } from "react-router-dom";
 export function ProjectBox(props) {
   const [project, setProject] = React.useState({});
 
-  const getProject = () => {
-    setProject((prevState) => ({
-      ...prevState,
-      type: props.data.type === "Mission" ? "Single Mission" : "Mission Pack",
-      typeURL: props.data.type === "Mission" ? "missions" : "mps",
-      banner: props.data.banner
-        ? `url(
-        http://localhost:5000/api/
-        ${props.data.type === "Mission" ? "missions" : "mps"}/
-        ${props.data._id}/
-        ${props.data.banner}
-        )`
-        : `url(${nopreview})`,
-    }));
-  };
-
   React.useEffect(() => {
+    function getProject() {
+      setProject((prevState) => ({
+        ...prevState,
+        type: props.data.type === "Mission" ? "Single Mission" : "Mission Pack",
+        typeURL: props.data.type === "Mission" ? "missions" : "mps",
+        banner: props.data.banner
+          ? `url(
+          http://localhost:5000/api/
+          ${props.data.type === "Mission" ? "missions" : "mps"}/
+          ${props.data._id}/
+          ${props.data.banner}
+          )`
+          : `url(${nopreview})`,
+      }));
+    }
+
     if (props.data) getProject();
   }, [props.data]);
 

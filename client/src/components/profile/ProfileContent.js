@@ -3,8 +3,6 @@ import { DYOMButton } from "../../styles/components/dyom/DYOMButton";
 import { DYOMContent } from "../../styles/components/dyom/DYOMContainer";
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { ProjectTable } from "../../styles/components/project/list/ProjectTable";
 
 export function ProfileContent(props) {
@@ -15,29 +13,29 @@ export function ProfileContent(props) {
     setValue(e.currentTarget.id);
   };
 
-  const sortProjects = () => {
-    if (props.profile.missions) {
-      let missions = JSON.parse(JSON.stringify([...props.profile.missions]));
-      let missionPacks = JSON.parse(
-        JSON.stringify([...props.profile.missionPacks])
-      );
-      missions = missions.map((obj) => {
-        obj.type = "Single Mission";
-        return obj;
-      });
-      missionPacks = missionPacks.map((obj, k) => {
-        obj.type = "Mission Pack";
-        return obj;
-      });
-      let p = [...missions, ...missionPacks];
-      p.sort((a, b) => {
-        return new Date(a.updatedAt) - new Date(b.updatedAt);
-      });
-      setProjects(p);
-    }
-  };
-
   React.useEffect(() => {
+    function sortProjects() {
+      if (props.profile.missions) {
+        let missions = JSON.parse(JSON.stringify([...props.profile.missions]));
+        let missionPacks = JSON.parse(
+          JSON.stringify([...props.profile.missionPacks])
+        );
+        missions = missions.map((obj) => {
+          obj.type = "Single Mission";
+          return obj;
+        });
+        missionPacks = missionPacks.map((obj, k) => {
+          obj.type = "Mission Pack";
+          return obj;
+        });
+        let p = [...missions, ...missionPacks];
+        p.sort((a, b) => {
+          return new Date(a.updatedAt) - new Date(b.updatedAt);
+        });
+        setProjects(p);
+      }
+    }
+
     sortProjects();
   }, [props.profile]);
 

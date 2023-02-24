@@ -75,11 +75,6 @@ export const getUser = createAsyncThunk(
   "user/get",
   async (id, { rejectWithValue }) => {
     try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
       const { data } = await axios.get(`${backendURL}api/users/${id}`);
       return data;
     } catch (error) {

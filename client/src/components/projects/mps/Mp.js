@@ -14,7 +14,7 @@ export function Mp() {
 
   React.useEffect(() => {
     dispatch(getProject(["mp", id]));
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <Project type="mp" loading={loading} data={single} isAuthor={isAuthor} />

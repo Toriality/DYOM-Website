@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid, Input, InputLabel, TextField } from "@mui/material";
+import { Grid, Input, InputLabel, TextField } from "@mui/material";
 
 export function ProfileInfo(props) {
   return (

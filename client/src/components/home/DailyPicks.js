@@ -13,11 +13,10 @@ export function DailyPicks() {
         return dailypick.project;
       });
       setData(projects);
-      console.log(data);
     } else {
       dispatch(getDaily());
     }
-  }, [daily]);
+  }, [daily, dispatch]);
 
   return <DYOMBanner data={data} title="Daily Picks" loading={loading} />;
 }

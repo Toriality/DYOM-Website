@@ -1,4 +1,4 @@
-import { Box, Grid, Link, Typography } from "@mui/material";
+import { Box, Grid, Link } from "@mui/material";
 import React from "react";
 import { DYOMContent } from "../../dyom/DYOMContainer";
 import { ProjectBanner } from "./ProjectBanner";

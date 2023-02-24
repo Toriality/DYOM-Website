@@ -14,7 +14,7 @@ export function Reviews(props) {
 
   React.useEffect(() => {
     dispatch(getProject(["mission", id, "?reviews"]));
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <ProjectReviews

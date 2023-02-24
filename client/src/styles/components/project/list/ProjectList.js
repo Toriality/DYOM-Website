@@ -24,7 +24,7 @@ export function ProjectList(props) {
     dispatch(listProjects([props.type]));
     dispatch(getDaily());
     setReset(true);
-  }, []);
+  }, [dispatch, props.type]);
 
   React.useEffect(() => {
     if (reset) {
@@ -39,7 +39,7 @@ export function ProjectList(props) {
         setFilteredDaily(filtered);
       }
     }
-  }, [daily, list, reset]);
+  }, [daily, list, reset, props.type]);
 
   return Object.keys(data).length === 0 ? null : (
     <>

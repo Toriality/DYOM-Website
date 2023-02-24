@@ -1,5 +1,5 @@
 import React from "react";
-import { ButtonBase, Typography, Box } from "@mui/material";
+import { ButtonBase, Typography } from "@mui/material";
 import nopreview from "../../images/nopreview.jpg";
 import { ImageResetButton } from "../../styles/components/ImageResetButton";
 

@@ -68,13 +68,13 @@ export function ProjectInput(props) {
   React.useEffect(() => {
     dispatch(resetSingle());
     setReset(true);
-  }, []);
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (single._id && reset) {
       navigate(`/missions/${single._id}`);
     }
-  }, [single, reset]);
+  }, [single, reset, navigate]);
 
   const changeBanner = (e) => {
     if (e.target.files.length !== 0) {

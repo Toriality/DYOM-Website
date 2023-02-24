@@ -1,11 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-  Grid,
-  Link,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Link, Skeleton } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 export function ProjectRightPanel(props) {
