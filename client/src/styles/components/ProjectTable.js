@@ -130,8 +130,8 @@ export function ProjectTable(props) {
                   ))}
                 </TableRow>
               ))
-            : props.data?.list?.length > 0
-            ? props.data?.list?.map((row) => (
+            : props.data?.length > 0
+            ? props.data?.map((row) => (
                 <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
                     <Link component={RouterLink} to={`${row._id}`}>
