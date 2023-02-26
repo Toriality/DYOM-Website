@@ -76,7 +76,7 @@ const styles = {
     bgcolor: "primary.main",
     height: "100%",
     aspectRatio: "1/1",
-    borderRadius: "100%",
+    borderRadius: "20px",
   },
 
   profileInfo: {

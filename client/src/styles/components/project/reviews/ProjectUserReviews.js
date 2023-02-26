@@ -13,6 +13,7 @@ import { WriteReview } from "../reviews/WriteReview";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { likeReview } from "../../../../features/project/projectSlice";
+import nopreview from "../../../../images/nopreview.jpg";
 
 export function ProjectUserReviews(props) {
   const [openModal, setOpenModal] = React.useState(false);
@@ -39,13 +40,13 @@ export function ProjectUserReviews(props) {
               <Box sx={styles.reviewBox}>
                 <Grid container alignItems="start">
                   <Grid item xs={2}>
-                    <Avatar
-                      sx={styles.avatar}
-                      src={
-                        review.author?.hasAvatar
-                          ? `http://localhost:5000/${review.author?._id}/avatar.jpg`
-                          : null
-                      }
+                    <Box
+                      sx={{
+                        ...styles.avatar,
+                        backgroundImage: review.author?.hasAvatar
+                          ? `url(http://localhost:5000/${review.author?._id}/avatar.jpg)`
+                          : `url(${nopreview})`,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={10}>
@@ -176,6 +177,7 @@ const styles = {
     width: "80%",
     height: "80%",
     aspectRatio: "1/1",
+    borderRadius: "20px",
     mt: 1,
   },
 

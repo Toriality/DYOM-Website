@@ -1,7 +1,8 @@
 import React from "react";
-import { ButtonBase, Typography, Avatar } from "@mui/material";
+import { ButtonBase, Typography, Avatar, Box } from "@mui/material";
 import { LoginModal } from "./LoginModal";
 import { useSelector } from "react-redux";
+import nopreview from "../../images/nopreview.jpg";
 
 export function NavUser() {
   let [openModal, setOpenModal] = React.useState(false);
@@ -31,12 +32,13 @@ export function NavUser() {
         <Typography variant="h4" color="primary" mr={2}>
           {userInfo?.username}
         </Typography>
-        <Avatar
-          src={
-            userInfo?.hasAvatar
-              ? `http://localhost:5000/${userInfo._id}/avatar.jpg`
-              : null
-          }
+        <Box
+          sx={{
+            ...styles.avatar,
+            backgroundImage: userInfo.banner
+              ? `url(${userInfo.banner})`
+              : `url(${nopreview})`,
+          }}
           alt="Profile Avatar"
         />
       </ButtonBase>
@@ -45,3 +47,14 @@ export function NavUser() {
 
   return <>{token && !loading ? <Logged /> : <Guest />}</>;
 }
+
+const styles = {
+  avatar: {
+    width: 42,
+    height: 42,
+    borderRadius: "8px",
+    backgroundSize: "cover",
+    backgroundrepeat: "no-repeat",
+    backgroundPosition: "center center",
+  },
+};
