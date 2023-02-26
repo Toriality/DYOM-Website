@@ -27,7 +27,7 @@ export function NavUser() {
 
   function Logged() {
     return (
-      <ButtonBase>
+      <ButtonBase href={`/profile/${userInfo._id}`}>
         <Typography variant="h4" color="primary" mr={2}>
           {userInfo?.username}
         </Typography>

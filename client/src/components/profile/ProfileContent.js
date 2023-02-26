@@ -7,37 +7,13 @@ import { ProjectTable } from "../../styles/components/project/list/ProjectTable"
 
 export function ProfileContent(props) {
   const [value, setValue] = React.useState("0");
-  const [projects, setProjects] = React.useState([{}]);
+  //const [projects, setProjects] = React.useState([{}]);
 
   const handleClick = (e) => {
     setValue(e.currentTarget.id);
   };
 
-  React.useEffect(() => {
-    function sortProjects() {
-      if (props.profile.missions) {
-        let missions = JSON.parse(JSON.stringify([...props.profile.missions]));
-        let missionPacks = JSON.parse(
-          JSON.stringify([...props.profile.missionPacks])
-        );
-        missions = missions.map((obj) => {
-          obj.type = "Single Mission";
-          return obj;
-        });
-        missionPacks = missionPacks.map((obj, k) => {
-          obj.type = "Mission Pack";
-          return obj;
-        });
-        let p = [...missions, ...missionPacks];
-        p.sort((a, b) => {
-          return new Date(a.updatedAt) - new Date(b.updatedAt);
-        });
-        setProjects(p);
-      }
-    }
-
-    sortProjects();
-  }, [props.profile]);
+  React.useEffect(() => {}, []);
 
   return (
     <DYOMContent>
@@ -55,7 +31,11 @@ export function ProfileContent(props) {
           Activity
         </DYOMButton>
       </DYOMBox>
-      <Content profile={props.profile} value={value} projects={projects} />
+      <Content
+        profile={props.profile}
+        value={value}
+        projects={props.profile?.projects}
+      />
     </DYOMContent>
   );
 }
