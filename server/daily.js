@@ -4,8 +4,7 @@ const Mission = require("./models/Mission");
 const MissionPack = require("./models/MissionPack");
 
 function getRandom(object) {
-  let rand = Math.floor(Math.random() * object.length);
-  return rand;
+  return Math.floor(Math.random() * object.length);
 }
 
 async function setDailyPicks() {

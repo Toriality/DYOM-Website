@@ -39,7 +39,7 @@ router.get("/", auth, (req, res) => {
     });
 });
 
-// Downlaod mission file
+// Download mission file
 router.get("/download/:id", auth, (req, res) => {
   // ID of the audio as in the database
   const { id } = req.params;
@@ -78,7 +78,7 @@ router.post("/add", auth, (req, res) => {
     return res.status(400).json({ msg: "Please insert the required fields." });
   }
 
-  // Limit tags and links ammount to a maximum of 6 tags
+  // Limit tags and links amount to a maximum of 6 tags
   if (tags.length > 3)
     return res.status(400).json({ msg: "No more than 3 tags are allowed!" });
 

@@ -2,12 +2,12 @@ const router = require("express").Router();
 const multer = require("multer");
 const fs = require("fs");
 
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     userID = req.user.id;
     type = req.body.type;
     path = `./uploads/${userID}/${type}s/uploading`;
-    fs.mkdirSync(path, { recursive: true });
+    fs.mkdirSync(path, {recursive: true});
     cb(null, path);
   },
   filename: function (req, file, cb) {
@@ -15,6 +15,6 @@ var storage = multer.diskStorage({
   },
 });
 
-var upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
 module.exports = { storage, upload };

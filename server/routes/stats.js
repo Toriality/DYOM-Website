@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     type: "MissionPack",
   }).exec();
   const users = await User.countDocuments({}).exec();
-  // get newest registered member and get only the username string
+  // get the newest registered member and get only the username string
   const newestUser = await User.findOne({}).sort({ createdAt: -1 }).exec();
 
   res.json({

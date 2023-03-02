@@ -8,7 +8,7 @@ const cron = require("node-cron");
 const setDailyPicks = require("./daily");
 const resetWeekViews = require("./trending");
 
-// Reading environement variables
+// Reading environment variables
 // Check readme.txt to make your own .env.development variables
 require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
@@ -35,7 +35,7 @@ app.use("/api/daily", require("./routes/dailyPicks"));
 // Make uploads folder public
 app.use("/", express.static(path.join(__dirname, "/uploads")));
 
-// Cron funcs
+// Cron functions
 cron.schedule(
   // (debug) "*/5 * * * * *",
   "0 0 * * *",

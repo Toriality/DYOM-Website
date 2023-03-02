@@ -39,7 +39,7 @@ router.post("/login", (req, res) => {
     if (!user)
       return res
         .status(400)
-        .json({ msg: "The user you inserted does not exixts!" });
+        .json({ msg: "The user you inserted does not exists!" });
 
     // Validate the password
     bcrypt.compare(password, user.password).then((isMatch) => {
