@@ -16,13 +16,9 @@ const reviewSchema = new Schema(
       ref: "User",
       required: true,
     },
-    mission: {
+    project: {
       type: Schema.Types.Number,
-      ref: "Mission",
-    },
-    mp: {
-      type: Schema.Types.Number,
-      ref: "MissionPack",
+      ref: "Project",
     },
     overallRating: { type: Number },
     gameplayRating: { type: Number },
@@ -32,7 +28,10 @@ const reviewSchema = new Schema(
       type: [Schema.Types.Number],
       ref: "User",
     },
-    dislikes: { type: Number, default: 0 },
+    dislikes: {
+      type: [Schema.Types.Number],
+      ref: "User",
+    },
     comments: { type: [Schema.Types.ObjectId] },
   },
   {

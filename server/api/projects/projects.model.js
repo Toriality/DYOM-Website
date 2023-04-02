@@ -45,4 +45,15 @@ const projectSchema = new Schema(
 projectSchema.plugin(AutoIncrement, { id: "project_seq", start_seq: 0 });
 const Project = mongoose.model("Project", projectSchema);
 
+const missionPackSchema = new Schema({
+  num: { type: Number, default: 1 },
+});
+
+const missionSchema = new Schema({
+  // Mission specific fields
+});
+
+Project.discriminator("Mission", missionSchema);
+Project.discriminator("MissionPack", missionPackSchema);
+
 module.exports = Project;
