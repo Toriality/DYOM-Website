@@ -4,15 +4,12 @@ const helpers = require("./users.helpers");
 const { checkErrors } = require("../helpers");
 
 // Use this middleware to create the newly registered user's profile image
-function registerUser(req, res, next) {
+function uploadAvatar(req, res, next) {
   try {
-    // Store the uploaded image into a temporary folder (new_user- + random id)
     const user = `new_user-${Math.random().toString(36).slice(-6)}`;
+    const folder = `./public/uploads/${user}`;
 
-    const storage = createStorage(
-      `./public/uploads/${user}`,
-      (file) => file.originalname
-    );
+    const storage = createStorage(folder, (file) => file.originalname);
 
     const upload = multer({ storage }).single("image");
 
@@ -20,6 +17,7 @@ function registerUser(req, res, next) {
       if (err) {
         return res.status(400).json({ msg: err.message });
       } else {
+        req.userFolder = folder;
         next();
       }
     });
@@ -33,17 +31,23 @@ function registerUser(req, res, next) {
 async function validateRegister(req, res, next) {
   try {
     const { username, password, email, location, aboutMe } = req.body;
+    const image = req.files ? req.files.image[0] : null;
 
     if (!username || !password || !email)
       return res
         .status(400)
         .json({ msg: "Please enter all the required fields." });
 
-    const usernameErrors = await helpers.checkUsername("register", username);
-    const passwordErrors = await helpers.checkPassword("register", password);
-    const emailErrors = await helpers.checkEmail(email);
-    const locationErrors = helpers.checkLocation(location);
-    const aboutMeErrors = helpers.checkAboutMe(aboutMe);
+    const usernameErrors = username
+      ? helpers.checkUsername("register", username)
+      : {};
+    const passwordErrors = password
+      ? helpers.checkPassword("register", password)
+      : {};
+    const emailErrors = email ? helpers.checkEmail(email) : {};
+    const locationErrors = location ? helpers.checkLocation(location) : {};
+    const aboutMeErrors = aboutMe ? helpers.checkAboutMe(aboutMe) : {};
+    const imageErrors = image ? helpers.checkImage(image) : {};
 
     const errors = checkErrors({
       usernameErrors,
@@ -51,12 +55,24 @@ async function validateRegister(req, res, next) {
       emailErrors,
       locationErrors,
       aboutMeErrors,
+      imageErrors,
     });
 
-    if (Object.keys(errors).length > 0) {
+    if (errors.length > 0) {
       return res.status(400).json(errors);
     }
 
+    req.newUser = {
+      username,
+      password,
+      email,
+      location,
+      aboutMe,
+      hasImage: !!image,
+    };
+    req.tempPath = req.userFolder;
+    req.destPath = `./public/uploads`;
+    req.imagePath = image ? image.originalname : null;
     next();
   } catch (e) {
     console.log(e);
@@ -100,4 +116,4 @@ async function validateLogin(req, res, next) {
   }
 }
 
-module.exports = { registerUser, validateRegister, validateLogin };
+module.exports = { uploadAvatar, validateRegister, validateLogin };

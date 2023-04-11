@@ -1,0 +1,91 @@
+<div>
+  <h1>DYOM Project Creation</h1>
+  <form enctype="multipart/form-data">
+    <div class="two-cols">
+      <div>
+        <div class="formDiv">
+          <label for="type">Project Type</label>
+          <select name="type" id="type">
+            <option value="Mission" selected>Mission</option>
+            <option value="MissionPack">Mission Pack</option>
+          </select>
+        </div>
+        <div class="formDiv">
+          <label for="title">Project Title</label>
+          <input type="text" id="title" name="title" />
+        </div>
+        <div class="formDiv">
+          <label for="summary">Project Summary</label>
+          <input type="text" id="summary" name="summary" />
+        </div>
+        <div class="formDiv">
+          <label for="description">Project Description</label>
+          <textarea id="description" name="description" rows="10"></textarea>
+        </div>
+        <div class="formDiv">
+          <label for="credits">Project Credits</label>
+          <textarea id="credits" name="credits" rows="5"></textarea>
+        </div>
+        <div class="formDiv">
+          <label for="trailer">Project Trailer</label>
+          <input type="text" id="trailer" name="trailer" />
+        </div>
+        <div class="formDiv">
+          <label for="original">Project Original</label>
+          <input type="text" id="original" name="original" />
+        </div>
+        <div class="formDiv">
+          <label for="motto">Project Motto</label>
+          <input type="text" id="motto" name="motto" />
+        </div>
+        <div class="formDiv">
+          <label for="music">Project Music</label>
+          <input type="text" id="music" name="music" />
+        </div>
+        <div class="formDiv">
+          <label for="difficulty">Project Difficulty</label>
+          <select name="difficulty" id="difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Normal" selected>Normal</option>
+            <option value="Hard">Hard</option>
+            <option value="Insane">Insane</option>
+          </select>
+        </div>
+        <div class="formDiv">
+          <label for="tags">Project Tags</label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            placeholder="Separate tags by comma"
+          />
+        </div>
+        <div class="formDiv">
+          <label for="mods">Project Mods</label>
+          <input type="checkbox" id="mods" name="mods" />
+        </div>
+        <div class="formDiv mp hidden">
+          <label for="num">Number of Missions</label>
+          <input type="number" id="num" name="num" />
+        </div>
+      </div>
+      <div>
+        <div class="formDiv">
+          <label for="file">Project File</label>
+          <input type="file" id="file" name="file" />
+        </div>
+        <div class="formDiv">
+          <label for="gallery">Project Gallery</label>
+          <input type="file" id="gallery" name="gallery" multiple />
+        </div>
+        <div class="formDiv">
+          <label for="banner">Project Banner</label>
+          <input type="file" id="banner" name="banner" />
+        </div>
+      </div>
+    </div>
+    <div class="buttonContainer">
+      <button type="submit" id="createBtn">Create</button>
+    </div>
+  </form>
+</div>

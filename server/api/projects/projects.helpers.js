@@ -2,6 +2,16 @@ const cron = require("node-cron");
 const Project = require("./projects.model");
 const utils = require("./projects.utils");
 
+function doesContainLinks(str) {
+  return /(http|https):\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?/i.test(str);
+}
+
+function isValidYouTube(url) {
+  return /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/i.test(
+    url
+  );
+}
+
 function resetWeekViews() {
   Project.updateMany({}, { $set: { weekViews: 0 } })
     .then(() => {
@@ -29,54 +39,64 @@ function startTrending() {
 function checkTitle(title) {
   return {
     regex: {
-      valid: utils.isTitleValid(title),
-      msg: "Title must be between 3 and 50 characters",
+      valid: title.length >= 3 && title.length <= 30,
+      msg: "Title must be between 3 and 30 characters",
     },
     links: {
-      valid: utils.doesContainLinks(title),
+      valid: !doesContainLinks(title),
       msg: "Title can't contain links",
     },
   };
 }
 
 function checkFile(file) {
+  const maxSize = 8 * 1024 * 1024;
+  const name = file.filename;
+  const size = file.size;
   return {
     regex: {
-      valid: utils.isFileNameValid(file),
-      msg: "File must be a .rar, .zip or a valid DYOM.dat file",
+      valid: /^DYOM\d\.dat$/i.test(name) || /\.(rar|zip)$/i.test(name),
+      msg: "File must be a .rar, .zip or a valid DYOM .dat file",
     },
     size: {
-      valid: utils.isFileSizeValid(file),
+      valid: size <= maxSize,
       msg: "File must be less than 8MB",
     },
   };
 }
 
 function checkBanner(banner) {
+  const maxSize = 1 * 1024 * 1024;
+  const name = banner.filename;
+  const size = banner.size;
   return {
     regex: {
-      valid: utils.isBannerValid(banner),
+      valid: name.endsWith(".png") || name.endsWith(".jpg"),
       msg: "Banner must be a .png or .jpg file",
     },
     size: {
-      valid: utils.isBannerSizeValid(banner),
-      msg: "Banner must be less than 2MB",
+      valid: size <= maxSize,
+      msg: "Banner must be less than 1MB",
     },
   };
 }
 
 function checkGallery(gallery) {
+  const maxSize = 1 * 1024 * 1024;
   return {
     regex: {
-      valid: utils.isGalleryValid(gallery),
+      valid: gallery.every(
+        (file) =>
+          file.filename.endsWith(".png") || file.filename.endsWith(".jpg")
+      ),
       msg: "Gallery files must be .png or .jpg",
     },
     size: {
-      valid: utils.isGallerySizeValid(gallery),
-      msg: "Gallery files must be less than 2MB",
+      valid: gallery.every((file) => file.size <= maxSize),
+      msg: "Gallery files must be less than 1MB",
     },
     amount: {
-      valid: utils.isGalleryAmountValid(gallery),
+      valid: gallery.length <= 5,
       msg: "You cannot upload more than 5 images on gallery",
     },
   };
@@ -85,11 +105,11 @@ function checkGallery(gallery) {
 function checkSummary(summary) {
   return {
     size: {
-      valid: utils.isSummarySizeValid(summary),
-      msg: "Summary can't be longer than 100 characters",
+      valid: summary.length <= 70,
+      msg: "Summary can't be longer than 70 characters",
     },
     links: {
-      valid: utils.doesContainLinks(summary),
+      valid: !doesContainLinks(summary),
       msg: "Summary can't contain links",
     },
   };
@@ -98,7 +118,7 @@ function checkSummary(summary) {
 function checkDescription(description) {
   return {
     regex: {
-      valid: utils.isDescriptionValid(description),
+      valid: description.length <= 1000,
       msg: "Description can't be longer than 1,000 characters",
     },
   };
@@ -107,7 +127,7 @@ function checkDescription(description) {
 function checkCredits(credits) {
   return {
     regex: {
-      valid: utils.isCreditsValid(credits),
+      valid: credits.length <= 200,
       msg: "Credits can't be longer than 200 characters",
     },
   };
@@ -116,15 +136,15 @@ function checkCredits(credits) {
 function checkTags(tags) {
   return {
     regex: {
-      valid: utils.isTagsValid(tags),
+      valid: tags.every((tag) => /^[a-zA-Z0-9_]+$/.test(tag)),
       msg: "A tag cannot contain spaces and special characters",
     },
     size: {
-      valid: utils.isTagsSizeValid(tags),
-      msg: "Tags can't be longer than 16 characters",
+      valid: tags.every((tag) => tag.length <= 12),
+      msg: "Tags can't be longer than 12 characters",
     },
     amount: {
-      valid: utils.isTagsAmountValid(tags),
+      valid: tags.length <= 5,
       msg: "You cannot add more than 5 tags",
     },
   };
@@ -133,8 +153,56 @@ function checkTags(tags) {
 function checkOriginal(original) {
   return {
     regex: {
-      valid: utils.isOriginalValid(original),
+      valid: original.length <= 70,
       msg: "Original name can't be longer than 70 characters",
+    },
+  };
+}
+
+function checkTrailer(trailer) {
+  return {
+    regex: {
+      valid: isValidYouTube(trailer),
+      msg: "You must insert a valid YouTube URL for the trailer",
+    },
+  };
+}
+
+function checkMotto(motto) {
+  return {
+    regex: {
+      valid: motto.length <= 40,
+      msg: "Motto can't be longer than 40 characters",
+    },
+  };
+}
+
+function checkMusic(music) {
+  return {
+    regex: {
+      valid:
+        /^(?:https?:\/\/)?(?:open\.)?spotify\.com\/track\/([\w-]+)(?:\?.*)?$/i.test(
+          music
+        ),
+      msg: "You must insert a valid Spotify URL for the music theme",
+    },
+  };
+}
+
+function checkDifficulty(difficulty) {
+  return {
+    regex: {
+      valid: /^(Easy|Normal|Hard|Insane)$/.test(difficulty),
+      msg: "Difficulty field is invalid",
+    },
+  };
+}
+
+function checkMods(mods) {
+  return {
+    regex: {
+      valid: /^(?:true|false)$/.test(mods),
+      msg: "Mods field is invalid",
     },
   };
 }
@@ -151,4 +219,9 @@ module.exports = {
   checkCredits,
   checkTags,
   checkOriginal,
+  checkTrailer,
+  checkMotto,
+  checkMusic,
+  checkDifficulty,
+  checkMods,
 };

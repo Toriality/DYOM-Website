@@ -1,12 +1,35 @@
 const { generateJWT } = require("./users.helpers");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
 const User = require("./users.model");
 
 // Get a list of all registered users
-exports.getAllUsers = async (req, res) => {
+exports.listUsers = async (req, res) => {
   try {
-    const users = await User.find({}).select("_id username");
-    res.json(users);
+    const role = req.query.role;
+    const id = req.query.id;
+    const name = new RegExp(req.query.name, "i");
+    const email = req.query.email;
+    const filter = {
+      ...(role && { role }),
+      ...(id && { _id: id }),
+      ...(name && { username: name }),
+      ...(email && { email }),
+    };
+    const totalUsers = await User.countDocuments(filter);
+    const resultsPerPage = req.query.limit || 20;
+    const numberOfPages = Math.ceil(totalUsers / resultsPerPage);
+    const page = Math.min(req.query.page, numberOfPages) || 1;
+
+    const select = ["_id", "username", "email", "role"];
+
+    const users = await User.find(filter)
+      .select(select)
+      .limit(resultsPerPage)
+      .skip(resultsPerPage * (page - 1))
+      .sort({ updatedAt: "desc" });
+
+    res.json({ users, totalUsers });
   } catch (e) {
     console.log(e);
     res.status(500).json({ msg: "Internal server error" });
@@ -28,13 +51,25 @@ exports.getUser = async (req, res) => {
 
     // Return the user based on their id
     const user = await User.findById(req.params.id)
-      .select("-password -email")
-      .populate({ path: "projects", populate: populateSelection })
-      .then((user) => {
-        res.json(user);
-      });
+      .select("-password")
+      .populate({ path: "projects", populate: populateSelection });
 
-    res.json(user);
+    // loop through files inside project folder
+    const userPath = `./public/uploads/${user._id}`;
+    const userFiles = {
+      image: null,
+    };
+    const files = fs.readdirSync(userPath);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const filePath = `${userPath}/${file}`;
+      const stat = fs.statSync(filePath);
+      if (stat.isFile()) {
+        if (file.endsWith(".png") || file.endsWith(".jpg"))
+          userFiles.image = file;
+      }
+    }
+    res.json({ user, userFiles });
   } catch (e) {
     console.log(e);
     res.status(500).json({ msg: "Internal server error" });
@@ -68,43 +103,26 @@ exports.login = async (req, res) => {
 // Handle user registration
 exports.register = async (req, res) => {
   try {
-    const { username, password, email, location, aboutMe } = req.body;
-    let hash, user;
-
-    // Check if avatar were uploaded
-    // TODO: Check on React website if this works
-    const hasAvatar = !!req.file;
-
     // Configure hash and salt
+    let hash;
     try {
       const salt = await bcrypt.genSalt(10);
-      hash = await bcrypt.hash(password, salt);
+      hash = await bcrypt.hash(req.newUser.password, salt);
     } catch (e) {
       throw new Error(`Error configuring hash and/or salt - ${e}`);
     }
+    req.newUser.password = hash;
 
-    // Save user to the database
-    try {
-      const newUser = new User({
-        username,
-        password: hash,
-        email,
-        location,
-        aboutMe,
-        hasAvatar,
-      });
-      user = await newUser.save();
-    } catch (e) {
-      throw new Error(`Error saving user to DB - ${e}`);
-    }
+    const user = await User.create(req.newUser);
 
-    // Move avatar from temp folder to this user's folder
-    try {
-      if (hasAvatar) {
-        await fs.rename(`./uploads/${req.folder}`, `./uploads/${user._id}/`);
+    if (req.imagePath)
+      fs.renameSync(`${req.tempPath}/avatar.${req.imagePath.split(".").pop()}`);
+    if (!fs.existsSync(`${req.destPath}/${user._id}`)) {
+      if (fs.existsSync(req.tempPath)) {
+        fs.renameSync(req.tempPath, `${req.destPath}/${user._id}/`);
+      } else {
+        fs.mkdirSync(`${req.destPath}/${user._id}`, { recursive: true });
       }
-    } catch (e) {
-      throw new Error(`Error moving avatar from temp folder - ${e}`);
     }
 
     // Sign JWT token and return

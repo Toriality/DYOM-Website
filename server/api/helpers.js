@@ -11,7 +11,10 @@ function checkErrors(errors) {
     }
   });
 
-  return errors;
+  const errorsArray = Object.values(errors)
+    .flatMap((obj) => Object.values(obj))
+    .map((obj) => obj.msg);
+  return errorsArray;
 }
 
 module.exports = {

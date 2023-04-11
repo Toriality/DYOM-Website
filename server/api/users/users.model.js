@@ -22,6 +22,11 @@ const userSchema = new Schema(
       type: [Schema.Types.Number],
       ref: "Project",
     },
+    role: {
+      type: String,
+      required: true,
+      default: "User",
+    },
     tutorials: [Schema.Types.ObjectId],
     reviews: [Schema.Types.ObjectId],
     points: { type: Number, default: 0 },
