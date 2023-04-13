@@ -11,13 +11,22 @@ Our primary objective is to recreate the website using the latest and most relia
 ## Screenshots
 
 <details>
-    <summary>Click here to show</summary>
+<summary>Click here to show</summary>
+    
+![image1](https://user-images.githubusercontent.com/38092988/215366447-b8047cba-b15e-4a75-ae6f-e20a2975db88.gif)
+![image2](https://user-images.githubusercontent.com/38092988/218580120-e6d05271-a266-4656-9e4b-ddf31e612804.gif)
+![image3](https://user-images.githubusercontent.com/38092988/218580146-1e229299-67cb-41d0-afea-43a4bee8cec5.gif)
+![image4](https://user-images.githubusercontent.com/38092988/218580156-9ec47fc8-1db8-4798-91de-bce18fb810e2.png)
+![image5](https://user-images.githubusercontent.com/38092988/216808909-fe07ba48-9424-41c1-b706-9cf1306eb71b.gif)
+![image6](https://user-images.githubusercontent.com/38092988/231892165-b2f906f5-f5a2-4326-9021-b25a9404b139.png)
+
+
 </details>
 
 ## Status
 
-**Front-end: <span style="color:#f55">Paused</color>**<br>
-**Back-end: <span style="color:#ff5">Work In Progress</span>**
+**Front-end: Paused**<br>
+**Back-end: Work In Progress**
 
 Currently, we're working on developing the back-end of the website, while the front-end development is temporarily paused.
 
