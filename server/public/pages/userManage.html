@@ -1,0 +1,92 @@
+<div>
+  <h1>DYOM User Management</h1>
+  <div class="two-cols">
+    <div>
+      <p>User List</p>
+      <div id="userList"></div>
+      <p>Search filters</p>
+      <form id="searchForm">
+        <div>
+          <div class="formDiv">
+            <label for="roleFilter">Role filter</label>
+            <select name="role" id="roleFilter">
+              <option value="User" selected>User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="formDiv">
+            <label for="filterName">Search by name</label>
+            <input type="text" id="filterName" name="name" />
+          </div>
+          <div class="formDiv">
+            <label for="filterEmail">Search by email</label>
+            <input type="email" id="filterEmail" name="email" />
+          </div>
+          <div class="formDiv">
+            <label for="filterId">Search by ID</label>
+            <input type="number" id="filterId" name="id" />
+          </div>
+          <div class="formDiv">
+            <label for="filterLimit">Limit</label>
+            <input type="number" id="filterLimit" name="limit" />
+          </div>
+          <div class="formDiv">
+            <label for="page">Page</label>
+            <select name="page" id="page"></select>
+          </div>
+          <p>Total users: <span id="totalUsers">--</span></p>
+          <button type="submit" id="search">Search</button>
+        </div>
+      </form>
+    </div>
+    <div>
+      <p>User Settings</p>
+      <div>
+        <p>ID: <span id="userId">None selected</span></p>
+        <form id="userForm">
+          <div style="display: flex; gap: 4rem">
+            <div>
+              <div class="formDiv">
+                <label for="role">Role</label>
+                <select name="role" id="role">
+                  <option value="User" selected>User</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
+              <div class="formDiv">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" />
+              </div>
+              <div class="formDiv">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" />
+              </div>
+              <div class="formDiv">
+                <label for="aboutMe">About Me</label>
+                <textarea id="aboutMe" name="aboutMe" rows="10"></textarea>
+              </div>
+              <div class="formDiv">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" />
+              </div>
+            </div>
+            <div>
+              <div class="formDiv">
+                <label for="image">Profile Picture</label>
+                <input type="file" id="image" name="image" />
+              </div>
+              <div class="formDiv">
+                <label for="removeImage">Remove profile picture</label>
+                <input type="checkbox" id="removeImage" name="removeImage" />
+              </div>
+              <div>
+                <p>Profile picture:</p>
+                <div id="imageContainer"></div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

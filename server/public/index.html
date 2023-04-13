@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="index.css" />
+    <title>DYOM</title>
+  </head>
+  <body>
+    <div id="root">
+      <div>
+        <h1>DYOM - Design Your Own Mission</h1>
+        <h2>Please wait...</h2>
+      </div>
+    </div>
+    <div id="back">back</div>
+  </body>
+
+  <script type="module">
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get("page");
+    const root = document.getElementById("root");
+    const token = localStorage.getItem("token");
+    const back = document.getElementById("back");
+    back.addEventListener("click", () => {
+      window.location.href = "/";
+    });
+
+    window.onload = async () => {
+      if (token) {
+        try {
+          const response = await axios.get("/api/users/profile", {
+            headers: {
+              "x-auth-token": token,
+            },
+          });
+          checkPage(page);
+        } catch (error) {
+          throwError(error);
+          localStorage.removeItem("token");
+          await initLogin();
+        }
+      } else {
+        await initLogin();
+      }
+    };
+
+    async function checkPage(page) {
+      switch (page) {
+        case "projects":
+          return await initProjectManage();
+        case "create":
+          return await initProjectCreate();
+        case "users":
+          return await initUserManage();
+        case "register":
+          return await initRegister();
+        default:
+          return await initPanel();
+      }
+    }
+
+    function handlePageChange(page) {
+      if (!page) urlParams.delete("page");
+      else urlParams.set("page", page);
+      const updatedUrl = `${window.location.pathname}?${urlParams}`;
+      window.history.replaceState(null, "", updatedUrl);
+    }
+
+    function throwError(error) {
+      const errorDiv = document.createElement("div");
+      errorDiv.id = "error";
+      if (!error.response) {
+        errorDiv.innerHTML = `<h2>${error}</h2>`;
+      } else if (typeof error.response.data.msg === "string") {
+        errorDiv.innerHTML = `<h2>${error.response?.data.msg}</h2>`;
+      } else {
+        const errorList = document.createElement("ul");
+        error.response.data.forEach((err) => {
+          const errorItem = document.createElement("li");
+          errorItem.innerHTML = err;
+          errorList.appendChild(errorItem);
+        });
+        errorDiv.appendChild(errorList);
+      }
+      document.body.appendChild(errorDiv);
+      console.log(error);
+    }
+
+    async function initLogin() {
+      try {
+        const login = await fetch("/pages/login.html");
+        root.innerHTML = await login.text();
+        handlePageChange();
+        const loginBtn = document.getElementById("button");
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
+        loginBtn.addEventListener("click", async () => {
+          const response = await axios.post("/api/users/login", {
+            username: username.value,
+            password: password.value,
+          });
+          localStorage.setItem("token", response.data.token);
+          await initPanel();
+        });
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function initPanel() {
+      try {
+        const panel = await fetch("/pages/panel.html");
+        root.innerHTML = await panel.text();
+        handlePageChange();
+        const projectManageBtn = document.getElementById("projectManageBtn");
+        const projectCreateBtn = document.getElementById("projectCreateBtn");
+        const userManageBtn = document.getElementById("userManageBtn");
+        const userCreateBtn = document.getElementById("userCreateBtn");
+        projectManageBtn.addEventListener("click", async () => {
+          await initProjectManage();
+        });
+        projectCreateBtn.addEventListener("click", async () => {
+          await initProjectCreate();
+        });
+        userManageBtn.addEventListener("click", async () => {
+          await initUserManage();
+        });
+        userCreateBtn.addEventListener("click", async () => {
+          await initRegister();
+        });
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function initProjectCreate() {
+      try {
+        const projectCreate = await fetch("/pages/projectCreate.html");
+        root.innerHTML = await projectCreate.text();
+        handlePageChange("create");
+
+        const type = document.getElementById("type");
+        type.addEventListener("change", () => {
+          const mp = document.querySelectorAll(".mp");
+          if (type.value === "Mission")
+            Array.from(mp).forEach((mp) => mp.classList.add("hidden"));
+          else Array.from(mp).forEach((mp) => mp.classList.remove("hidden"));
+        });
+
+        const form = document.querySelector("form");
+        form.addEventListener("submit", async (event) => {
+          try {
+            event.preventDefault();
+            const formData = new FormData(form);
+            formData.set("mods", document.getElementById("mods").checked);
+            const response = await axios.post("/api/projects/add", formData, {
+              headers: {
+                "x-auth-token": token,
+              },
+            });
+          } catch (error) {
+            throwError(error);
+          }
+        });
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function initProjectManage() {
+      try {
+        const projectManage = await fetch("/pages/projectManage.html");
+        root.innerHTML = await projectManage.text();
+        handlePageChange("projects");
+        let projects = await loadProjectList();
+
+        const projectId = document.getElementById("projectId");
+        const saveProjectBtn = document.getElementById("saveProjectBtn");
+        const copyProjectBtn = document.getElementById("copyProjectBtn");
+        const deleteProjectBtn = document.getElementById("deleteProjectBtn");
+
+        saveProjectBtn.addEventListener("click", async () => {
+          await saveProject(projectId.innerHTML);
+        });
+        copyProjectBtn.addEventListener("click", async () => {
+          await copyProject(projectId.innerHTML);
+        });
+        deleteProjectBtn.addEventListener("click", async () => {
+          await deleteProject(projectId.innerHTML);
+        });
+
+        const searchForm = document.getElementById("searchForm");
+        searchForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const formData = new FormData(searchForm);
+          projects = await loadProjectList(
+            formData.get("type"),
+            formData.get("limit"),
+            formData.get("page"),
+            formData.get("title"),
+            formData.get("author"),
+            formData.get("id")
+          );
+        });
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function initRegister() {
+      try {
+        const register = await fetch("/pages/register.html");
+        root.innerHTML = await register.text();
+        handlePageChange("register");
+
+        const form = document.getElementById("registerForm");
+        form.addEventListener("submit", async (event) => {
+          try {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const response = await axios.post("/api/users/register", formData);
+          } catch (error) {
+            throwError(error);
+          }
+        });
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function initUserManage() {
+      try {
+        const userManage = await fetch("/pages/userManage.html");
+        root.innerHTML = await userManage.text();
+        handlePageChange("users");
+        let users = await loadUserList();
+        // const userId = document.getElementById("userId");
+        // const saveUserBtn = document.getElementById("saveUserBtn");
+        // const copyUserBtn = document.getElementById("copyUserBtn");
+        // const deleteUserBtn = document.getElementById("deleteUserBtn");
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function saveProject(id) {
+      try {
+        const form = document.getElementById("projectForm");
+        const formData = new FormData(form);
+        formData.set("mods", document.getElementById("mods").checked);
+        const response = await axios.patch(
+          `/api/projects/update/${id}`,
+          formData,
+          {
+            headers: {
+              "x-auth-token": token,
+            },
+          }
+        );
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function copyProject(id) {
+      try {
+        const project = await axios.get(`/api/projects/view/${id}`);
+        await axios.post(
+          `/api/projects/copy/`,
+          { id },
+          {
+            headers: {
+              "x-auth-token": token,
+            },
+          }
+        );
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function deleteProject(id) {
+      try {
+        const response = await axios.delete(`/api/projects/delete/${id}`, {
+          headers: {
+            "x-auth-token": token,
+          },
+        });
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function loadProjectList(
+      type = "Mission",
+      limit,
+      page,
+      title,
+      author,
+      id
+    ) {
+      try {
+        const url = new URL(
+          `/api/projects/list/${type}`,
+          window.location.origin
+        );
+        if (title) url.searchParams.set("title", title);
+        if (author) url.searchParams.set("author", author);
+        if (limit) url.searchParams.set("limit", limit);
+        if (page) url.searchParams.set("page", page);
+        if (id) url.searchParams.set("id", id);
+        const projects = await axios.get(url);
+        const projectList = document.getElementById("projectList");
+        projectList.innerHTML = "";
+        const totalProjects = document.getElementById("totalProjects");
+        totalProjects.innerHTML = projects.data.totalProjects;
+        const pageSelect = document.getElementById("page");
+        pageSelect.innerHTML = "";
+        const numOfPages = Math.ceil(
+          projects.data.totalProjects / (limit || 20)
+        );
+        for (let i = 1; i <= numOfPages; i++) {
+          const option = document.createElement("option");
+          option.value = i;
+          option.text = i;
+          if (i == page) option.selected = true;
+          if (page > numOfPages && i == numOfPages) option.selected = true;
+          pageSelect.appendChild(option);
+        }
+        Array.from(projects.data.projects).forEach((project) => {
+          const projectDiv = document.createElement("div");
+          projectDiv.classList.add("project");
+          projectDiv.innerHTML = `${project._id}: ${project.title}`;
+          projectList.appendChild(projectDiv);
+          projectDiv.addEventListener("click", async () => {
+            document.getElementById("projectId").innerHTML = project._id;
+            document.getElementById("authorId").innerHTML = project.author._id;
+            document.querySelectorAll("button").forEach((button) => {
+              button.disabled = false;
+            });
+            projectList.querySelectorAll(".project").forEach((projectDiv) => {
+              projectDiv.classList.remove("selected");
+            });
+            projectDiv.classList.add("selected");
+            const selectedProject = await axios.get(
+              `/api/projects/view/${project._id}`
+            );
+            const formFields = document.querySelectorAll("#projectForm [name]");
+
+            formFields.forEach((formField) => {
+              const fieldName = formField.name;
+              const selectedField = selectedProject.data.project[fieldName];
+              const selectedFile = selectedProject.data.projectFiles[fieldName];
+              if (formField.type === "select-one") {
+                const option = formField.querySelector(
+                  `option[value='${selectedField}']`
+                );
+                if (option) {
+                  option.selected = true;
+                }
+              } else if (formField.type === "checkbox") {
+                formField.checked = selectedField;
+              } else if (formField.type === "file") {
+                formField.value = "";
+              } else {
+                formField.value = selectedField;
+              }
+            });
+
+            const fileContainer = document.getElementById("fileContainer");
+            const galleryContainer =
+              document.getElementById("galleryContainer");
+            const bannerContainer = document.getElementById("bannerContainer");
+            const data = selectedProject.data.projectFiles;
+            const dyomRegex = new RegExp(/^file\.(zip|rar|dat)$/);
+            const path = `${window.location.origin}/uploads/${selectedProject.data.project.author._id}/${selectedProject.data.project.type}s/${selectedProject.data.project._id}`;
+            fileContainer.innerHTML = "";
+            galleryContainer.innerHTML = "";
+            bannerContainer.innerHTML = "";
+
+            for (const key in data) {
+              if (!data[key]) continue;
+              if (Array.isArray(data[key])) {
+                // If the value is an array, loop through it and create <img> elements with the specified properties
+                const gallery = data[key];
+                gallery.forEach((file, index) => {
+                  const img = document.createElement("img");
+                  img.setAttribute("id", `${key}_${index}`);
+                  img.setAttribute("src", `${path}/${file}`);
+                  galleryContainer.appendChild(img);
+                });
+              } else if (dyomRegex.test(data[key])) {
+                // If the value is a file, create a <a> element with the specified properties
+                const a = document.createElement("a");
+                a.setAttribute("href", `${path}/${data[key]}`);
+                a.setAttribute("download", `${data[key]}`);
+                a.innerHTML = data[key];
+                fileContainer.appendChild(a);
+              } else {
+                // If the value is a string, create a single <img> element with the specified properties
+                const img = document.createElement("img");
+                img.setAttribute("id", key);
+                img.setAttribute("src", `${path}/${data[key]}`);
+                bannerContainer.appendChild(img);
+              }
+            }
+
+            console.log(selectedProject.data.projectFiles);
+          });
+        });
+        return projects;
+      } catch (error) {
+        throwError(error);
+      }
+    }
+
+    async function loadUserList(role = "User", limit, page, name, email, id) {
+      try {
+        const url = new URL(`/api/users/list`, window.location.origin);
+        if (name) url.searchParams.set("name", name);
+        if (email) url.searchParams.set("email", email);
+        if (role) url.searchParams.set("role", role);
+        if (limit) url.searchParams.set("limit", limit);
+        if (page) url.searchParams.set("page", page);
+        if (id) url.searchParams.set("id", id);
+        const users = await axios.get(url);
+        const userList = document.getElementById("userList");
+        userList.innerHTML = "";
+        const totalUsers = document.getElementById("totalUsers");
+        totalUsers.innerHTML = users.data.totalUsers;
+        const pageSelect = document.getElementById("page");
+        pageSelect.innerHTML = "";
+        const numOfPages = Math.ceil(users.data.totalUsers / (limit || 20));
+        for (let i = 1; i <= numOfPages; i++) {
+          const option = document.createElement("option");
+          option.value = i;
+          option.text = i;
+          if (i == page) option.selected = true;
+          if (page > numOfPages && i == numOfPages) option.selected = true;
+          pageSelect.appendChild(option);
+        }
+        Array.from(users.data.users).forEach((user) => {
+          const userDiv = document.createElement("div");
+          userDiv.classList.add("user");
+          userDiv.innerHTML = `${user._id}: ${user.username}`;
+          userList.appendChild(userDiv);
+          userDiv.addEventListener("click", async () => {
+            document.getElementById("userId").innerHTML = user._id;
+            document.querySelectorAll("button").forEach((button) => {
+              button.disabled = false;
+            });
+            userList.querySelectorAll(".user").forEach((userDiv) => {
+              userDiv.classList.remove("selected");
+            });
+            userDiv.classList.add("selected");
+            const selectedUser = await axios.get(`/api/users/id/${user._id}`);
+            const formFields = document.querySelectorAll("#userForm [name]");
+            formFields.forEach((formField) => {
+              const fieldName = formField.name;
+              const selectedField = selectedUser.data.user[fieldName];
+              const selectedFile = selectedUser.data.userFiles[fieldName];
+              if (formField.type === "select-one") {
+                const option = formField.querySelector(
+                  `option[value='${selectedField}']`
+                );
+                if (option) {
+                  option.selected = true;
+                }
+              } else if (formField.type === "file") {
+                formField.value = "";
+              } else {
+                formField.value = selectedField;
+              }
+            });
+
+            const imageContainer = document.getElementById("imageContainer");
+            console.log(selectedUser);
+            const data = selectedUser.data.userFiles;
+            const path = `${window.location.origin}/uploads/${user._id}`;
+            imageContainer.innerHTML = "";
+
+            for (const key in data) {
+              if (!data[key]) continue;
+              const img = document.createElement("img");
+              img.setAttribute("id", key);
+              img.setAttribute("src", `${path}/${data[key]}`);
+              imageContainer.appendChild(img);
+            }
+          });
+        });
+      } catch (error) {
+        throwError(error);
+      }
+    }
+  </script>
+</html>
