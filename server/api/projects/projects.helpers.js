@@ -1,6 +1,7 @@
 const cron = require("node-cron");
 const Project = require("./projects.model");
 const utils = require("./projects.utils");
+const fs = require("fs");
 
 function doesContainLinks(str) {
   return /(http|https):\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?/i.test(str);
@@ -53,6 +54,20 @@ function checkFile(file) {
   const maxSize = 8 * 1024 * 1024;
   const name = file.filename;
   const size = file.size;
+  const dyom = () => {
+    console.log(file);
+    if (name.endsWith(".dat")) {
+      const fileData = fs.openSync(file.path, "r");
+      const buf = Buffer.alloc(4);
+      fs.readSync(fileData, buf, 0, 4, 0);
+      const num = buf.readUInt32LE(0);
+      fs.closeSync(fileData);
+      return num === 6;
+    } else {
+      return false;
+    }
+  };
+
   return {
     regex: {
       valid: /^DYOM\d\.dat$/i.test(name) || /\.(rar|zip)$/i.test(name),
@@ -61,6 +76,10 @@ function checkFile(file) {
     size: {
       valid: size <= maxSize,
       msg: "File must be less than 8MB",
+    },
+    dyom: {
+      valid: dyom(),
+      msg: "File must be a valid DYOM .dat file",
     },
   };
 }
@@ -86,8 +105,7 @@ function checkGallery(gallery) {
   return {
     regex: {
       valid: gallery.every(
-        (file) =>
-          file.filename.endsWith(".png") || file.filename.endsWith(".jpg")
+        (file) => file.filename.endsWith(".png") || file.filename.endsWith(".jpg")
       ),
       msg: "Gallery files must be .png or .jpg",
     },
@@ -180,10 +198,9 @@ function checkMotto(motto) {
 function checkMusic(music) {
   return {
     regex: {
-      valid:
-        /^(?:https?:\/\/)?(?:open\.)?spotify\.com\/track\/([\w-]+)(?:\?.*)?$/i.test(
-          music
-        ),
+      valid: /^(?:https?:\/\/)?(?:open\.)?spotify\.com\/track\/([\w-]+)(?:\?.*)?$/i.test(
+        music
+      ),
       msg: "You must insert a valid Spotify URL for the music theme",
     },
   };

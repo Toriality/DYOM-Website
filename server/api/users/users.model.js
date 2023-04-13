@@ -4,6 +4,7 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const userSchema = new Schema(
   {
+    // Main information
     username: {
       type: String,
       required: true,
@@ -18,26 +19,34 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    aboutMe: { type: String },
+    location: { type: String },
+    hasAvatar: { type: Boolean },
+
+    // Stats
+    stats: [{ type: Schema.Types.ObjectId, ref: "Stats" }],
+
+    // User-made contents
     projects: {
       type: [Schema.Types.Number],
       ref: "Project",
     },
+    tutorials: [Schema.Types.ObjectId],
+    reviews: [Schema.Types.ObjectId],
+
+    // Front-end features
+    pinnedProject: { type: Schema.Types.ObjectId },
+    pinnedAward: { type: Schema.Types.ObjectId },
+    awards: { type: [Schema.Types.Mixed] },
+
+    // Access and rank control
     role: {
       type: String,
       required: true,
       default: "User",
     },
-    tutorials: [Schema.Types.ObjectId],
-    reviews: [Schema.Types.ObjectId],
-    points: { type: Number, default: 0 },
-    lastVisit: { type: Date, required: true, default: Date.now },
     rank: { type: Number, required: true, default: 0 },
-    awards: { type: [Schema.Types.Mixed] },
-    aboutMe: { type: String },
-    pinnedProject: { type: Schema.Types.ObjectId },
-    pinnedAward: { type: Schema.Types.ObjectId },
-    hasAvatar: { type: Boolean },
-    location: { type: String },
+    points: { type: Number, default: 0 },
   },
   {
     _id: false,

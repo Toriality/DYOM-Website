@@ -4,6 +4,7 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const projectSchema = new Schema(
   {
+    // Main information
     title: {
       type: String,
       required: true,
@@ -14,12 +15,7 @@ const projectSchema = new Schema(
       required: true,
     },
     summary: { type: String },
-    reviews: {
-      type: [Schema.Types.ObjectId],
-      ref: "Review",
-    },
     description: { type: String },
-    awards: { type: [Schema.Types.Mixed] },
     banner: { type: Boolean },
     gallery: { type: Boolean },
     tags: { type: [String] },
@@ -30,6 +26,18 @@ const projectSchema = new Schema(
     music: { type: String },
     difficulty: { type: String },
     mods: { type: Boolean },
+
+    // Front-end features
+    awards: { type: [Schema.Types.Mixed] },
+
+    // User-interactions
+    reviews: {
+      type: [Schema.Types.ObjectId],
+      ref: "Review",
+    },
+
+    // Statistics
+    stats: [{ type: Schema.Types.ObjectId, ref: "Stats" }],
     views: { type: Number, default: 0 },
     weekViews: { type: Number, default: 0 },
     downloads: { type: Number, default: 0 },
