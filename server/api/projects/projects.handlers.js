@@ -1,6 +1,8 @@
 const Project = require("./projects.model");
 const User = require("../users").model;
 const fs = require("fs");
+const crc = require("crc");
+const { moveFiles } = require("../helpers.js");
 
 const dyomRegex = new RegExp(/^file\.(zip|rar|dat)$/);
 const galleryRegex = new RegExp(/^gallery_\d\.(jpg|png)$/);
@@ -72,9 +74,7 @@ exports.getSingle = async (req, res) => {
       select = ["-awards", "-reviews"];
     }
 
-    const project = await Project.findOne({ _id: id })
-      .populate(populate)
-      .select(select);
+    const project = await Project.findOne({ _id: id }).populate(populate).select(select);
 
     if (!req.cookies[cookieName]) {
       await project.updateOne({ $inc: { views: 1, weekViews: 1 } }).exec();
@@ -106,6 +106,41 @@ exports.getSingle = async (req, res) => {
   }
 };
 
+exports.getCRC = async (req, res) => {
+  try {
+    const project = await Project.findOne({ crc: req.params.crc });
+    if (!project)
+      return res.status(404).json({ msg: "No projects found with this CRC!" });
+    res.json(project);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
+exports.getRandom = async (req, res) => {
+  try {
+    const PATH = `./public/uploads/missions/`;
+    const type = req.params.type;
+    const slot = req.query.slot;
+
+    const numOfProjects = await Project.countDocuments({ type: type });
+
+    const randomProject = Math.floor(Math.random() * numOfProjects);
+    const project = await Project.findOne({ type })
+      .sort({ updatedAt: "desc" })
+      .skip(randomProject);
+
+    const randomMission = Math.floor(Math.random() * project.missions.length);
+    const mission = project.missions[randomMission];
+
+    res.download(PATH + mission.file, `DYOM${slot}.dat`);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
 // Get trending projects
 exports.getTrending = async (req, res) => {
   try {
@@ -126,64 +161,20 @@ exports.getTrending = async (req, res) => {
 // Add new project
 exports.addProject = async (req, res) => {
   try {
-    // const tempPath = `./public/uploads/${req.user.id}/temp/${req.project}`;
-    // const destPath = `./public/uploads/${req.user.id}/${req.body.type}s`;
-    // const bannerPath = req.files.banner
-    //   ? req.files.banner[0].originalname
-    //   : null;
-    // const galleryPath = req.files.gallery
-    //   ? req.files.gallery.map((f) => f.originalname)
-    //   : null;
-    // const filePath = req.files.file[0].originalname;
+    moveFiles([
+      { name: req.newProject.missions.map((mission) => mission.file), to: "missions" },
+      {
+        name: req.newProject.missions
+          .flatMap((mission) => mission.sd || [])
+          .map((sd) => sd.file),
+        to: "audio",
+      },
+      { name: req.newProject.banner, to: "images" },
+      { name: req.newProject.gallery, to: "images" },
+    ]);
 
-    // const newProject = {
-    //   type: req.body.type,
-    //   title: req.body.title,
-    //   author: req.user.id,
-    //   summary: req.body.summary,
-    //   description: req.body.description,
-    //   banner: !!req.files.banner,
-    //   gallery: !!req.files.gallery,
-    //   trailer: req.body.trailer,
-    //   credits: req.body.credits,
-    //   tags: req.body.tags ? req.body.tags.split(",") : [],
-    //   original: req.body.original,
-    //   motto: req.body.motto,
-    //   music: req.body.music,
-    //   difficulty: req.body.difficulty,
-    //   mods: req.body.mods,
-    //   num: req.body.num,
-    // };
     const project = await Project.create(req.newProject);
-
-    // Start renaming files
-    fs.renameSync(
-      `${req.tempPath}/${req.filePath}`,
-      `${req.tempPath}/file.${req.filePath.split(".").pop()}`
-    );
-    if (req.bannerPath) {
-      fs.renameSync(
-        `${req.tempPath}/${req.bannerPath}`,
-        `${req.tempPath}/banner.${req.bannerPath.split(".").pop()}`
-      );
-    }
-    if (req.galleryPath) {
-      req.galleryPath.forEach((img, i) => {
-        fs.renameSync(
-          `${req.tempPath}/${img}`,
-          `${req.tempPath}/gallery_${i}.${img.split(".").pop()}`
-        );
-      });
-    }
-    if (!fs.existsSync(req.destPath)) {
-      fs.mkdirSync(req.destPath, { recursive: true });
-    }
-    fs.renameSync(req.tempPath, `${req.destPath}/${project._id}`);
-
-    await User.updateOne(
-      { _id: req.user.id },
-      { $push: { projects: project._id } }
-    );
+    await User.updateOne({ _id: req.user.id }, { $push: { projects: project._id } });
 
     res.json(project);
   } catch (err) {
@@ -208,7 +199,6 @@ exports.updateProject = async (req, res) => {
     if (req.body.removeGallery) findFileAndDelete(galleryRegex, projectPath);
 
     if (req.filePath) {
-      console.log("yes");
       findFileAndDelete(dyomRegex, projectPath);
       fs.rmSync(`${projectPath}/${req.filePath}`, { force: true });
       fs.renameSync(
@@ -276,10 +266,7 @@ exports.deleteProject = async (req, res) => {
     const projectPath = `./public/uploads/${req.user.id}/${project.type}s/${project._id}`;
     fs.rmSync(projectPath, { force: true, recursive: true });
     await Project.deleteOne({ _id: req.params.id });
-    await User.updateOne(
-      { _id: req.user.id },
-      { $pull: { projects: req.params.id } }
-    );
+    await User.updateOne({ _id: req.user.id }, { $pull: { projects: req.params.id } });
     res.json({ msg: "Project deleted" });
   } catch (err) {
     console.log(err);
@@ -298,6 +285,16 @@ function findFileAndDelete(fileRegex, folder) {
         fs.rmSync(filePath, { force: true });
       }
     }
+  }
+}
+
+async function createCRC(filePath) {
+  try {
+    const fileContent = fs.readFileSync(filePath);
+    const crcValue = crc.crc32(fileContent);
+    return crcValue;
+  } catch (err) {
+    throw err;
   }
 }
 

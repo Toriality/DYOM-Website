@@ -2,42 +2,69 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
+const fileSchema = new Schema(
+  {
+    filename: { type: String, required: true },
+    file: { type: String, required: true },
+  },
+  {
+    _id: false,
+  }
+);
+
+const missionSchema = new Schema(
+  {
+    title: { type: String, required: true },
+    file: { type: String, required: true },
+    sd: [fileSchema],
+    summary: { type: String },
+    stats: [{ type: Schema.Types.ObjectId, ref: "Stats" }],
+  },
+  {
+    _id: false,
+  }
+);
+
 const projectSchema = new Schema(
   {
     // Main information
-    title: {
-      type: String,
+    type: {
+      type: Number,
+      enum: [0, 1, 2], // 0: Single Mission, 1: Mission Pack, 2: Storyline
       required: true,
     },
-    author: {
-      type: Schema.Types.Number,
-      ref: "User",
-      required: true,
-    },
+    title: { type: String, required: true },
+    author: { type: Schema.Types.Number, ref: "User", required: true },
+
+    // Optional information
     summary: { type: String },
     description: { type: String },
-    banner: { type: Boolean },
-    gallery: { type: Boolean },
     tags: { type: [String] },
     trailer: { type: String },
     credits: { type: String },
-    original: { type: String },
     motto: { type: String },
     music: { type: String },
-    difficulty: { type: String },
     mods: { type: Boolean },
+    difficulty: {
+      type: Number,
+      enum: [0, 1, 2, 3], // 0: Easy, 1: Normal, 2: Hard, 3: Insane
+    },
+
+    // Missions
+    missions: [missionSchema],
+
+    // CRC
+    banner: { type: String },
+    gallery: { type: [String] },
+    modloader: [fileSchema],
 
     // Front-end features
     awards: { type: [Schema.Types.Mixed] },
 
     // User-interactions
-    reviews: {
-      type: [Schema.Types.ObjectId],
-      ref: "Review",
-    },
+    reviews: { type: [Schema.Types.ObjectId], ref: "Review" },
 
     // Statistics
-    stats: [{ type: Schema.Types.ObjectId, ref: "Stats" }],
     views: { type: Number, default: 0 },
     weekViews: { type: Number, default: 0 },
     downloads: { type: Number, default: 0 },
@@ -45,22 +72,10 @@ const projectSchema = new Schema(
   {
     _id: false,
     timestamps: true,
-    discriminatorKey: "type",
   }
 );
 
 projectSchema.plugin(AutoIncrement, { id: "project_seq", start_seq: 0 });
 const Project = mongoose.model("Project", projectSchema);
-
-const missionPackSchema = new Schema({
-  num: { type: Number, default: 1 },
-});
-
-const missionSchema = new Schema({
-  // Mission specific fields
-});
-
-Project.discriminator("Mission", missionSchema);
-Project.discriminator("MissionPack", missionPackSchema);
 
 module.exports = Project;

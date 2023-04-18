@@ -51,66 +51,65 @@ function checkTitle(title) {
 }
 
 function checkFile(file) {
-  const maxSize = 8 * 1024 * 1024;
-  const name = file.filename;
+  const MAX_SIZE = 8 * 1024 * 1024;
+  const DYOM_BYTES = 6;
+
+  const originalName = file.originalname;
   const size = file.size;
-  const dyom = () => {
-    console.log(file);
-    if (name.endsWith(".dat")) {
-      const fileData = fs.openSync(file.path, "r");
-      const buf = Buffer.alloc(4);
-      fs.readSync(fileData, buf, 0, 4, 0);
-      const num = buf.readUInt32LE(0);
-      fs.closeSync(fileData);
-      return num === 6;
-    } else {
-      return false;
-    }
+
+  const isDYOM = () => {
+    if (!originalName.endsWith(".dat")) return false;
+
+    const fileData = fs.openSync(file.path, "r");
+    const buf = Buffer.alloc(4);
+    fs.readSync(fileData, buf, 0, 4, 0);
+    const num = buf.readUInt32LE(0);
+    fs.closeSync(fileData);
+    return num === 6;
   };
 
   return {
     regex: {
-      valid: /^DYOM\d\.dat$/i.test(name) || /\.(rar|zip)$/i.test(name),
-      msg: "File must be a .rar, .zip or a valid DYOM .dat file",
+      valid: originalName.endsWith(".rar") || originalName.endsWith(".zip") || isDYOM(),
+      msg: "File must be a .rar, .zip or a valid DYOM file",
     },
     size: {
       valid: size <= maxSize,
       msg: "File must be less than 8MB",
     },
-    dyom: {
-      valid: dyom(),
-      msg: "File must be a valid DYOM .dat file",
-    },
   };
 }
 
 function checkBanner(banner) {
-  const maxSize = 1 * 1024 * 1024;
-  const name = banner.filename;
+  const MAX_SIZE = 1 * 1024 * 1024;
+
+  const originalName = banner.originalname;
   const size = banner.size;
+
   return {
     regex: {
-      valid: name.endsWith(".png") || name.endsWith(".jpg"),
+      valid: originalName.endsWith(".png") || originalName.endsWith(".jpg"),
       msg: "Banner must be a .png or .jpg file",
     },
     size: {
-      valid: size <= maxSize,
+      valid: size <= MAX_SIZE,
       msg: "Banner must be less than 1MB",
     },
   };
 }
 
 function checkGallery(gallery) {
-  const maxSize = 1 * 1024 * 1024;
+  const MAX_SIZE = 1 * 1024 * 1024;
+
   return {
     regex: {
       valid: gallery.every(
-        (file) => file.filename.endsWith(".png") || file.filename.endsWith(".jpg")
+        (file) => file.originalname.endsWith(".png") || file.originalname.endsWith(".jpg")
       ),
       msg: "Gallery files must be .png or .jpg",
     },
     size: {
-      valid: gallery.every((file) => file.size <= maxSize),
+      valid: gallery.every((file) => file.size <= MAX_SIZE),
       msg: "Gallery files must be less than 1MB",
     },
     amount: {

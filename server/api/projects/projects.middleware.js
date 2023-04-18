@@ -1,30 +1,41 @@
-const createStorage = require("../../middleware/upload");
+const { createStorage, createFileFilter } = require("../../middleware/upload");
 const multer = require("multer");
 const helpers = require("./projects.helpers");
 const { checkErrors } = require("../helpers");
 const Project = require("./projects.model");
+const crc = require("crc");
+const fs = require("fs");
 
 function uploadFiles(req, res, next) {
   try {
-    const { id } = req.user;
-    const projectFolder = `new_project-${Math.random().toString(36).slice(-6)}`;
+    const storage = createStorage();
 
-    const storage = createStorage(
-      `./public/uploads/${id}/temp/${projectFolder}`,
-      (file) => file.originalname
-    );
+    const fields = [];
+    for (let i = 1; i <= 8; i++) {
+      fields.push({
+        name: `mission${i}_file`,
+        extensions: [".dat"],
+        mimetype: ["application/octet-stream"],
+        maxCount: 1,
+      });
+      fields.push({ name: `mission${i}_sd`, maxCount: 105 });
+    }
+    fields.push({ name: "banner", maxCount: 1 });
+    fields.push({ name: "gallery", maxCount: 5 });
+    fields.push({ name: "modloader", maxCount: 100 });
 
-    const upload = multer({ storage }).fields([
-      { name: "file" },
-      { name: "banner" },
-      { name: "gallery" },
-    ]);
+    const fileFilter = createFileFilter(fields);
+
+    const limits = {
+      fileSize: 100 * 1024 * 1024, // 100MB
+    };
+
+    const upload = multer({ storage, fileFilter, limits }).fields(fields);
 
     upload(req, res, (err) => {
       if (err) {
         return res.status(400).json({ msg: err.message });
       } else {
-        req.projectFolder = projectFolder;
         next();
       }
     });
@@ -34,10 +45,70 @@ function uploadFiles(req, res, next) {
   }
 }
 
+async function validateFiles(req, res, next) {
+  const DYOM_NUM = 6;
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+  const MAX_BANNER_SIZE = 1 * 1024 * 1024; // 1MB
+  const MAX_GALLERY_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_MODS_SIZE = 2 * 1024 * 1024; // 2MB
+  const MAX_SD_SIZE = 2 * 1024 * 1024; // 2MB
+
+  for (i = 1; i <= 8; i++) {
+    const file = req.files[`mission${i}_file`]?.[0];
+    const sdFiles = req.files[`mission${i}_sd`];
+
+    // Check if DYOM mission file is valid
+    if (file) {
+      const fileData = fs.openSync(file.path, "r");
+      const buf = Buffer.alloc(4);
+      fs.readSync(fileData, buf, 0, 4, 0);
+      const fileNum = buf.readUInt32LE(0);
+      fs.closeSync(fileData);
+
+      if (file.size > MAX_FILE_SIZE) {
+        res.status(400).json({ msg: "File must be less than 1MB" });
+      }
+
+      if (fileNum !== DYOM_NUM) {
+        res.status(400).json({ msg: "File must be a valid DYOM mission." });
+      }
+    }
+
+    // Check SD files sizes
+    if (sdFiles) {
+      sdFiles.forEach((file) => {
+        if (file.size > MAX_SD_SIZE) {
+          res.status(400).json({ msg: "SD file must be less than 2MB" });
+        }
+      });
+    }
+  }
+
+  // Other file size-related checks
+  if (req.files.banner?.[0].size > MAX_BANNER_SIZE) {
+    res.status(400).json({ msg: "Banner must be less than 1MB" });
+  }
+  if (req.files.gallery) {
+    req.files.gallery.forEach((file) => {
+      if (file.size > MAX_GALLERY_SIZE) {
+        res.status(400).json({ msg: "Gallery file must be less than 5MB" });
+      }
+    });
+  }
+  if (req.files.modloader) {
+    req.files.modloader.forEach((file) => {
+      if (file.size > MAX_MODS_SIZE) {
+        res.status(400).json({ msg: "Modloader file must be less than 2MB" });
+      }
+    });
+  }
+
+  next();
+}
+
 async function validateUpdate(req, res, next) {
   const project = await Project.findById(req.params.id);
   if (project) {
-    //req.oldProject = project;
     req.update = true;
     next();
   } else res.status(404).json({ msg: "Can't update: Project doesn't exists!" });
@@ -45,36 +116,54 @@ async function validateUpdate(req, res, next) {
 
 function validateProject(req, res, next) {
   try {
+    const author = req.user.id;
     const {
+      type,
       title,
       summary,
       description,
       credits,
-      original,
       trailer,
       motto,
       music,
       difficulty,
       mods,
     } = req.body;
-    const file = req.files.file ? req.files.file[0] : null;
-    const banner = req.files.banner ? req.files.banner[0] : null;
-    const gallery = req.files?.gallery || [];
-    const tags = req.body.tags.split(",").filter((empty) => empty !== "");
-    if (!title || (!req.update && !file))
-      return res
-        .status(400)
-        .json({ msg: "Please enter all the required fields." });
+    const tags = req.body.tags?.split(",").filter((empty) => empty !== "");
+
+    const missions = [];
+    for (let i = 1; i <= 8; i++) {
+      const missionTitle = req.body[`mission${i}_title`];
+      const missionFile = req.files[`mission${i}_file`]?.[0].filename;
+      const missionSdFiles = [];
+      if (req.files[`mission${i}_sd`]) {
+        for (let j = 0; j < req.files[`mission${i}_sd`].length; j++) {
+          missionSdFiles.push({
+            filename: req.files[`mission${i}_sd`][j].originalname,
+            file: req.files[`mission${i}_sd`][j].filename,
+          });
+        }
+      }
+      const missionSummary = req.body[`mission${i}_summary`];
+      if (missionFile) {
+        missions.push({
+          title: missionTitle,
+          file: missionFile,
+          sd: missionSdFiles,
+          summary: missionSummary,
+        });
+      }
+    }
+
+    console.log(title, missions.length);
+    if (!title || (!req.update && !missions.length))
+      return res.status(400).json({ msg: "Please enter all the required fields." });
 
     const titleErrors = title ? helpers.checkTitle(title) : {};
-    const fileErrors = file ? helpers.checkFile(file) : {};
-    const bannerErrors = banner ? helpers.checkBanner(banner) : {};
-    const galleryErrors = gallery ? helpers.checkGallery(gallery) : {};
     const summaryErrors = summary ? helpers.checkSummary(summary) : {};
     const descErrors = description ? helpers.checkDescription(description) : {};
     const creditsErrors = credits ? helpers.checkCredits(credits) : {};
     const tagsErrors = tags ? helpers.checkTags(tags) : {};
-    const originalErrors = original ? helpers.checkOriginal(original) : {};
     const trailerErrors = trailer ? helpers.checkTrailer(trailer) : {};
     const mottoErrors = motto ? helpers.checkMotto(motto) : {};
     const musicErrors = music ? helpers.checkMusic(music) : {};
@@ -83,14 +172,10 @@ function validateProject(req, res, next) {
 
     const errors = checkErrors({
       titleErrors,
-      fileErrors,
-      bannerErrors,
-      galleryErrors,
       summaryErrors,
       descErrors,
       creditsErrors,
       tagsErrors,
-      originalErrors,
       trailerErrors,
       mottoErrors,
       musicErrors,
@@ -102,43 +187,24 @@ function validateProject(req, res, next) {
       return res.status(400).json(errors);
     }
 
-    // if (req.update) {
-    //   if (req.body.tags) req.body.tags = req.body.tags.split(",");
-    //   else req.body.tags = [];
-
-    //   let newProject = {};
-    //   Object.keys(req.body).forEach((element) => {
-    //     if (req.oldProject[element] !== req.body[element]) {
-    //       newProject[element] = req.body[element];
-    //     }
-    //   });
-    //   res.status(400).json({ newProject });
-    // }
     req.newProject = {
-      type: req.body.type,
-      title: req.body.title,
-      author: req.user.id,
-      summary: req.body.summary,
-      description: req.body.description,
-      banner: !!req.files.banner,
-      gallery: !!req.files.gallery,
-      trailer: req.body.trailer,
-      credits: req.body.credits,
-      tags: req.body.tags ? req.body.tags.split(",") : [],
-      original: req.body.original,
-      motto: req.body.motto,
-      music: req.body.music,
-      difficulty: req.body.difficulty,
-      mods: req.body.mods,
-      num: req.body.num,
+      type,
+      title,
+      author,
+      summary,
+      description,
+      missions,
+      banner: req.files.banner?.[0].filename,
+      gallery: req.files.gallery?.map((file) => file.filename),
+      trailer,
+      credits,
+      tags,
+      motto,
+      music,
+      difficulty,
+      mods,
     };
-    req.tempPath = `./public/uploads/${req.user.id}/temp/${req.projectFolder}`;
-    req.destPath = `./public/uploads/${req.user.id}/${req.body.type}s`;
-    req.bannerPath = req.files.banner ? req.files.banner[0].originalname : null;
-    req.galleryPath = req.files.gallery
-      ? req.files.gallery.map((f) => f.originalname)
-      : null;
-    req.filePath = req.files.file ? req.files.file[0].originalname : null;
+
     next();
   } catch (e) {
     console.log(e);
@@ -148,6 +214,7 @@ function validateProject(req, res, next) {
 
 module.exports = {
   uploadFiles,
+  validateFiles,
   validateProject,
   validateUpdate,
 };
