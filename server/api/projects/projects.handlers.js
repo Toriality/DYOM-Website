@@ -1,4 +1,5 @@
 const Project = require("./projects.model");
+const Mission = require("../missions").model;
 const User = require("../users").model;
 const fs = require("fs");
 const crc = require("crc");
@@ -11,12 +12,12 @@ const bannerRegex = new RegExp(/^banner\.(jpg|png)$/);
 // Get list of projects
 exports.getList = async (req, res) => {
   try {
-    const type = req.params.type;
+    const type = req.query.type || null;
     const author = req.query.author || null;
     const id = req.query.id || null;
     const title = new RegExp(req.query.title, "i");
     const filter = {
-      type: type,
+      ...(type && { type }),
       ...(author && { author }),
       ...(title && { title }),
       ...(id && { _id: id }),
@@ -27,30 +28,16 @@ exports.getList = async (req, res) => {
     const numberOfPages = Math.ceil(totalProjects / resultsPerPage);
     const page = Math.min(req.query.page, numberOfPages) || 1;
 
-    const select = [
-      "title",
-      "author",
-      "updatedAt",
-      "rating",
-      "downloads",
-      "views",
-      "comments",
-    ];
-
     const projects = await Project.find(filter)
-      .select(select)
       .limit(resultsPerPage)
       .skip(resultsPerPage * (page - 1))
       .sort({ updatedAt: "desc" })
-      .populate({
-        path: "author",
-        select: "username",
-      });
+      .populate([{ path: "author", select: "username" }, { path: "missions" }]);
 
     res.json({ projects, totalProjects });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal Server Error" });
+    res.status(500).json({ error: "Failed to retrieve projects" });
   }
 };
 
@@ -58,86 +45,41 @@ exports.getList = async (req, res) => {
 exports.getSingle = async (req, res) => {
   try {
     const week = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
-    const type = req.params.type;
     const id = req.params.id;
-    const cookieName = `view_${type}_${id}`;
+    const cookieName = `view_${id}`;
 
-    let select;
-    let populate = [{ path: "author", select: "username" }];
-    if (req.query.hasOwnProperty("reviews")) {
-      select = ["title", "author", "awards", "reviews"];
-      populate.push({
-        path: "reviews",
-        populate: { path: "author", select: ["username", "hasAvatar"] },
-      });
-    } else {
-      select = ["-awards", "-reviews"];
-    }
-
-    const project = await Project.findOne({ _id: id }).populate(populate).select(select);
+    const project = await Project.findById(id).populate([
+      { path: "author", select: "username" },
+      { path: "missions" },
+    ]);
 
     if (!req.cookies[cookieName]) {
       await project.updateOne({ $inc: { views: 1, weekViews: 1 } }).exec();
       res.cookie(cookieName, true, { maxAge: week });
     }
 
-    // loop through files inside project folder
-    const projectPath = `./public/uploads/${project.author.id}/${project.type}s/${id}/`;
-    const projectFiles = {
-      file: null,
-      gallery: [],
-      banner: null,
-    };
-    const files = fs.readdirSync(projectPath);
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const filePath = `${projectPath}/${file}`;
-      const stat = fs.statSync(filePath);
-      if (stat.isFile()) {
-        if (dyomRegex.test(file)) projectFiles.file = file;
-        if (galleryRegex.test(file)) projectFiles.gallery.push(file);
-        if (bannerRegex.test(file)) projectFiles.banner = file;
-      }
-    }
-    res.json({ project, projectFiles });
-  } catch (e) {
-    console.log(e);
-    res.status(500).json({ msg: "Internal Server Error" });
-  }
-};
-
-exports.getCRC = async (req, res) => {
-  try {
-    const project = await Project.findOne({ crc: req.params.crc });
-    if (!project)
-      return res.status(404).json({ msg: "No projects found with this CRC!" });
     res.json(project);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal Server Error" });
+    res.status(500).json({ error: "Failed to retrieve project" });
   }
 };
 
 exports.getRandom = async (req, res) => {
   try {
-    const PATH = `./public/uploads/missions/`;
-    const type = req.params.type;
-    const slot = req.query.slot;
+    const type = req.query.type;
 
     const numOfProjects = await Project.countDocuments({ type: type });
-
     const randomProject = Math.floor(Math.random() * numOfProjects);
     const project = await Project.findOne({ type })
       .sort({ updatedAt: "desc" })
-      .skip(randomProject);
+      .skip(randomProject)
+      .populate([{ path: "author", select: "username" }, { path: "missions" }]);
 
-    const randomMission = Math.floor(Math.random() * project.missions.length);
-    const mission = project.missions[randomMission];
-
-    res.json({ mission });
+    res.json({ project });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal Server Error" });
+    res.status(500).json({ error: "Failed to retrieve random project" });
   }
 };
 
@@ -161,22 +103,36 @@ exports.getTrending = async (req, res) => {
 // Add new project
 exports.addProject = async (req, res) => {
   try {
+    // Create new project
     moveFiles([
-      { name: req.newProject.missions.map((mission) => mission.file), to: "missions" },
-      {
-        name: req.newProject.missions
-          .flatMap((mission) => mission.sd || [])
-          .map((sd) => sd.file),
-        to: "audio",
-      },
       { name: req.newProject.banner, to: "images" },
       { name: req.newProject.gallery, to: "images" },
     ]);
-
     const project = await Project.create(req.newProject);
     await User.updateOne({ _id: req.user.id }, { $push: { projects: project._id } });
 
-    res.json(project);
+    // Create missions
+    moveFiles([
+      { name: req.newMissions.map((mission) => mission.file), to: "missions" },
+      {
+        name: req.newMissions.flatMap((mission) => mission.sd || []).map((sd) => sd.file),
+        to: "audio",
+      },
+    ]);
+    const missions = [];
+    for (let i = 0; i < req.newMissions.length; i++) {
+      req.newMissions[i].project = project._id;
+      const mission = await Mission.create(req.newMissions[i]);
+      missions.push(mission._id);
+    }
+
+    // Update project with missions
+    await Project.updateOne(
+      { _id: project._id },
+      { $push: { missions: { $each: missions } } }
+    );
+
+    res.redirect(`/api/projects/view/${project._id}`);
   } catch (err) {
     console.log(err);
     res.status(400).json({ msg: "Something went wrong. Try again later." });

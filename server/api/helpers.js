@@ -47,8 +47,21 @@ async function moveFiles(files) {
   });
 }
 
+async function removeFiles(files) {
+  files.forEach(({ name, at }) => {
+    const names = Array.isArray(name) ? name : [name];
+
+    names.forEach((file) => {
+      if (!file) return;
+      const src = `./public/uploads/${at}/${file}`;
+      if (fs.existsSync(src)) fs.unlinkSync(src);
+    });
+  });
+}
+
 module.exports = {
   checkErrors,
   generateCRC,
   moveFiles,
+  removeFiles,
 };

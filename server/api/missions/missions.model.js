@@ -16,6 +16,7 @@ const missionSchema = new Schema(
   {
     project: { type: Schema.Types.Number, ref: "Project", required: true },
     title: { type: String, required: true },
+    slot: { type: Number, required: true },
     file: { type: String, required: true },
     sd: [fileSchema],
     summary: { type: String },

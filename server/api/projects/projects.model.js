@@ -38,7 +38,7 @@ const projectSchema = new Schema(
     },
 
     // Missions
-    missions: { type: [Schema.Types.Number], ref: "Mission", required: true },
+    missions: { type: [Schema.Types.Number], ref: "Mission" },
 
     // CRC
     banner: { type: String },

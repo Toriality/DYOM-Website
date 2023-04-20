@@ -22,15 +22,42 @@ exports.getList = async (req, res) => {
 
 exports.getSingle = async (req, res) => {
   try {
-    const mission = await Mission.findById(req.params.missionId);
+    const isCRC = req.query.isCRC;
+    const id = req.params.missionId;
+
+    const mission = await Mission.findOne({
+      ...(isCRC ? { crc: id } : { _id: id }),
+    });
 
     if (!mission) {
-      return res
-        .status(404)
-        .json({ msg: `Mission of ID ${req.params.missionId} not found` });
+      return res.status(404).json({
+        msg: `Mission of ${isCRC ? "CRC" : "ID"} ${id} not found`,
+      });
     }
 
     res.json(mission);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.download = async (req, res) => {
+  try {
+    const isCRC = req.query.isCRC;
+    const slot = req.query.slot || 1;
+    const id = req.params.missionId;
+
+    const mission = await Mission.findOne({
+      ...(isCRC ? { crc: id } : { _id: id }),
+    });
+
+    if (!mission) {
+      return res.status(404).json({
+        msg: `Mission of ${isCRC ? "CRC" : "ID"} ${id} not found`,
+      });
+    }
+
+    res.download(`./public/uploads/missions/${mission.file}`, `DYOM${slot}.dat`);
   } catch (e) {
     console.log(e);
   }

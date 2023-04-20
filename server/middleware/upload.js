@@ -36,6 +36,7 @@ function createFileFilter(fields) {
 }
 
 function makeCRC(req, res, next) {
+  req.crc = [];
   for (const field in req.files) {
     const files = req.files[field];
     for (const file of files) {
@@ -46,6 +47,7 @@ function makeCRC(req, res, next) {
       fs.renameSync(path, crcPath);
       file.path = crcPath;
       file.filename = crcValue;
+      req.crc.push(crcValue);
     }
   }
   next();

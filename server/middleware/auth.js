@@ -1,22 +1,30 @@
 const jwt = require("jsonwebtoken");
+const User = require("../api/users/users.model");
 
 require("dotenv").config();
 
-function auth(req, res, next) {
+async function auth(req, res, next) {
   const token = req.header("x-auth-token");
 
   // Check for token
-  if (!token)
-    return res.status(401).json({ msg: "Unauthorized access - No token." });
+  if (!token) return res.status(401).json({ error: "Unauthorized access - No token." });
 
   try {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Check if user exists
+    const userExists = await User.findById(decoded.id);
+    if (!userExists)
+      return res.status(401).json({ error: "Unauthorized access - Invalid user." });
+
     // Add user from payload
     req.user = decoded;
+
     next();
   } catch (e) {
-    res.status(400).json({ msg: "Token is not valid." });
+    console.log(e);
+    res.status(400).json({ error: "Token is not valid." });
   }
 }
 
