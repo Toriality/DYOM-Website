@@ -5,6 +5,7 @@ const statsSchema = new Schema(
   {
     user: { type: Schema.Types.Number, ref: "User", required: true },
     project: { type: Schema.Types.Number, ref: "Project", required: true },
+    mission: { type: Schema.Types.Number, required: true },
     // Main stats
     highestProgress: { type: Number },
     lowestProgress: { type: Number },

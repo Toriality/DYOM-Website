@@ -134,7 +134,7 @@ exports.getRandom = async (req, res) => {
     const randomMission = Math.floor(Math.random() * project.missions.length);
     const mission = project.missions[randomMission];
 
-    res.download(PATH + mission.file, `DYOM${slot}.dat`);
+    res.json({ mission });
   } catch (e) {
     console.log(e);
     res.status(500).json({ msg: "Internal Server Error" });

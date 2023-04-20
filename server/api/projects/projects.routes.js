@@ -7,7 +7,7 @@ const { makeCRC } = require("../../middleware/upload");
 router.get("/list/:type", handlers.getList);
 router.get("/view/:id", handlers.getSingle);
 router.get("/crc/:crc", handlers.getCRC);
-router.get("/random/:type", handlers.getRandom);
+router.get("/random/:type", auth, handlers.getRandom);
 router.get("/trending", handlers.getTrending);
 
 router.post(

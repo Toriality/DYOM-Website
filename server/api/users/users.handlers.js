@@ -2,6 +2,7 @@ const { generateJWT } = require("./users.helpers");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const User = require("./users.model");
+const { report } = require("../helpers.js");
 
 // Get a list of all registered users
 exports.listUsers = async (req, res) => {
@@ -65,8 +66,7 @@ exports.getUser = async (req, res) => {
       const filePath = `${userPath}/${file}`;
       const stat = fs.statSync(filePath);
       if (stat.isFile()) {
-        if (file.endsWith(".png") || file.endsWith(".jpg"))
-          userFiles.image = file;
+        if (file.endsWith(".png") || file.endsWith(".jpg")) userFiles.image = file;
       }
     }
     res.json({ user, userFiles });

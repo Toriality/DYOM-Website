@@ -23,11 +23,13 @@ const Stats = require("./stats.model");
 // };
 
 exports.report = async (req, res) => {
+  const missionNumber = req.body.mission;
   const user = await User.findById(req.user.id);
   const project = await Project.findById(req.body.project);
+  const mission = project.missions[missionNumber];
 
-  if (!user || !project) {
-    return res.status(400).json({ msg: `Bad request` });
+  if (!user || !project || !mission) {
+    return res.status(400).json({ msg: `Bad request ${mission} ${project} ${user}` });
   }
 
   const options = {
@@ -39,10 +41,12 @@ exports.report = async (req, res) => {
     {
       user: user._id,
       project: project._id,
+      mission: missionNumber,
     },
     {
       user: user._id,
       project: project._id,
+      mission: missionNumber,
     },
     options
   );
@@ -106,13 +110,13 @@ exports.report = async (req, res) => {
   };
 
   const newStat = await Stats.findOneAndUpdate(
-    { user: user._id, project: project._id },
+    { user: user._id, project: project._id, mission: req.body.mission },
     update,
     options
   );
 
   await Project.findByIdAndUpdate(project._id, {
-    $push: { stats: stat._id },
+    $push: { "missions.$missionNumber.stats": stat._id },
   });
 
   await User.findByIdAndUpdate(user._id, {

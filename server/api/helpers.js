@@ -1,5 +1,6 @@
 const fs = require("fs");
 const crc = require("crc");
+const ip = require("ip");
 
 function checkErrors(errors) {
   Object.keys(errors).forEach((key) => {
