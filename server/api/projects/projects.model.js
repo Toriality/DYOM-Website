@@ -12,19 +12,6 @@ const fileSchema = new Schema(
   }
 );
 
-const missionSchema = new Schema(
-  {
-    title: { type: String, required: true },
-    file: { type: String, required: true },
-    sd: [fileSchema],
-    summary: { type: String },
-    stats: [{ type: Schema.Types.ObjectId, ref: "Stats" }],
-  },
-  {
-    _id: false,
-  }
-);
-
 const projectSchema = new Schema(
   {
     // Main information
@@ -51,7 +38,7 @@ const projectSchema = new Schema(
     },
 
     // Missions
-    missions: [missionSchema],
+    missions: { type: [Schema.Types.Number], ref: "Mission", required: true },
 
     // CRC
     banner: { type: String },
