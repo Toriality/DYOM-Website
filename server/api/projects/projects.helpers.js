@@ -1,6 +1,5 @@
 const cron = require("node-cron");
 const Project = require("./projects.model");
-const utils = require("./projects.utils");
 const fs = require("fs");
 
 const DYOM_NUM = 6;
@@ -10,43 +9,31 @@ const MAX_GALLERY_SIZE = 5 * 1024 * 1024; // 5MB
 const MAX_MODS_SIZE = 2 * 1024 * 1024; // 2MB
 const MAX_SD_SIZE = 2 * 1024 * 1024; // 2MB
 
+/**
+ * Check if a string contains one or more URLs.
+ * @param {string} str - The input string to check.
+ * @returns {boolean} - True if the string contains at least one URL, false otherwise.
+ */
 function doesContainLinks(str) {
   return /(http|https):\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?/i.test(str);
 }
 
+/**
+ * Checks if a given URL is a valid YouTube video URL
+ * @param {string} url - The URL to check
+ * @returns {boolean} - True if the URL is a valid YouTube video URL, false otherwise
+ */
 function isValidYouTube(url) {
-  return /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/i.test(
+  return /^(?:https?:\/\/)?(?:www.)?(?:youtube.com\/watch\?v=|youtu.be\/)([\w-]{11})/i.test(
     url
   );
-}
-
-function resetWeekViews() {
-  Project.updateMany({}, { $set: { weekViews: 0 } })
-    .then(() => {
-      console.log("Week Views has been reset");
-    })
-    .catch((err) => console.log(err));
-}
-
-// Reset week views of all projects every week
-function startTrending() {
-  cron.schedule(
-    // (debug) "*/5 * * * * *",
-    "0 0 * * 0",
-    () => {
-      resetWeekViews();
-    },
-    {
-      scheduled: true,
-      timezone: "America/Los_Angeles",
-    }
-  );
-  console.log("Week Views cron job has been started");
 }
 
 function checkFiles(files) {
   if (!files) return [];
 
+  // Check if every file in the array is a valid DYOM mission by checking its first four bytes.
+  // DYOM 8.1 files has the number 6 in the first four bytes.
   const validFile = files.every((file) => {
     const fileData = fs.openSync(file.path, "r");
     const buf = Buffer.alloc(4);
@@ -55,6 +42,7 @@ function checkFiles(files) {
     fs.closeSync(fileData);
     return fileNum === DYOM_NUM;
   });
+
   const validSize = files.every((file) => file.size <= MAX_FILE_SIZE);
   const uniqueFile = files.every(
     (file) => !fs.existsSync(`./public/uploads/missions/${file.filename}`)
@@ -195,8 +183,6 @@ function checkMods(mods) {
 }
 
 module.exports = {
-  startTrending,
-  resetWeekViews,
   checkTitle,
   checkSummary,
   checkDescription,

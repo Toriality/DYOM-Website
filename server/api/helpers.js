@@ -3,6 +3,7 @@ const crc = require("crc");
 const ip = require("ip");
 const archiver = require("archiver");
 
+//TODO: Remove function
 function checkErrors(errors) {
   Object.keys(errors).forEach((key) => {
     const error = errors[key];
@@ -22,12 +23,12 @@ function checkErrors(errors) {
   return errorsArray;
 }
 
-function generateCRC(filePath) {
-  const file = fs.readFileSync(filePath);
-  const crc = crc.crc32(file);
-  return crc;
-}
-
+/**
+ * Move files to a specified directory.
+ *
+ * @param {Array<{name: string | Array<string>, to: string}>} files - The files to move.
+ * @returns {Promise<void>}
+ */
 async function moveFiles(files) {
   files.forEach(({ name, to }) => {
     const names = Array.isArray(name) ? name : [name];
@@ -48,6 +49,14 @@ async function moveFiles(files) {
   });
 }
 
+/**
+ * Removes files from the './public/uploads' directory.
+ * @async
+ * @param {Array<{name: string | Array<string>, at: string}>} files - An array of objects
+ * with 'name' and 'at' properties. 'name' can be a string or an array of strings,
+ * and 'at' is a string representing a subdirectory of the './public/uploads' directory.
+ * @returns {Promise<void>} - A promise that resolves when all files have been removed.
+ */
 async function removeFiles(files) {
   files.forEach(({ name, at }) => {
     const names = Array.isArray(name) ? name : [name];
@@ -60,6 +69,18 @@ async function removeFiles(files) {
   });
 }
 
+/**
+ * Create a zip archive of given files and append additional content if provided.
+ * @async
+ * @param {Object[]} files - List of files to be included in the archive.
+ * @param {string} files[].name - Name of the file.
+ * @param {string} files[].type - Type of the file
+ * @param {string} files[].dest - Destination directory for the file in the archive.
+ * @param {Object} [append] - Optional additional content to append to the archive.
+ * @param {string} append.content - Content to append to the archive.
+ * @param {string} append.name - Name of the appended content in the archive.
+ * @returns {string} - Path to the created archive.
+ */
 async function createArchive(files, append) {
   const archive = archiver("zip");
   const randomId = Math.random().toString(36).substring(2);
@@ -85,6 +106,11 @@ async function createArchive(files, append) {
   return `./public/uploads/temp/${tempFile}`;
 }
 
+/**
+ * Generates a README file content based on the given object.
+ * @param {Object} obj - The object containing information about the project/mission.
+ * @returns {string} - The generated README file content.
+ */
 const createReadMe = (obj) => {
   let header;
   let content = [];
@@ -144,7 +170,6 @@ const createReadMe = (obj) => {
 
 module.exports = {
   checkErrors,
-  generateCRC,
   moveFiles,
   removeFiles,
   createArchive,

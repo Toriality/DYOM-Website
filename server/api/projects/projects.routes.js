@@ -7,7 +7,6 @@ const { makeCRC } = require("../../middleware/upload");
 router.get("/list", handlers.getList);
 router.get("/view/:id", handlers.getSingle);
 router.get("/random", auth, handlers.getRandom);
-router.get("/trending", handlers.getTrending);
 router.get("/download/:id", handlers.download);
 
 router.post(
@@ -19,17 +18,5 @@ router.post(
   middleware.validateProject,
   handlers.addProject
 );
-router.post("/copy", auth, handlers.copyProject);
-
-router.patch(
-  "/update/:id",
-  auth,
-  middleware.validateUpdate,
-  middleware.uploadFiles,
-  middleware.validateProject,
-  handlers.updateProject
-);
-
-router.delete("/delete/:id", auth, handlers.deleteProject);
 
 module.exports = router;

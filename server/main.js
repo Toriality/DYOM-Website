@@ -3,7 +3,6 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const useRoutes = require("./routes");
-const useSchedules = require("./schedules");
 const path = require("path");
 
 // Reading environnement variables
@@ -27,9 +26,6 @@ mongoose.connect(uri, () => {
 // Routes
 app.use("/", express.static(path.join(__dirname, "/public")));
 useRoutes(app);
-
-// Cron jobs
-useSchedules();
 
 // Log server info
 app.listen(port, () => {

@@ -45,10 +45,6 @@ function uploadFiles(req, res, next) {
   }
 }
 
-async function downloadFiles(req, res, next) {
-  next();
-}
-
 async function validateFiles(req, res, next) {
   const files = [];
   const sdFiles = [];
@@ -74,14 +70,6 @@ async function validateFiles(req, res, next) {
   }
 
   next();
-}
-
-async function validateUpdate(req, res, next) {
-  const project = await Project.findById(req.params.id);
-  if (project) {
-    req.update = true;
-    next();
-  } else res.status(404).json({ msg: "Can't update: Project doesn't exists!" });
 }
 
 function validateProject(req, res, next) {
@@ -164,8 +152,6 @@ function validateProject(req, res, next) {
 
 module.exports = {
   uploadFiles,
-  downloadFiles,
   validateFiles,
   validateProject,
-  validateUpdate,
 };
