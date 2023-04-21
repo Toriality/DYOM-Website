@@ -3,7 +3,9 @@ const Mission = require("../missions").model;
 const User = require("../users").model;
 const fs = require("fs");
 const crc = require("crc");
-const { moveFiles } = require("../helpers.js");
+const { moveFiles, createArchive, createReadMe } = require("../helpers.js");
+const archiver = require("archiver");
+const { Readable } = require("stream");
 
 const dyomRegex = new RegExp(/^file\.(zip|rar|dat)$/);
 const galleryRegex = new RegExp(/^gallery_\d\.(jpg|png)$/);
@@ -62,6 +64,47 @@ exports.getSingle = async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(500).json({ error: "Failed to retrieve project" });
+  }
+};
+
+// Download a project
+exports.download = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const project = await Project.findById(id).populate([
+      { path: "missions" },
+      { path: "author", select: "username" },
+    ]);
+    const missions = project.missions;
+    const files = [];
+    for (let i = 0; i < missions.length; i++) {
+      const mission = missions[i];
+      for (let j = 0; j < mission.sd.length; j++) {
+        const sd = mission.sd[j];
+        files.push({
+          name: sd.file,
+          type: "audio",
+          dest: `SD/${sd.filename}`,
+        });
+      }
+      files.push({
+        name: mission.file,
+        type: "missions",
+        dest: `DYOM${mission.slot}.dat`,
+      });
+    }
+
+    const readme = createReadMe(project);
+
+    const downloadPath = await createArchive(files, {
+      name: "README.txt",
+      content: readme,
+    });
+
+    res.download(downloadPath, `${project.title}.zip`);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: "Failed to download project" });
   }
 };
 

@@ -8,6 +8,7 @@ router.get("/list", handlers.getList);
 router.get("/view/:id", handlers.getSingle);
 router.get("/random", auth, handlers.getRandom);
 router.get("/trending", handlers.getTrending);
+router.get("/download/:id", handlers.download);
 
 router.post(
   "/add",

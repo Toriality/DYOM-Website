@@ -45,6 +45,10 @@ function uploadFiles(req, res, next) {
   }
 }
 
+async function downloadFiles(req, res, next) {
+  next();
+}
+
 async function validateFiles(req, res, next) {
   const files = [];
   const sdFiles = [];
@@ -160,6 +164,7 @@ function validateProject(req, res, next) {
 
 module.exports = {
   uploadFiles,
+  downloadFiles,
   validateFiles,
   validateProject,
   validateUpdate,
