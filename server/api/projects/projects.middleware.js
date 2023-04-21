@@ -101,7 +101,7 @@ function validateProject(req, res, next) {
     }
 
     if (!req.body.title || (!req.update && !missions.length))
-      return res.status(400).json({ msg: "Please enter all the required fields." });
+      return res.status(400).json({ error: "Please enter all the required fields." });
 
     req.body.tags = req.body.tags?.split(",").filter((empty) => empty !== "");
 

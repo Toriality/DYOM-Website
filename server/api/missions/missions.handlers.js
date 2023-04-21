@@ -12,7 +12,7 @@ exports.getList = async (req, res) => {
     if (!project) {
       return res
         .status(404)
-        .json({ msg: `Project of ID ${req.params.projectId} not found` });
+        .json({ error: `Project of ID ${req.params.projectId} not found` });
     }
 
     const missions = project.missions;
@@ -37,7 +37,7 @@ exports.getSingle = async (req, res) => {
 
     if (!mission) {
       return res.status(404).json({
-        msg: `Mission of ${isCRC ? "CRC" : "ID"} ${id} not found`,
+        error: `Mission of ${isCRC ? "CRC" : "ID"} ${id} not found`,
       });
     }
 

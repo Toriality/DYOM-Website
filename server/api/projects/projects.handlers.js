@@ -7,10 +7,6 @@ const { moveFiles, createArchive, createReadMe } = require("../helpers.js");
 const archiver = require("archiver");
 const { Readable } = require("stream");
 
-const dyomRegex = new RegExp(/^file\.(zip|rar|dat)$/);
-const galleryRegex = new RegExp(/^gallery_\d\.(jpg|png)$/);
-const bannerRegex = new RegExp(/^banner\.(jpg|png)$/);
-
 /** Retrieves the list of projects. */
 exports.getList = async (req, res) => {
   try {
