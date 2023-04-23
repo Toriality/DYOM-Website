@@ -20,7 +20,6 @@ Our primary objective is to recreate the website using the latest and most relia
 ![image5](https://user-images.githubusercontent.com/38092988/216808909-fe07ba48-9424-41c1-b706-9cf1306eb71b.gif)
 ![image6](https://user-images.githubusercontent.com/38092988/231892165-b2f906f5-f5a2-4326-9021-b25a9404b139.png)
 
-
 </details>
 
 ## Status
@@ -36,4 +35,4 @@ If you're interested in contributing to the project, we welcome any assistance, 
 
 ---
 
-###### To follow the development progress of the site, [visit my devlog!](https://github.com/Toriality/Toriality/blob/main/devlog.md)
+###### To follow the development progress of the site, [visit my devlog!](https://github.com/Toriality/my-devlog)

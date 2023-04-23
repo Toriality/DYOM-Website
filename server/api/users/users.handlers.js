@@ -2,7 +2,6 @@ const { generateJWT } = require("./users.helpers");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 const User = require("./users.model");
-const { report } = require("../helpers.js");
 
 // Get a list of all registered users
 exports.listUsers = async (req, res) => {
