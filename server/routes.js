@@ -4,5 +4,4 @@ module.exports = function (app) {
   app.use("/api/projects", require("./api/projects").routes);
   app.use("/api/missions", require("./api/missions").routes);
   app.use("/api/reviews", require("./api/reviews").routes);
-  app.use("/api/daily", require("./api/daily").routes);
 };
