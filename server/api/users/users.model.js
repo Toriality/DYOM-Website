@@ -21,7 +21,7 @@ const userSchema = new Schema(
     },
     aboutMe: { type: String },
     location: { type: String },
-    hasAvatar: { type: Boolean },
+    avatar: { type: String },
 
     // Stats
     stats: [{ type: Schema.Types.ObjectId, ref: "Stats" }],

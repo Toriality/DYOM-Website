@@ -33,101 +33,66 @@ async function getUserFound(username) {
   return userFound;
 }
 
-async function checkUsername(type, username, userFound) {
-  switch (type) {
-    case "login":
-      return {
-        found: {
-          valid: userFound !== null,
-          msg: "This user was not found in the DYOM website database.",
-        },
-      };
-    case "register":
-      return {
-        regex: {
-          valid: /^[a-zA-Z0-9_]{3,20}$/.test(username),
-          msg: "Username must be between 3 and 20 characters and can only contain letters, numbers, and underscores.",
-        },
-        taken: {
-          valid: userFound === null,
-          msg: "Username is already taken by another user.",
-        },
-        forbidden: {
-          valid: username !== "admin",
-          msg: "Username is forbidden.",
-        },
-      };
-  }
+async function checkUsername(username) {
+  if (!username) return [];
+
+  const validRegex = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+  const isForbidden = username === "admin";
+  const isTaken = await User.findOne({ username });
+
+  return [
+    !validRegex &&
+      "Username must be between 3 and 20 characters and can only contain letters, numbers, and underscores.",
+    isForbidden && "Username is forbidden.",
+    isTaken && "Username is already taken.",
+  ];
 }
 
-async function checkPassword(type, password, userFound) {
-  switch (type) {
-    case "login":
-      return {
-        match: {
-          valid: await doPasswordsMatch(password, userFound.password),
-          msg: "Username and password combination doesn't match.",
-        },
-      };
-    case "register":
-      return {
-        regex: {
-          valid: /^(?=.*\d).{8,}$/.test(password),
-          msg: "Password must be between 8 and 20 characters and must contain at least one uppercase letter, one lowercase letter, and one number.",
-        },
-      };
-  }
+async function checkPassword(password) {
+  if (!password) return [];
+
+  const validRegex = /^(?=.*\d).{8,}$/.test(password);
+
+  return [!validRegex && "Password must be between 8 and 32 characters."];
 }
 
 async function checkEmail(email) {
-  const users = await User.find({});
-  return {
-    regex: {
-      valid:
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-          email
-        ),
-      msg: "Email must be a valid email address.",
-    },
-    taken: {
-      valid: users.some((user) => user.email === email),
-      msg: "Email is already taken by another user.",
-    },
-  };
+  if (!email) return [];
+
+  const validRegex =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+  const isTaken = await User.findOne({ email });
+
+  return [
+    !validRegex && "Email must be a valid email address.",
+    isTaken && "Email is already taken.",
+  ];
 }
 
 function checkLocation(location) {
-  return {
-    regex: {
-      valid: /^[a-zA-Z0-9_]{0,24}$/.test(location),
-      msg: "Location must be between 0 and 24 characters.",
-    },
-  };
+  if (!location) return [];
+
+  const validRegex = /^[a-zA-Z0-9_]{0,24}$/.test(location);
+
+  return [!validRegex && "Location must be between 0 and 24 characters."];
 }
 
 function checkAboutMe(aboutMe) {
-  return {
-    regex: {
-      valid: /^.{0,1000}$/.test(aboutMe),
-      msg: "About me must be between 0 and 1000 characters.",
-    },
-  };
+  if (!aboutMe) return [];
+
+  const validRegex = /^.{0,1000}$/.test(aboutMe);
+
+  return [!validRegex && "About me must be between 0 and 1000 characters."];
 }
 
-function checkImage(image) {
-  const maxSize = 1 * 1024 * 1024;
-  const name = image.filename;
-  const size = image.size;
-  return {
-    regex: {
-      valid: name.endsWith(".png") || name.endsWith(".jpg"),
-      msg: "Profile image must be a .png or .jpg file",
-    },
-    size: {
-      valid: size <= maxSize,
-      msg: "Banner must be less than 1MB",
-    },
-  };
+function checkAvatar(avatar) {
+  if (!avatar) return [];
+
+  const validSize = avatar.size <= 1 * 1024 * 1024;
+
+  return [!validSize && "Avatar must be less than 1MB."];
 }
 
 module.exports = {
@@ -138,5 +103,5 @@ module.exports = {
   checkEmail,
   checkLocation,
   checkAboutMe,
-  checkImage,
+  checkAvatar,
 };

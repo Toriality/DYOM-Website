@@ -3,9 +3,10 @@ const Schema = mongoose.Schema;
 
 const reviewSchema = new Schema(
   {
-    mode: {
+    type: {
       type: String,
       required: true,
+      enum: ["Project", "Mission"],
     },
     content: {
       type: String,
@@ -17,27 +18,51 @@ const reviewSchema = new Schema(
       required: true,
     },
     project: {
-      type: Schema.Types.Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
+      required: function () {
+        return this.type === "Project";
+      },
     },
-    overallRating: { type: Number },
-    gameplayRating: { type: Number },
-    historyRating: { type: Number },
-    soundRating: { type: Number },
-    likes: {
-      type: [Schema.Types.Number],
-      ref: "User",
+    mission: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Mission",
+      required: function () {
+        return this.type === "Mission";
+      },
     },
-    dislikes: {
-      type: [Schema.Types.Number],
-      ref: "User",
+    interactions: {
+      likes: [
+        {
+          user: { type: Schema.Types.Number, ref: "User" },
+          date: { type: Date, default: Date.now },
+        },
+      ],
+      dislikes: [
+        {
+          user: { type: Schema.Types.Number, ref: "User" },
+          date: { type: Date, default: Date.now },
+        },
+      ],
     },
-    comments: { type: [Schema.Types.ObjectId] },
   },
   {
     timestamps: true,
+    discriminatorKey: "mode",
   }
 );
 
+const officialReviewSchema = new Schema({
+  gameplayRating: { type: Number },
+  historyRating: { type: Number },
+  soundRating: { type: Number },
+});
+
+const userReviewSchema = new Schema({
+  overallRating: { type: Number },
+});
+
 const Review = mongoose.model("Review", reviewSchema);
+Review.discriminator("OfficialReview", officialReviewSchema);
+Review.discriminator("UserReview", userReviewSchema);
 module.exports = Review;

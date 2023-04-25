@@ -32,7 +32,7 @@ exports.listUsers = async (req, res) => {
     res.json({ users, totalUsers });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -40,38 +40,17 @@ exports.listUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
   try {
     // Populate the projects collection with the following fields:
-    const populateSelection = [
-      "title",
-      "updatedAt",
-      "downloads",
-      "views",
-      "ratings",
-      "comments",
-    ];
+    const populate = ["title", "updatedAt", "downloads", "views", "ratings", "comments"];
 
     // Return the user based on their id
     const user = await User.findById(req.params.id)
       .select("-password")
-      .populate({ path: "projects", populate: populateSelection });
+      .populate({ path: "projects", populate: populate });
 
-    // loop through files inside project folder
-    const userPath = `./public/uploads/${user._id}`;
-    const userFiles = {
-      image: null,
-    };
-    const files = fs.readdirSync(userPath);
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const filePath = `${userPath}/${file}`;
-      const stat = fs.statSync(filePath);
-      if (stat.isFile()) {
-        if (file.endsWith(".png") || file.endsWith(".jpg")) userFiles.image = file;
-      }
-    }
-    res.json({ user, userFiles });
+    res.json(user);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -82,20 +61,30 @@ exports.getProfile = async (req, res) => {
     res.json(user);
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 // Handle user login
 exports.login = async (req, res) => {
   try {
-    const { userFound } = req;
+    if (!req.body.email || !req.body.password)
+      return res.status(400).json({ error: "Please enter all the required fields." });
+
+    const user = await User.findOne({
+      password: req.body.password,
+      email: req.body.email,
+    });
+
+    if (!user)
+      return res.status(400).json({ error: "Invalid email and password combination" });
+
     // Generate JWT token
-    const token = generateJWT(userFound);
-    res.json({ token, userFound });
+    const token = generateJWT(user);
+    res.json({ token, user });
   } catch (e) {
     console.log(e);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -114,16 +103,6 @@ exports.register = async (req, res) => {
 
     const user = await User.create(req.newUser);
 
-    if (req.imagePath)
-      fs.renameSync(`${req.tempPath}/avatar.${req.imagePath.split(".").pop()}`);
-    if (!fs.existsSync(`${req.destPath}/${user._id}`)) {
-      if (fs.existsSync(req.tempPath)) {
-        fs.renameSync(req.tempPath, `${req.destPath}/${user._id}/`);
-      } else {
-        fs.mkdirSync(`${req.destPath}/${user._id}`, { recursive: true });
-      }
-    }
-
     // Sign JWT token and return
     try {
       const token = generateJWT(user);
@@ -133,46 +112,6 @@ exports.register = async (req, res) => {
     }
   } catch (e) {
     console.error(e);
-    res.status(500).json({ msg: "Internal server error" });
-  }
-};
-
-// Edit a user's profile
-exports.updateUser = async (req, res) => {
-  try {
-    // Convert req.user.id (number) to string since req.params.id is a string
-    const userID = req.user.id.toString();
-
-    // Unauthorized access if user wants to update another user's profile
-    if (userID !== req.params.id) {
-      return res.status(403).json({ msg: "Unauthorized access." });
-    }
-
-    // Get variables from req
-    const { location, aboutMe, shouldRemoveAvatar } = req.body;
-    const userHasAvatar = req.user.hasAvatar;
-    const hasAvatar = !!req.file;
-
-    // Update user
-    try {
-      const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-          location,
-          aboutMe,
-          // TODO: Test on React website
-          // If shouldRemoveAvatar is true, return false
-          // If shouldRemoveAvatar is false and user has avatar or input has avatar, return true
-          hasAvatar: !shouldRemoveAvatar && (userHasAvatar || hasAvatar),
-        },
-        { new: true }
-      );
-      res.json(updatedUser);
-    } catch (e) {
-      throw new Error(`Error updating user - ${e}`);
-    }
-  } catch (e) {
-    console.log(e);
     res.status(500).json({ msg: "Internal server error" });
   }
 };
